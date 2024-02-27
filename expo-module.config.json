@@ -1,9 +1,9 @@
 {
-  "platforms": ["ios", "android", "web"],
+  "platforms": ["ios"],
   "ios": {
-    "modules": ["ReactNativeIosCollectionViewModule"]
-  },
-  "android": {
-    "modules": ["expo.modules.ioscollectionview.ReactNativeIosCollectionViewModule"]
+    "modules": [
+      "RNICollectionViewModule"
+    ],
+    "podspecPath": "./ios/ReactNativeIosCollectionView.podspec"
   }
 }

@@ -1,11 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native';
-
-import * as ReactNativeIosCollectionView from 'react-native-ios-collection-view';
+import { StyleSheet, View } from 'react-native';
+import { CollectionView } from 'react-native-ios-collection-view';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>{ReactNativeIosCollectionView.hello()}</Text>
+      <CollectionView/>
     </View>
   );
 }
