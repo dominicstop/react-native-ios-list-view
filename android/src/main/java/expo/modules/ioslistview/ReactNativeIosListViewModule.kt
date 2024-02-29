@@ -1,17 +1,17 @@
-package expo.modules.ioscollectionview
+package expo.modules.ioslistview
 
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 
-class ReactNativeIosCollectionViewModule : Module() {
+class ReactNativeIosListViewModule : Module() {
   // Each module class must implement the definition function. The definition consists of components
   // that describes the module's functionality and behavior.
   // See https://docs.expo.dev/modules/module-api for more details about available components.
   override fun definition() = ModuleDefinition {
     // Sets the name of the module that JavaScript code will use to refer to the module. Takes a string as an argument.
     // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
-    // The module will be accessible from `requireNativeModule('ReactNativeIosCollectionView')` in JavaScript.
-    Name("ReactNativeIosCollectionView")
+    // The module will be accessible from `requireNativeModule('ReactNativeIosListView')` in JavaScript.
+    Name("ReactNativeIosListView")
 
     // Sets constant properties on the module. Can take a dictionary or a closure that returns a dictionary.
     Constants(
@@ -37,9 +37,9 @@ class ReactNativeIosCollectionViewModule : Module() {
 
     // Enables the module to be used as a native view. Definition components that are accepted as part of
     // the view definition: Prop, Events.
-    View(ReactNativeIosCollectionView::class) {
+    View(ReactNativeIosListView::class) {
       // Defines a setter for the `name` prop.
-      Prop("name") { view: ReactNativeIosCollectionView, prop: String ->
+      Prop("name") { view: ReactNativeIosListView, prop: String ->
         println(prop)
       }
     }

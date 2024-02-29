@@ -3,8 +3,8 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "react-native-ios-collection-view": ["../src/index"],
-      "react-native-ios-collection-view/*": ["../src/*"]
+      "react-native-ios-list-view": ["../src/index"],
+      "react-native-ios-list-view/*": ["../src/*"]
     }
   }
 }

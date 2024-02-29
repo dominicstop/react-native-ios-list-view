@@ -19,7 +19,7 @@ config.resolver.nodeModulesPaths = [
 ];
 
 config.resolver.extraNodeModules = {
-  'react-native-ios-collection-view': '..',
+  'react-native-ios-list-view': '..',
 };
 
 config.watchFolders = [path.resolve(__dirname, '..')];

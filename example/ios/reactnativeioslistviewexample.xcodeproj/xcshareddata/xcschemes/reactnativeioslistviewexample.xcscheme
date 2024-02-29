@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "reactnativeioscollectionviewexample.app"
-               BlueprintName = "reactnativeioscollectionviewexample"
-               ReferencedContainer = "container:reactnativeioscollectionviewexample.xcodeproj">
+               BuildableName = "reactnativeioslistviewexample.app"
+               BlueprintName = "reactnativeioslistviewexample"
+               ReferencedContainer = "container:reactnativeioslistviewexample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "reactnativeioscollectionviewexampleTests.xctest"
-               BlueprintName = "reactnativeioscollectionviewexampleTests"
-               ReferencedContainer = "container:reactnativeioscollectionviewexample.xcodeproj">
+               BuildableName = "reactnativeioslistviewexampleTests.xctest"
+               BlueprintName = "reactnativeioslistviewexampleTests"
+               ReferencedContainer = "container:reactnativeioslistviewexample.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "reactnativeioscollectionviewexample.app"
-            BlueprintName = "reactnativeioscollectionviewexample"
-            ReferencedContainer = "container:reactnativeioscollectionviewexample.xcodeproj">
+            BuildableName = "reactnativeioslistviewexample.app"
+            BlueprintName = "reactnativeioslistviewexample"
+            ReferencedContainer = "container:reactnativeioslistviewexample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "reactnativeioscollectionviewexample.app"
-            BlueprintName = "reactnativeioscollectionviewexample"
-            ReferencedContainer = "container:reactnativeioscollectionviewexample.xcodeproj">
+            BuildableName = "reactnativeioslistviewexample.app"
+            BlueprintName = "reactnativeioslistviewexample"
+            ReferencedContainer = "container:reactnativeioslistviewexample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

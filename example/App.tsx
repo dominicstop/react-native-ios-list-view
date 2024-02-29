@@ -1,5 +1,6 @@
 import { StyleSheet, View } from 'react-native';
-import { CollectionView } from 'react-native-ios-collection-view';
+import { CollectionView } from 'react-native-ios-list-view';
+
 
 export default function App() {
   return (

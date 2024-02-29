@@ -1,11 +1,11 @@
-# react-native-ios-collection-view
+# react-native-ios-list-view
 
 TBA
 
 # API documentation
 
-- [Documentation for the main branch](https://github.com/expo/expo/blob/main/docs/pages/versions/unversioned/sdk/react-native-ios-collection-view.md)
-- [Documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/react-native-ios-collection-view/)
+- [Documentation for the main branch](https://github.com/expo/expo/blob/main/docs/pages/versions/unversioned/sdk/react-native-ios-list-view.md)
+- [Documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/react-native-ios-list-view/)
 
 # Installation in managed Expo projects
 
@@ -18,7 +18,7 @@ For bare React Native projects, you must ensure that you have [installed and con
 ### Add the package to your npm dependencies
 
 ```
-npm install react-native-ios-collection-view
+npm install react-native-ios-list-view
 ```
 
 ### Configure for iOS

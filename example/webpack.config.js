@@ -6,7 +6,7 @@ module.exports = async (env, argv) => {
     {
       ...env,
       babel: {
-        dangerouslyAddModulePathsToTranspile: ['react-native-ios-collection-view'],
+        dangerouslyAddModulePathsToTranspile: ['react-native-ios-list-view'],
       },
     },
     argv

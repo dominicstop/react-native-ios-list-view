@@ -83,9 +83,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'expo.modules.ioscollectionview.example'
+    namespace 'expo.modules.ioslistview.example'
     defaultConfig {
-        applicationId 'expo.modules.ioscollectionview.example'
+        applicationId 'expo.modules.ioslistview.example'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

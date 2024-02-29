@@ -1,4 +1,4 @@
-rootProject.name = 'react-native-ios-collection-view-example'
+rootProject.name = 'react-native-ios-list-view-example'
 
 dependencyResolutionManagement {
   versionCatalogs {

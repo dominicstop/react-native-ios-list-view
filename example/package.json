@@ -1,5 +1,5 @@
 {
-  "name": "react-native-ios-collection-view-example",
+  "name": "react-native-ios-list-view-example",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~50.0.6",
+    "expo": "~50.0.8",
     "react": "18.2.0",
     "react-native": "0.73.4"
   },

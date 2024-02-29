@@ -4,6 +4,6 @@
     "modules": [
       "RNICollectionViewModule"
     ],
-    "podspecPath": "./ios/ReactNativeIosCollectionView.podspec"
+    "podspecPath": "./ios/ReactNativeIosListView.podspec"
   }
 }

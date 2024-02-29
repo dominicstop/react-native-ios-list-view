@@ -1,4 +1,4 @@
-package expo.modules.ioscollectionview.example
+package expo.modules.ioslistview.example
 
 import android.os.Build
 import android.os.Bundle

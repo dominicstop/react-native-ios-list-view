@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 
-group = 'expo.modules.ioscollectionview'
+group = 'expo.modules.ioslistview'
 version = '0.1.0'
 
 buildscript {
@@ -65,7 +65,7 @@ android {
     }
   }
 
-  namespace "expo.modules.ioscollectionview"
+  namespace "expo.modules.ioslistview"
   defaultConfig {
     minSdkVersion safeExtGet("minSdkVersion", 21)
     targetSdkVersion safeExtGet("targetSdkVersion", 34)

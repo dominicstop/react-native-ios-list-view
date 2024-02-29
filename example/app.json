@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-ios-collection-view-example",
-    "slug": "react-native-ios-collection-view-example",
+    "name": "react-native-ios-list-view-example",
+    "slug": "react-native-ios-list-view-example",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,14 +16,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "expo.modules.ioscollectionview.example"
+      "bundleIdentifier": "expo.modules.ioslistview.example"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "expo.modules.ioscollectionview.example"
+      "package": "expo.modules.ioslistview.example"
     },
     "web": {
       "favicon": "./assets/favicon.png"

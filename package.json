@@ -1,5 +1,5 @@
 {
-  "name": "react-native-ios-collection-view",
+  "name": "react-native-ios-list-view",
   "version": "0.1.0",
   "description": "TBA",
   "main": "build/index.js",
@@ -18,16 +18,16 @@
   "keywords": [
     "react-native",
     "expo",
-    "react-native-ios-collection-view",
-    "RNICollectionView"
+    "react-native-ios-list-view",
+    "ReactNativeIosListView"
   ],
-  "repository": "https://github.com/dominicstop/react-native-ios-collection-view",
+  "repository": "https://github.com/dominicstop/react-native-ios-list-view",
   "bugs": {
-    "url": "https://github.com/dominicstop/react-native-ios-collection-view/issues"
+    "url": "https://github.com/dominicstop/react-native-ios-list-view/issues"
   },
   "author": "Dominic Go <dominic@dominicgo.dev> (https://github.com/dominicstop)",
   "license": "MIT",
-  "homepage": "https://github.com/dominicstop/react-native-ios-collection-view#readme",
+  "homepage": "https://github.com/dominicstop/react-native-ios-list-view#readme",
   "dependencies": {},
   "devDependencies": {
     "@types/react": "^18.0.25",
