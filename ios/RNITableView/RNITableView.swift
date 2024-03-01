@@ -6,6 +6,7 @@ struct ListData: Hashable {
   var key: String;
 };
 
+
 public class RNITableView: ExpoView, RNIRenderRequestDelegate {
   
   enum NativeIDKey: String {
@@ -13,7 +14,7 @@ public class RNITableView: ExpoView, RNIRenderRequestDelegate {
   };
 
   lazy var tableView = UITableView(frame: .zero, style: .plain);
-  var dataSource: UITableViewDiffableDataSource<Int, String>?;
+  var dataSource: RNITableViewDataSource?;
   
   var cellInstanceCount = 0;
   
@@ -22,7 +23,7 @@ public class RNITableView: ExpoView, RNIRenderRequestDelegate {
   var _didTriggerSetup = false;
   
   var listData: [ListData] = {
-    (0...15).map {
+    (0...100).map {
       ListData(key: "\($0)");
     };
   }();
@@ -53,6 +54,11 @@ public class RNITableView: ExpoView, RNIRenderRequestDelegate {
   func _setupInitTableView(){
     guard !self._didTriggerSetup else { return };
     let tableView = UITableView();
+    tableView.dragInteractionEnabled = true;
+    
+    tableView.delegate = self;
+    tableView.dragDelegate = self;
+    tableView.dropDelegate = self;
     
     tableView.register(
       RNITableViewCell.self,
@@ -84,8 +90,8 @@ public class RNITableView: ExpoView, RNIRenderRequestDelegate {
     tableView.dataSource = dataSource;
   };
   
-  func _createDataSource() -> UITableViewDiffableDataSource<Int, String> {
-    return UITableViewDiffableDataSource(
+  func _createDataSource() -> RNITableViewDataSource {
+    return RNITableViewDataSource(
       tableView: self.tableView,
       cellProvider: { [unowned self] tableView, indexPath, key in
         let listItem = self.listData.first(where: { $0.key == key })!;
@@ -126,5 +132,55 @@ public class RNITableView: ExpoView, RNIRenderRequestDelegate {
     guard didRegisterAllCells else { return };
       
  
+  };
+};
+
+extension RNITableView: UITableViewDelegate {
+  public func tableView(
+    _ tableView: UITableView,
+    heightForRowAt indexPath: IndexPath
+  ) -> CGFloat {
+    return 65;
+  };
+};
+
+extension RNITableView: UITableViewDragDelegate {
+  public func tableView(
+    _ tableView: UITableView,
+    itemsForBeginning session: UIDragSession,
+    at indexPath: IndexPath
+  ) -> [UIDragItem] {
+    guard let dataSource = self.dataSource,
+          let item = dataSource.itemIdentifier(for: indexPath)
+    else {
+      return [];
+    };
+    
+    let itemProvider = NSItemProvider(object: item as NSString);
+    let dragItem = UIDragItem(itemProvider: itemProvider);
+    dragItem.localObject = item;
+
+    return [dragItem]
+  };
+};
+
+extension RNITableView: UITableViewDropDelegate {
+  public func tableView(
+    _ tableView: UITableView,
+    dropSessionDidUpdate session: UIDropSession,
+    withDestinationIndexPath destinationIndexPath: IndexPath?
+  ) -> UITableViewDropProposal {
+  
+    return UITableViewDropProposal(
+      operation: .move,
+      intent: .insertAtDestinationIndexPath
+    );
+  };
+  
+  public func tableView(
+    _ tableView: UITableView,
+    performDropWith coordinator: UITableViewDropCoordinator
+  ) {
+    // no-op
   };
 };

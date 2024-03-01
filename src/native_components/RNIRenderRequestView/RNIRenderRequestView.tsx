@@ -83,12 +83,29 @@ export class RNIRenderRequestView extends React.PureComponent<
             // temp. use nativeID to encode data
             nativeID={`${item.renderRequestKey}`}
             style={{
+              paddingLeft: 10,
+              paddingHorizontal: 10,
+              height: 65,
+              justifyContent: 'center',
             }}
           >
-            <Text>
+            <Text style={{ 
+              backgroundColor: 'rgba(255,0,0,0.1)',
+              paddingHorizontal: 8,
+              paddingVertical: 3, 
+              borderRadius: 10,
+              overflow: 'hidden',
+            }}>
               {`renderRequestKey: ${item.renderRequestKey}`}
             </Text>
-            <Text>
+            <Text style={{
+              backgroundColor: 'rgba(0,0,255,0.1)',
+              paddingHorizontal: 8,
+              paddingVertical: 3, 
+              borderRadius: 10,
+              overflow: 'hidden',
+              marginTop: 5,
+            }}>
               {`index: ${index}`}
             </Text>
           </View>
