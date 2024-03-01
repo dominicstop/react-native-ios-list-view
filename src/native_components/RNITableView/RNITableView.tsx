@@ -2,16 +2,16 @@
 import * as React from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 
-import { RNICollectionViewProps } from './RNICollectionViewTypes';
-import { RNICollectionNativeView } from './RNICollectionNativeView';
+import { RNITableViewProps } from './RNITableViewTypes';
+import { RNITableNativeView } from './RNITableNativeView';
 
 
-export class RNICollectionView extends React.PureComponent<RNICollectionViewProps> {
+export class RNITableView extends React.PureComponent<RNITableViewProps> {
   
   nativeRef?: View;
   reactTag?: number;
 
-  constructor(props: RNICollectionViewProps){
+  constructor(props: RNITableViewProps){
     super(props);
   };
 
@@ -38,7 +38,7 @@ export class RNICollectionView extends React.PureComponent<RNICollectionViewProp
   };
 
   render(){
-    return React.createElement(RNICollectionNativeView, {
+    return React.createElement(RNITableNativeView, {
       ...this.props,
       ...((this.reactTag == null) && {
         onLayout: this._handleOnLayout,

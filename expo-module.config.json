@@ -2,7 +2,7 @@
   "platforms": ["ios"],
   "ios": {
     "modules": [
-      "RNICollectionViewModule"
+      "RNITableViewModule"
     ],
     "podspecPath": "./ios/ReactNativeIosListView.podspec"
   }

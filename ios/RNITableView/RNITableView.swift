@@ -1,18 +1,18 @@
 import ExpoModulesCore
 
 
-public class RNICollectionView: ExpoView {
+public class RNITableView: ExpoView {
   
   public required init(appContext: AppContext?) {
     super.init(appContext: appContext);
   };
   
   func _setup(){
-    let collectionView = UICollectionView();
+    let collectionView = UITableView();
     
     collectionView.register(
-      UICollectionViewCell.self,
-      forCellWithReuseIdentifier: "RNICollectionViewCell"
+      UITableViewCell.self,
+      forCellWithReuseIdentifier: "RNITableViewCell"
     );
     
     collectionView.dataSource = self;
@@ -30,10 +30,10 @@ public class RNICollectionView: ExpoView {
   };
 };
 
-extension RNICollectionView: UICollectionViewDataSource {
+extension RNITableView: UITableViewDataSource {
 
   public func collectionView(
-    _ collectionView: UICollectionView,
+    _ collectionView: UITableView,
     numberOfItemsInSection section: Int
   ) -> Int {
   
@@ -41,12 +41,12 @@ extension RNICollectionView: UICollectionViewDataSource {
   };
   
   public func collectionView(
-    _ collectionView: UICollectionView,
+    _ collectionView: UITableView,
     cellForItemAt indexPath: IndexPath
-  ) -> UICollectionViewCell {
+  ) -> UITableViewCell {
   
     let cell = collectionView.dequeueReusableCell(
-      withReuseIdentifier: "RNICollectionViewCell",
+      withReuseIdentifier: "RNITableViewCell",
       for: indexPath
     );
     
@@ -57,6 +57,6 @@ extension RNICollectionView: UICollectionViewDataSource {
   };
 };
 
-extension RNICollectionView: UICollectionViewDelegate {
+extension RNITableView: UITableViewDelegate {
   
 };

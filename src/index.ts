@@ -1,2 +1,2 @@
 
-export * from './components/CollectionView';
+export * from './components/TableView';

@@ -1,11 +1,11 @@
 import { StyleSheet, View } from 'react-native';
-import { CollectionView } from 'react-native-ios-list-view';
+import { TableView } from 'react-native-ios-list-view';
 
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <CollectionView/>
+      <TableView/>
     </View>
   );
 }

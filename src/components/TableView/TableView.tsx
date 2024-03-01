@@ -1,20 +1,20 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { RNICollectionView } from '../../native_components/RNICollectionView';
+import { RNITableView } from '../../native_components/RNITableView';
 
-import type { CollectionViewProps, CollectionViewState } from './CollectionViewTypes';
+import type { TableViewProps, TableViewState } from './TableViewTypes';
 
 
 const NATIVE_ID_KEYS = {
 };
 
-export class CollectionView extends 
-  React.PureComponent<CollectionViewProps, CollectionViewState> {
+export class TableView extends 
+  React.PureComponent<TableViewProps, TableViewState> {
 
-  nativeRef!: RNICollectionView;
+  nativeRef!: RNITableView;
 
-  constructor(props: CollectionViewProps){
+  constructor(props: TableViewProps){
     super(props);
 
     this.state = {
@@ -27,7 +27,7 @@ export class CollectionView extends
     } = this.props;
 
     return {
-      // A. Group native props for `RNICollectionView`...
+      // A. Group native props for `RNITableView`...
       nativeProps: {
         // TBA
       },
@@ -46,7 +46,7 @@ export class CollectionView extends
     const state = this.state;
 
     return (
-      <RNICollectionView
+      <RNITableView
         {...props.viewProps}
         {...props.nativeProps}
         ref={r => { this.nativeRef = r! }}
