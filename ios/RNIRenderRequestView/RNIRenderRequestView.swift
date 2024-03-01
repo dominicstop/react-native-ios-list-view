@@ -27,10 +27,7 @@ class RNIRenderRequestView: ExpoView {
 
   let onRenderRequestEvent = EventDispatcher("onRenderRequest");
   
-  override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
-    super.insertReactSubview(subview, at: atIndex);
-    subview.removeFromSuperview();
-    
+  override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {    
     self.renderRequestRegistry[self.currentRenderRequestKey] = subview;
     
     // temp. encode/decode data using `nativeID`

@@ -1,15 +1,23 @@
 import ExpoModulesCore
 import UIKit
+import ReactNativeIosUtilities
 
 struct ListData: Hashable {
   var key: String;
 };
 
-
-public class RNITableView: ExpoView {
+public class RNITableView: ExpoView, RNIRenderRequestDelegate {
+  
+  enum NativeIDKey: String {
+    case renderRequest;
+  };
 
   lazy var tableView = UITableView(frame: .zero, style: .plain);
   var dataSource: UITableViewDiffableDataSource<Int, String>?;
+  
+  var cellInstanceCount = 0;
+  
+  var renderRequestView: RNIRenderRequestView?;
   
   var _didTriggerSetup = false;
   
@@ -24,12 +32,30 @@ public class RNITableView: ExpoView {
     self._setupInitTableView();
   };
   
+  public override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
+    super.insertReactSubview(subview, at: atIndex);
+    
+    guard let nativeID = subview.nativeID,
+          let nativeIDKey = NativeIDKey(rawValue: nativeID)
+    else { return };
+    
+    switch (subview, nativeIDKey) {
+      case (let renderRequestView as RNIRenderRequestView, .renderRequest):
+        self.renderRequestView = renderRequestView;
+        renderRequestView.renderRequestDelegate.add(self);
+        self._applySnapshot();
+        
+      default:
+        break;
+    };
+  };
+  
   func _setupInitTableView(){
     guard !self._didTriggerSetup else { return };
     let tableView = UITableView();
     
     tableView.register(
-      UITableViewCell.self,
+      RNITableViewCell.self,
       forCellReuseIdentifier: "id"
     );
     
@@ -56,9 +82,6 @@ public class RNITableView: ExpoView {
     
     dataSource.defaultRowAnimation = .top;
     tableView.dataSource = dataSource;
-    
-    // load the initial items.
-    self._applySnapshot();
   };
   
   func _createDataSource() -> UITableViewDiffableDataSource<Int, String> {
@@ -66,14 +89,16 @@ public class RNITableView: ExpoView {
       tableView: self.tableView,
       cellProvider: { [unowned self] tableView, indexPath, key in
         let listItem = self.listData.first(where: { $0.key == key })!;
-      
+        
         // Create the cell as you'd usually do.
         let cell = tableView.dequeueReusableCell(
           withIdentifier: "id",
           for: indexPath
-        );
+        ) as! RNITableViewCell;
         
-        cell.textLabel?.text = listItem.key;
+        self.cellInstanceCount += 1;
+        
+        cell.setupIfNeeded(renderRequestView: self.renderRequestView!);
         return cell
       }
     );
@@ -90,5 +115,16 @@ public class RNITableView: ExpoView {
       snapshot,
       animatingDifferences: shouldAnimateRowUpdates
     );
+  };
+  
+  func onRenderRequestCompleted(renderRequestKey: Int, view: UIView) {
+    let renderRequestView = self.renderRequestView!;
+    
+    let didRegisterAllCells =
+      renderRequestView.renderRequestRegistry.count == self.cellInstanceCount;
+      
+    guard didRegisterAllCells else { return };
+      
+ 
   };
 };
