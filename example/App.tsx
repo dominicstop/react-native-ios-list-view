@@ -1,4 +1,5 @@
-import { StyleSheet, View } from 'react-native';
+import * as React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { TableView } from 'react-native-ios-list-view';
 
 
@@ -15,6 +16,67 @@ const LIST_DATA = (() => {
   return items;
 })();
 
+function CellContent(props: {
+  reuseIdentifier: number;
+}){
+  const [counter, setCounter] = React.useState(0);
+  const intervalRef = React.useRef<NodeJS.Timeout | undefined>();
+
+  const isIntervalActive = intervalRef.current != null;
+
+  React.useEffect(() => {
+    const intervalID = setInterval(() => {
+      setCounter((prevValue) => prevValue + 1); 
+    }, 1000);
+
+    intervalRef.current = intervalID;
+    return () => {
+      clearTimeout(intervalID);
+    };
+  }, [counter]);
+  
+  return (
+    <View style={styles.cellContentContainer}>
+      <View style={[styles.buttonRowContainer, styles.spacer]}>
+        <TouchableOpacity
+          style={[styles.button, styles.timerButton]}
+          onPress={() => {
+            if(isIntervalActive){
+              clearTimeout(intervalRef.current!);
+
+            } else {
+              const intervalID = setInterval(() => {
+                setCounter((prevValue) => prevValue + 1); 
+              }, 1000);
+
+              intervalRef.current = intervalID;
+            };
+          }}
+        >
+          <Text style={styles.buttonLabel}>
+            {isIntervalActive ? 'Start Counter' : 'End Counter' }
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, styles.resetTimerButton]}
+          onPress={() => {
+            setCounter(0);
+          }}
+        >
+          <Text style={styles.buttonLabel}>
+            {"Reset Counter"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.label}>
+        {`Reuse Identifier: ${props.reuseIdentifier}`}
+        {' - '}
+        {`Counter: ${counter}`}
+      </Text>
+    </View>
+  );
+};
+
 export default function App() {
   return (
     <View style={styles.container}>
@@ -26,6 +88,13 @@ export default function App() {
           index: number
         ) => {
           return `${item.indexID}`;
+        }}
+        renderCellContent={(renderRequestData) => {
+          return (
+            <CellContent
+              reuseIdentifier={renderRequestData.renderRequestKey}
+            />
+          );
         }}
       />
     </View>
@@ -39,5 +108,36 @@ const styles = StyleSheet.create({
   },
   tableView: {
     flex: 1,
+  },
+  cellContentContainer: {
+    paddingLeft: 10,
+    paddingHorizontal: 10,
+    height: 65,
+    justifyContent: 'center',
+  },
+  buttonRowContainer: {
+    flexDirection: 'row',
+  },
+  spacer: {
+    marginBottom: 8,
+  },
+  button: {
+    paddingHorizontal: 8,
+    paddingVertical: 3, 
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  timerButton: {
+    backgroundColor: 'rgba(255,0,0,0.1)',
+  },
+  resetTimerButton: {
+    backgroundColor: 'rgba(0,0,255,0.1)',
+    marginLeft: 12,
+  },
+  buttonLabel: {
+    fontWeight: '500',
+  },
+  label: {
+    fontSize: 14,
   },
 });

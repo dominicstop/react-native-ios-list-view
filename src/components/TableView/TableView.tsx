@@ -27,6 +27,8 @@ export class TableView extends
     const {
       listData,
       listDataKeyExtractor,
+      renderCellContent,
+      cellContentContainerStyle,
       ...viewProps
     } = this.props;
 
@@ -42,6 +44,9 @@ export class TableView extends
       nativeProps: {
         listData: listDataProcessed,
       },
+
+      renderCellContent,
+      cellContentContainerStyle,
 
       // B. Move all the default view-related
       //    props here...
@@ -65,6 +70,10 @@ export class TableView extends
       >
         <RNIRenderRequestView
           nativeID={NATIVE_ID_KEYS.renderRequest}
+          renderItem={(renderRequestData) => {
+            return props.renderCellContent(renderRequestData);
+          }}
+          renderItemContainerStyle={props.cellContentContainerStyle}
         />
       </RNITableView>
     );

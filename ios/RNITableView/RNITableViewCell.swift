@@ -54,7 +54,7 @@ class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
         equalTo: self.widthAnchor
       ),
       self.heightAnchor.constraint(
-        equalTo: view.heightAnchor
+        equalToConstant: view.bounds.height
       ),
     ]);
   };

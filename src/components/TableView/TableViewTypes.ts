@@ -1,9 +1,13 @@
-import { ViewProps } from "react-native";
-import { RNITableViewBaseProps, RNITableViewListDataItem } from "../../native_components/RNITableView";
+import { View, ViewProps } from "react-native";
+import { RNIRenderRequestViewProps, RenderRequestItem } from "../../native_components/RNIRenderRequestView";
 
 // export type TableViewInheritedProps = Pick<RNITableViewBaseProps, 
 //  | ''
 // >;
+
+export type TableViewRenderCellContent = (
+  renderRequestData: RenderRequestItem
+) => React.ReactElement;
 
 export type ListDataKeyExtractor<T extends object> = (
   listDataItem: T,
@@ -13,6 +17,8 @@ export type ListDataKeyExtractor<T extends object> = (
 export type TableViewBaseProps = {
   listData: Array<object>;
   listDataKeyExtractor: ListDataKeyExtractor<Record<string, any>>;
+  renderCellContent: TableViewRenderCellContent;
+  cellContentContainerStyle?: RNIRenderRequestViewProps['renderItemContainerStyle'];
 };
 
 export type TableViewProps = 
