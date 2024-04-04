@@ -1,10 +1,18 @@
 import { ViewProps } from "react-native";
-// import { RNITableViewBaseProps } from "../../native_components/RNITableView";
+import { RNITableViewBaseProps, RNITableViewListDataItem } from "../../native_components/RNITableView";
 
-// export type TableViewInheritedProps 
+// export type TableViewInheritedProps = Pick<RNITableViewBaseProps, 
+//  | ''
+// >;
+
+export type ListDataKeyExtractor<T extends object> = (
+  listDataItem: T,
+  index: number
+) => string;
 
 export type TableViewBaseProps = {
-  // TBA
+  listData: Array<object>;
+  listDataKeyExtractor: ListDataKeyExtractor<Record<string, any>>;
 };
 
 export type TableViewProps = 

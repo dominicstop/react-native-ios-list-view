@@ -1,10 +1,9 @@
-import ExpoModulesCore
 import UIKit
+import ExpoModulesCore
 import ReactNativeIosUtilities
+import DGSwiftUtilities
 
-struct ListData: Hashable {
-  var key: String;
-};
+
 
 
 public class RNITableView: ExpoView, RNIRenderRequestDelegate {
@@ -22,37 +21,42 @@ public class RNITableView: ExpoView, RNIRenderRequestDelegate {
   
   var _didTriggerSetup = false;
   
-  var listData: [ListData] = {
-    (0...100).map {
-      ListData(key: "\($0)");
-    };
-  }();
+  var listDataOrdered: Array<RNITableViewListDataEntry> = [];
+  
+  // MARK: Properties - RN Props
+  // ---------------------------
+  
+  var listData: Array<RNITableViewListDataEntry> = [];
+  var listDataProp: Array<NSDictionary> = [] {
+    willSet {
+      let oldValue = self.listDataProp;
+      guard newValue != oldValue else { return };
+      
+      let listDataNew = newValue.compactMap {
+        try? RNITableViewListDataEntry(fromDict: $0 as! Dictionary<String, Any>);
+      };
+      
+      let listDataOld = self.listData;
+      guard listDataNew != listDataOld else { return };
+      
+      self.listData = listDataNew;
+      self._notifyOnListDataPropDidUpdate(old: listDataOld, new: listDataNew);
+    }
+  };
+  
+  var listDataKeyProp: String?;
+  
+  // MARK: Init + Setup
+  // ------------------
   
   public required init(appContext: AppContext?) {
     super.init(appContext: appContext);
     self._setupInitTableView();
   };
   
-  public override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
-    super.insertReactSubview(subview, at: atIndex);
-    
-    guard let nativeID = subview.nativeID,
-          let nativeIDKey = NativeIDKey(rawValue: nativeID)
-    else { return };
-    
-    switch (subview, nativeIDKey) {
-      case (let renderRequestView as RNIRenderRequestView, .renderRequest):
-        self.renderRequestView = renderRequestView;
-        renderRequestView.renderRequestDelegate.add(self);
-        self._applySnapshot();
-        
-      default:
-        break;
-    };
-  };
-  
   func _setupInitTableView(){
     guard !self._didTriggerSetup else { return };
+    
     let tableView = UITableView();
     tableView.dragInteractionEnabled = true;
     
@@ -90,11 +94,36 @@ public class RNITableView: ExpoView, RNIRenderRequestDelegate {
     tableView.dataSource = dataSource;
   };
   
+  // MARK: Functions - RN Lifecycle
+  // ------------------------------
+  
+  public override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
+    super.insertReactSubview(subview, at: atIndex);
+    
+    guard let nativeID = subview.nativeID,
+          let nativeIDKey = NativeIDKey(rawValue: nativeID)
+    else { return };
+    
+    switch (subview, nativeIDKey) {
+      case (let renderRequestView as RNIRenderRequestView, .renderRequest):
+        self.renderRequestView = renderRequestView;
+        renderRequestView.renderRequestDelegate.add(self);
+        
+      default:
+        break;
+    };
+  };
+  
+  // MARK: Functions
+  // ---------------
+  
   func _createDataSource() -> RNITableViewDataSource {
     return RNITableViewDataSource(
       tableView: self.tableView,
       cellProvider: { [unowned self] tableView, indexPath, key in
-        let listItem = self.listData.first(where: { $0.key == key })!;
+        let listItem = self.listDataOrdered.first {
+          $0.key == key;
+        };
         
         // Create the cell as you'd usually do.
         let cell = tableView.dequeueReusableCell(
@@ -115,7 +144,7 @@ public class RNITableView: ExpoView, RNIRenderRequestDelegate {
   
     var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
     snapshot.appendSections([0]);
-    snapshot.appendItems(self.listData.map({$0.key}));
+    snapshot.appendItems(self.listDataOrdered.map({$0.key}));
     
     dataSource.apply(
       snapshot,
@@ -130,8 +159,33 @@ public class RNITableView: ExpoView, RNIRenderRequestDelegate {
       renderRequestView.renderRequestRegistry.count == self.cellInstanceCount;
       
     guard didRegisterAllCells else { return };
+  };
+  
+  func _notifyOnListDataPropDidUpdate(
+    old listDataOld: [RNITableViewListDataEntry],
+    new listDataNew: [RNITableViewListDataEntry]
+  ){
+  
+    let newItems = listDataNew.filter { item in
+      let matchFromOld = listDataOld.first {
+        item == $0;
+      };
       
- 
+      let hasMatchFromOld = matchFromOld != nil;
+      return !hasMatchFromOld;
+    };
+    
+    let listDataOrderedFiltered =  self.listDataOrdered.filter { item in
+      let matchFromNew = listDataNew.first {
+        item == $0;
+      };
+      
+      let hasMatchFromNew = matchFromNew != nil;
+      return hasMatchFromNew;
+    };
+    
+    self.listDataOrdered = listDataOrderedFiltered + newItems;
+    self._applySnapshot();
   };
 };
 

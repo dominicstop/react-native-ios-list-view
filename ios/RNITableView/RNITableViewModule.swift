@@ -6,7 +6,9 @@ public class RNITableViewModule: Module {
     Name("RNITableView");
 
     View(RNITableView.self) {
-      // no-op
+      Prop("listData"){
+        $0.listDataProp = $1;
+      };
     }
   };
 };

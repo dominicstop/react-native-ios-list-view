@@ -6,7 +6,14 @@ import { RNITableNativeViewBaseProps } from './RNITableNativeViewTypes';
 //  | 'tba'
 // >;
 
+export type RNITableViewListDataItem<T = object> = {
+  key: string;
+  data: T;
+};
+
+
 export type RNITableViewBaseProps = {
+  listData: Array<RNITableViewListDataItem>;
 };
 
 export type RNITableViewProps = 

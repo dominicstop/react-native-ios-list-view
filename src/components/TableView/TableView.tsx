@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { RNITableView } from '../../native_components/RNITableView';
+import { RNITableView, RNITableViewListDataItem } from '../../native_components/RNITableView';
 
 import type { TableViewProps, TableViewState } from './TableViewTypes';
 import { RNIRenderRequestView } from '../../native_components/RNIRenderRequestView';
@@ -25,13 +25,22 @@ export class TableView extends
 
   private getProps = () => {
     const {
+      listData,
+      listDataKeyExtractor,
       ...viewProps
     } = this.props;
+
+    const listDataProcessed: Array<RNITableViewListDataItem> = listData.map((item, index) => {
+      return ({
+        key: listDataKeyExtractor(item, index),
+        data: item,
+      });
+    });
 
     return {
       // A. Group native props for `RNITableView`...
       nativeProps: {
-        // TBA
+        listData: listDataProcessed,
       },
 
       // B. Move all the default view-related
