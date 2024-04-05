@@ -10,7 +10,7 @@ import DGSwiftUtilities
 
 
 public struct RNITableViewListDataEntry: Hashable {
-  var key: String;
+  public var key: String;
 };
 
 extension RNITableViewListDataEntry: InitializableFromDictionary {
