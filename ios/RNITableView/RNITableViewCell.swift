@@ -10,12 +10,12 @@ import DGSwiftUtilities
 
 
 class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
-  
+
   var renderRequestKey: Int?;
 
   var _didTriggerSetup = false;
 
-  weak var renderRequestView: RNIRenderRequestView!;
+  weak var renderRequestView: RNIRenderRequestView?;
   
   func setupIfNeeded(renderRequestView: RNIRenderRequestView){
     guard !self._didTriggerSetup else { return };
@@ -28,33 +28,36 @@ class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     self.renderRequestKey = renderRequestKey;
   };
   
-  func onRenderRequestCompleted(renderRequestKey: Int, view: UIView) {
+  func onRenderRequestCompleted(
+    renderRequestKey: Int,
+    requestedView: RNIRenderRequestableView
+  ) {
     guard self.renderRequestKey == renderRequestKey else { return };
 
     print(
       "RNITableViewCell.onRenderRequestCompleted",
       "\n - renderRequestKey:", renderRequestKey,
-      "\n - view.bounds:", view.bounds,
+      "\n - requestedView.bounds:", requestedView.bounds,
       "\n"
     );
     
-    view.removeFromSuperview();
+    requestedView.removeFromSuperview();
     
-    view.translatesAutoresizingMaskIntoConstraints = false;
-    self.addSubview(view);
+    requestedView.translatesAutoresizingMaskIntoConstraints = false;
+    self.addSubview(requestedView);
     
     NSLayoutConstraint.activate([
-      view.centerXAnchor.constraint(
+      requestedView.centerXAnchor.constraint(
         equalTo: self.centerXAnchor
       ),
-      view.centerYAnchor.constraint(
+      requestedView.centerYAnchor.constraint(
         equalTo: self.centerYAnchor
       ),
-      view.widthAnchor.constraint(
+      requestedView.widthAnchor.constraint(
         equalTo: self.widthAnchor
       ),
       self.heightAnchor.constraint(
-        equalToConstant: view.bounds.height
+        equalToConstant: requestedView.bounds.height
       ),
     ]);
   };

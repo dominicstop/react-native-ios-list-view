@@ -6,7 +6,7 @@ import DGSwiftUtilities
 
 
 
-public class RNITableView: ExpoView, RNIRenderRequestDelegate {
+public class RNITableView: ExpoView {
   
   enum NativeIDKey: String {
     case renderRequest;
@@ -152,14 +152,7 @@ public class RNITableView: ExpoView, RNIRenderRequestDelegate {
     );
   };
   
-  func onRenderRequestCompleted(renderRequestKey: Int, view: UIView) {
-    let renderRequestView = self.renderRequestView!;
-    
-    let didRegisterAllCells =
-      renderRequestView.renderRequestRegistry.count == self.cellInstanceCount;
-      
-    guard didRegisterAllCells else { return };
-  };
+  
   
   func _notifyOnListDataPropDidUpdate(
     old listDataOld: [RNITableViewListDataEntry],

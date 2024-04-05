@@ -9,13 +9,7 @@ import UIKit
 import ExpoModulesCore
 import DGSwiftUtilities
 
-protocol RNIRenderRequestDelegate {
-  
-  func onRenderRequestCompleted(
-    renderRequestKey: Int,
-    view: UIView
-  );
-};
+
 
 class RNIRenderRequestView: ExpoView {
 
@@ -23,20 +17,21 @@ class RNIRenderRequestView: ExpoView {
     MulticastDelegate<RNIRenderRequestDelegate>();
 
   var currentRenderRequestKey = 0;
-  var renderRequestRegistry: Dictionary<Int, UIView> = [:];
+  var renderRequestRegistry: Dictionary<Int, RNIRenderRequestableView> = [:];
 
   let onRenderRequestEvent = EventDispatcher("onRenderRequest");
   
-  override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {    
-    self.renderRequestRegistry[self.currentRenderRequestKey] = subview;
+  override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
+    guard let requestedView = subview as? RNIRenderRequestableView
+    else { return };
     
-    // temp. encode/decode data using `nativeID`
-    let renderRequestKey = Int(subview.nativeID!)!;
+    let renderRequestKey = requestedView.renderRequestKey;
+    self.renderRequestRegistry[renderRequestKey] = requestedView;
     
     renderRequestDelegate.invoke {
       $0.onRenderRequestCompleted(
         renderRequestKey: renderRequestKey,
-        view: subview
+        requestedView: requestedView
       );
     };
     
