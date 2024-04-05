@@ -5,12 +5,14 @@ import { RNIRenderRequestNativeViewBaseProps } from './RNIRenderRequestNativeVie
 //  | 'tba'
 // >;
 
+export type RNIRenderRequestViewRenderItem = (
+  renderRequestItem: RenderRequestItem,
+  index: number
+) => React.ReactElement;
+
 export type RNIRenderRequestViewBaseProps = {
-  renderItem: (
-    renderRequestItem: RenderRequestItem,
-    index: number
-  ) => React.ReactElement;
   renderItemContainerStyle?: ViewStyle;
+  renderItem: RNIRenderRequestViewRenderItem;
 };
 
 export type RNIRenderRequestViewProps = 
