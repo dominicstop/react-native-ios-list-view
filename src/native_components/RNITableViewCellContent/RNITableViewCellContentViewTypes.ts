@@ -1,7 +1,7 @@
 import { View, ViewProps, ViewStyle } from 'react-native';
-import { RNIRenderRequestNativeViewBaseProps } from './RNIRenderRequestNativeViewTypes';
+import { RNITableViewCellContentNativeViewBaseProps } from './RNITableViewCellContentNativeViewTypes';
 
-// export type RNITableViewCellContentViewInheritedProps = Pick<RNIRenderRequestNativeViewBaseProps,
+// export type RNITableViewCellContentViewInheritedProps = Pick<RNITableViewCellContentNativeViewBaseProps,
 //  | 'tba'
 // >;
 

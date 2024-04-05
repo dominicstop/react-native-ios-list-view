@@ -1,5 +1,5 @@
 import { requireNativeViewManager } from 'expo-modules-core';
-import type { RNIRenderRequestNativeViewProps } from './RNIRenderRequestNativeViewTypes';
+import type { RNITableViewCellContentNativeViewProps } from './RNITableViewCellContentNativeViewTypes';
 
-export const RNITableViewCellContentNativeView: React.ComponentType<RNIRenderRequestNativeViewProps> =
+export const RNITableViewCellContentNativeView: React.ComponentType<RNITableViewCellContentNativeViewProps> =
   requireNativeViewManager('RNITableViewCellContentView');
