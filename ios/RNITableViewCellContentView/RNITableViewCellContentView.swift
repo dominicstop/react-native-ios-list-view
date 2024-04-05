@@ -12,5 +12,6 @@ import DGSwiftUtilities
 
 
 public class RNITableViewCellContentView: ExpoView {
-
+  
+  var renderRequestKey: Int = -1;
 };

@@ -13,7 +13,9 @@ public class RNITableViewCellContentViewModule: Module {
     Name("RNITableViewCellContentView");
 
     View(RNITableViewCellContentView.self) {
-
-    }
+      Prop("renderRequestKey"){
+        $0.renderRequestKey = $1;
+      };
+    };
   };
 };
