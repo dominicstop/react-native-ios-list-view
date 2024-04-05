@@ -1,4 +1,4 @@
-import { View, ViewProps } from "react-native";
+import { View, ViewProps, ViewStyle } from "react-native";
 import { RNIRenderRequestViewProps, RenderRequestItem } from "../../native_components/RNIRenderRequestView";
 
 // export type TableViewInheritedProps = Pick<RNITableViewBaseProps, 
@@ -18,7 +18,7 @@ export type TableViewBaseProps = {
   listData: Array<object>;
   listDataKeyExtractor: ListDataKeyExtractor<Record<string, any>>;
   renderCellContent: TableViewRenderCellContent;
-  cellContentContainerStyle?: RNIRenderRequestViewProps['renderItemContainerStyle'];
+  cellContentContainerStyle?: ViewStyle;
 };
 
 export type TableViewProps = 

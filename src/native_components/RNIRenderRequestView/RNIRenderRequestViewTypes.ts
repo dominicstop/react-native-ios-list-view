@@ -11,7 +11,6 @@ export type RNIRenderRequestViewRenderItem = (
 ) => React.ReactElement;
 
 export type RNIRenderRequestViewBaseProps = {
-  renderItemContainerStyle?: ViewStyle;
   renderItem: RNIRenderRequestViewRenderItem;
 };
 

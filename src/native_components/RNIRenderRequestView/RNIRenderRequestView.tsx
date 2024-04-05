@@ -35,7 +35,6 @@ export class RNIRenderRequestView extends React.PureComponent<
   private getProps = () => {
     const {
       renderItem,
-      renderItemContainerStyle: renderContainerStyle,
       ...viewProps
     } = this.props;
 
@@ -44,8 +43,8 @@ export class RNIRenderRequestView extends React.PureComponent<
       nativeProps: {
       },
 
+      // B. React props...
       renderItem,
-      renderContainerStyle,
 
       // C. Move all the default view-related
       //    props here...
@@ -99,15 +98,7 @@ export class RNIRenderRequestView extends React.PureComponent<
       ],
       onRenderRequest: this._handleOnRenderRequest,
       children: state.renderRequests.map((item, index) => {
-        return (
-          <View
-            key={item.renderRequestKey}
-            nativeID={`${item.renderRequestKey}`}
-            style={props.renderContainerStyle}
-          >
-            {props.renderItem(item, index)}
-          </View>
-        );
+        return props.renderItem(item, index);
       }),
     });
   };

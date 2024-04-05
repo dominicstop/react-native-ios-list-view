@@ -73,7 +73,6 @@ export class TableView extends
           renderItem={(renderRequestData) => {
             return props.renderCellContent(renderRequestData);
           }}
-          renderItemContainerStyle={props.cellContentContainerStyle}
         />
       </RNITableView>
     );
