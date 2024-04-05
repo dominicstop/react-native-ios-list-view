@@ -59,6 +59,7 @@ public class RNITableView: ExpoView {
     
     let tableView = UITableView();
     tableView.dragInteractionEnabled = true;
+    tableView.separatorStyle = .none;
     
     tableView.delegate = self;
     tableView.dragDelegate = self;
@@ -131,9 +132,10 @@ public class RNITableView: ExpoView {
           for: indexPath
         ) as! RNITableViewCell;
         
-        self.cellInstanceCount += 1;
-        
+        cell.selectionStyle = .none;
         cell.setupIfNeeded(renderRequestView: self.renderRequestView!);
+        
+        self.cellInstanceCount += 1;
         return cell
       }
     );
