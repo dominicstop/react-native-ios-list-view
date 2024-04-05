@@ -22,6 +22,8 @@ export type RenderRequestItem = {
   renderRequestKey: number;
 };
 
+export type RenderRequestKey = RenderRequestItem['renderRequestKey'];
+
 export type RNIRenderRequestViewState = {
   renderRequests: Array<RenderRequestItem>;
 };
