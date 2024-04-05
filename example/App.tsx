@@ -20,9 +20,9 @@ function CellContent(props: {
   reuseIdentifier: number;
 }){
   const [counter, setCounter] = React.useState(0);
-  const intervalRef = React.useRef<NodeJS.Timeout | undefined>();
+  const [isIntervalActive, setIsIntervalActive] = React.useState(true);
 
-  const isIntervalActive = intervalRef.current != null;
+  const intervalRef = React.useRef<NodeJS.Timeout | undefined>();
 
   React.useEffect(() => {
     const intervalID = setInterval(() => {
@@ -43,6 +43,7 @@ function CellContent(props: {
           onPress={() => {
             if(isIntervalActive){
               clearTimeout(intervalRef.current!);
+              setIsIntervalActive(false);
 
             } else {
               const intervalID = setInterval(() => {
@@ -50,11 +51,15 @@ function CellContent(props: {
               }, 1000);
 
               intervalRef.current = intervalID;
+              setIsIntervalActive(true);
             };
           }}
         >
           <Text style={styles.buttonLabel}>
-            {isIntervalActive ? 'Start Counter' : 'End Counter' }
+            {isIntervalActive 
+              ? 'End Counter' 
+              : 'Start Counter'
+            } 
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
