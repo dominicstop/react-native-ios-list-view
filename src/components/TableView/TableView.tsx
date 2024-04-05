@@ -5,6 +5,7 @@ import { RNITableView, RNITableViewListDataItem } from '../../native_components/
 
 import type { TableViewProps, TableViewState } from './TableViewTypes';
 import { RNIRenderRequestView } from '../../native_components/RNIRenderRequestView';
+import { RNITableViewCellContentView } from '../../native_components/RNITableViewCellContent';
 
 
 const NATIVE_ID_KEYS = {
@@ -71,7 +72,15 @@ export class TableView extends
         <RNIRenderRequestView
           nativeID={NATIVE_ID_KEYS.renderRequest}
           renderItem={(renderRequestData) => {
-            return props.renderCellContent(renderRequestData);
+            return (
+              <RNITableViewCellContentView
+                key={renderRequestData.renderRequestKey}
+                style={props.cellContentContainerStyle}
+                renderRequestKey={renderRequestData.renderRequestKey}
+              >
+                {props.renderCellContent(renderRequestData)}
+              </RNITableViewCellContentView>
+            );
           }}
         />
       </RNITableView>

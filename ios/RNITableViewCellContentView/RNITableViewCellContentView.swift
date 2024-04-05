@@ -11,7 +11,9 @@ import ReactNativeIosUtilities
 import DGSwiftUtilities
 
 
-public class RNITableViewCellContentView: ExpoView {
+public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
+
+  public var renderRequestData: Dictionary<String, Any> = [:];
+  public var renderRequestKey: Int = -1;
   
-  var renderRequestKey: Int = -1;
 };
