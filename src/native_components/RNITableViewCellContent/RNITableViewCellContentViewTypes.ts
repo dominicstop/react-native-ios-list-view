@@ -6,11 +6,6 @@ import { RNITableViewCellContentNativeViewBaseProps } from './RNITableViewCellCo
 // >;
 
 export type RNITableViewCellContentViewBaseProps = {
-  renderItem: (
-    renderRequestItem: RenderRequestItem,
-    index: number
-  ) => React.ReactElement;
-  renderItemContainerStyle?: ViewStyle;
 };
 
 export type RNITableViewCellContentViewProps = 
@@ -18,10 +13,5 @@ export type RNITableViewCellContentViewProps =
   // & RNITableViewCellContentViewInheritedProps
   & ViewProps;
 
-export type RenderRequestItem = {
-  renderRequestKey: number;
-};
-
 export type RNITableViewCellContentViewState = {
-  renderRequests: Array<RenderRequestItem>;
 };

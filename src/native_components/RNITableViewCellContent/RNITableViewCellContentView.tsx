@@ -16,10 +16,6 @@ export class RNITableViewCellContentView extends React.PureComponent<
 
   constructor(props: RNITableViewCellContentViewProps){
     super(props);
-
-    this.state = {
-      renderRequests: [],
-    };
   };
 
   getNativeRef: () => View | undefined = () => {
