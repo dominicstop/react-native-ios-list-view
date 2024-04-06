@@ -190,6 +190,19 @@ public class RNITableView: ExpoView {
     
     self._applySnapshot();
   };
+  
+  func _updateOrderedListData(
+    usingSnapshot snapshot: NSDiffableDataSourceSnapshot<Int, String>
+  ){
+    
+    let snapshotItems = snapshot.itemIdentifiers;
+    let listDataOrderedNew = snapshotItems.map {
+      RNITableViewListDataEntry(key: $0);
+    };
+    
+    self.listDataOrdered = listDataOrderedNew;
+  };
+  
 };
 
 extension RNITableView: UITableViewDelegate {
