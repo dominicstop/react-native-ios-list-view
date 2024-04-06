@@ -2,7 +2,6 @@
 
 <br>
 
-- [ ] **Impl**: `TableView.renderCellContent` + `TableView.listData` - Pass the corresponding `listData` item for the current cell.
 - [ ] **Impl**: `TableView.initialCellsToRenderCount` Logic
   * Related: Cell render request logic.
   * Problem: We don't know how many cells to render beforehand; this causes the cells to render sequentially on screen.
@@ -13,6 +12,7 @@
 
 ## Completed Tasks
 
+- [x] **Impl**: `TableView.renderCellContent` + `TableView.listData` - Pass the corresponding `listData` item for the current cell.
 - [x] **Impl**: `RNITableViewCellContent` - Create custom view for `RNITableView`'s cell content.
 - [x] **Impl**: `RNIRenderRequestableView` Protocol - Create protocol for `RNIRenderRequestView` view items.
 - [x] **Impl**: `TableView.renderCellContent` Prop - Use custom render content from the table view cell.
