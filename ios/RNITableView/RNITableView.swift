@@ -94,6 +94,7 @@ public class RNITableView: ExpoView {
     ]);
     
     let dataSource = self._createDataSource();
+    dataSource.reactTableViewCellContainer = self;
     self.dataSource = dataSource;
     
     dataSource.defaultRowAnimation = .top;

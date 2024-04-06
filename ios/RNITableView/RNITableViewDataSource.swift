@@ -11,7 +11,9 @@ import ReactNativeIosUtilities
 
 
 class RNITableViewDataSource: UITableViewDiffableDataSource<Int, String> {
-  
+
+  weak var reactTableViewCellContainer: RNITableView?;
+
   override func tableView(
     _ tableView: UITableView,
     canMoveRowAt indexPath: IndexPath
