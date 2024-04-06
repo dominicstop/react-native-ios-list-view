@@ -16,8 +16,15 @@ const LIST_DATA = (() => {
   return items;
 })();
 
+const MIN_CELL_HEIGHT = 100;
+
+type ListDataItem = typeof LIST_DATA[number];
+
 function CellContent(props: {
   reuseIdentifier: number;
+  listDataItem: ListDataItem | undefined;
+  orderedListDataEntryIndex: number | undefined;
+  reactListDataEntryIndex: number | undefined;
 }){
   const [counter, setCounter] = React.useState(0);
   const [isIntervalActive, setIsIntervalActive] = React.useState(true);
@@ -25,6 +32,8 @@ function CellContent(props: {
   const intervalRef = React.useRef<NodeJS.Timeout | undefined>();
 
   React.useEffect(() => {
+    if(!isIntervalActive) return;
+
     const intervalID = setInterval(() => {
       setCounter((prevValue) => prevValue + 1); 
     }, 1000);
@@ -78,6 +87,16 @@ function CellContent(props: {
         {' - '}
         {`Counter: ${counter}`}
       </Text>
+      <Text style={styles.label}>
+        {`indexID: ${props.listDataItem?.indexID ?? '-1'}`}
+        {' - '}
+        {`message: ${props.listDataItem?.message ?? 'N/A'}`}
+      </Text>
+      <Text style={styles.label}>
+        {`orderedIndex: ${props.orderedListDataEntryIndex ?? '-1'}`}
+        {' - '}
+        {`listIndex: ${props.reactListDataEntryIndex ?? '-1'}`}
+      </Text>
     </View>
   );
 };
@@ -88,6 +107,7 @@ export default function App() {
       <TableView
         style={styles.tableView}
         listData={LIST_DATA}
+        minimumListCellHeight={MIN_CELL_HEIGHT}
         listDataKeyExtractor={(
           item: Record<string, typeof LIST_DATA[number]>, 
           index: number
@@ -103,6 +123,9 @@ export default function App() {
           return (
             <CellContent
               reuseIdentifier={renderRequestData.renderRequestKey}
+              listDataItem={listDataItem}
+              orderedListDataEntryIndex={orderedListDataEntryIndex}
+              reactListDataEntryIndex={reactListDataEntryIndex}
             />
           );
         }}
@@ -122,7 +145,7 @@ const styles = StyleSheet.create({
   cellContentContainer: {
     paddingLeft: 10,
     paddingHorizontal: 10,
-    height: 65,
+    height: MIN_CELL_HEIGHT,
     justifyContent: 'center',
   },
   buttonRowContainer: {
