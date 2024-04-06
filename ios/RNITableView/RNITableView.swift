@@ -185,7 +185,9 @@ public class RNITableView: ExpoView {
       return hasMatchFromNew;
     };
     
-    self.listDataOrdered = listDataOrderedFiltered + newItems;
+    let listDataOrderedNew = listDataOrderedFiltered + newItems;
+    self.listDataOrdered = listDataOrderedNew;
+    
     self._applySnapshot();
   };
 };
