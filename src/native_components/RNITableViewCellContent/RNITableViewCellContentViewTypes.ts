@@ -2,9 +2,17 @@ import { ViewProps } from 'react-native';
 import { RNITableViewCellContentNativeViewBaseProps } from './RNITableViewCellContentNativeViewTypes';
 
 
-export type RNITableViewCellContentViewInheritedProps = Pick<RNITableViewCellContentNativeViewBaseProps,
+export type RNITableViewCellContentViewInheritedRequiredProps = Pick<RNITableViewCellContentNativeViewBaseProps,
  | 'renderRequestKey'
 >;
+
+export type RNITableViewCellContentViewInheritedOptionalProps = Partial<Pick<RNITableViewCellContentNativeViewBaseProps,
+ | 'onDidSetListDataEntry'
+>>;
+
+export type RNITableViewCellContentViewInheritedProps = 
+  & RNITableViewCellContentViewInheritedRequiredProps
+  & RNITableViewCellContentViewInheritedOptionalProps;
 
 export type RNITableViewCellContentViewBaseProps = {
 };

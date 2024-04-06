@@ -9,7 +9,7 @@ import Foundation
 import DGSwiftUtilities
 
 
-public struct RNITableViewListDataEntry: Hashable {
+public struct RNITableViewListDataEntry: Hashable, Encodable {
   public var key: String;
 };
 

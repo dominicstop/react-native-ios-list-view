@@ -13,6 +13,8 @@ public class RNITableViewCellContentViewModule: Module {
     Name("RNITableViewCellContentView");
 
     View(RNITableViewCellContentView.self) {
+      Events("onDidSetListDataEntry");
+      
       Prop("renderRequestKey"){
         $0.renderRequestKey = $1;
       };

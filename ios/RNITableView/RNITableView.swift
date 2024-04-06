@@ -122,9 +122,9 @@ public class RNITableView: ExpoView {
     return RNITableViewDataSource(
       tableView: self.tableView,
       cellProvider: { [unowned self] tableView, indexPath, key in
-        let listItem = self.listDataOrdered.first {
-          $0.key == key;
-        };
+        let enumeratedListItem = self.listDataOrdered.enumerated().first {
+          $0.element.key == key;
+        }!;
         
         // Create the cell as you'd usually do.
         let cell = tableView.dequeueReusableCell(
@@ -133,7 +133,24 @@ public class RNITableView: ExpoView {
         ) as! RNITableViewCell;
         
         cell.selectionStyle = .none;
+        cell.reactTableViewContainer = self;
+        
         cell._setupIfNeeded(renderRequestView: self.renderRequestView!);
+        
+        /// index of `RNITableViewListDataEntry` in `listDataProp`
+        let reactListItemIndex: Int = {
+          let match = self.listData.enumerated().first {
+            $0.element.key == enumeratedListItem.element.key;
+          };
+          
+          return match!.offset;
+        }();
+        
+        cell.setListDataEntry(
+          listDataEntry: enumeratedListItem.element,
+          orderedListDataEntryIndex: enumeratedListItem.offset,
+          reactListDataEntryIndex: reactListItemIndex
+        );
         
         self.cellInstanceCount += 1;
         return cell
@@ -190,6 +207,14 @@ extension RNITableView: UITableViewDelegate {
     heightForRowAt indexPath: IndexPath
   ) -> CGFloat {
     return 65;
+  };
+  
+  public func tableView(
+    _ tableView: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
+    
   };
 };
 

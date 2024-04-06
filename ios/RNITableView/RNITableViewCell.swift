@@ -12,10 +12,12 @@ import DGSwiftUtilities
 public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
 
   public var renderRequestKey: Int?;
+  public var listDataEntry: RNITableViewListDataEntry?;
 
   var _didTriggerSetup = false;
-
-  public weak var renderRequestView: RNIRenderRequestView?;
+  
+  public weak var reactTableViewContainer: RNITableView?;
+  public weak var reactRenderRequestView: RNIRenderRequestView?;
   public weak var reactCellContent: RNITableViewCellContentView?;
   
   // MARK: - Init + Setup
@@ -25,13 +27,30 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     guard !self._didTriggerSetup else { return };
     self._didTriggerSetup = true;
     
-    self.renderRequestView = renderRequestView;
+    self.reactRenderRequestView = renderRequestView;
     renderRequestView.renderRequestDelegate.add(self);
     
     let renderRequestKey = renderRequestView.createRenderRequest();
     self.renderRequestKey = renderRequestKey;
   };
   
+  // MARK: - Functions
+  // -----------------
+  
+  public func setListDataEntry(
+    listDataEntry: RNITableViewListDataEntry,
+    orderedListDataEntryIndex: Int,
+    reactListDataEntryIndex: Int
+  ){
+    self.listDataEntry = listDataEntry;
+    
+    guard let reactCellContent = self.reactCellContent else { return };
+    reactCellContent.setListDataEntry(
+      listDataEntry: listDataEntry,
+      orderedListDataEntryIndex: orderedListDataEntryIndex,
+      reactListDataEntryIndex: reactListDataEntryIndex
+    );
+  };
   
   // MARK: - Functions - RNIRenderRequestDelegate
   // --------------------------------------------
@@ -40,7 +59,12 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     renderRequestKey: Int,
     requestedView: RNIRenderRequestableView
   ) {
-    guard self.renderRequestKey == renderRequestKey else { return };
+    guard self.renderRequestKey == renderRequestKey,
+          let reactCellContent = requestedView as? RNITableViewCellContentView
+    else { return };
+    
+    self.reactCellContent = reactCellContent;
+    reactCellContent.parentTableViewCell = self;
 
     print(
       "RNITableViewCell.onRenderRequestCompleted",

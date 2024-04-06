@@ -6,9 +6,8 @@ import { RNITableNativeViewBaseProps } from './RNITableNativeViewTypes';
 //  | 'tba'
 // >;
 
-export type RNITableViewListDataItem<T = object> = {
+export type RNITableViewListDataItem = {
   key: string;
-  data: T;
 };
 
 

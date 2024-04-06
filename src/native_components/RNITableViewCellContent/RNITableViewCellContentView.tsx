@@ -4,6 +4,7 @@ import { LayoutChangeEvent, StyleSheet, Text, View } from 'react-native';
 
 import { RNITableViewCellContentViewProps, RNITableViewCellContentViewState } from './RNITableViewCellContentViewTypes';
 import { RNITableViewCellContentNativeView } from './RNITableViewCellContentNativeView';
+import { OnDidSetListDataEntryEvent } from './RNITableViewCellContentNativeViewEvents';
 
 
 export class RNITableViewCellContentView extends React.PureComponent<
@@ -29,12 +30,16 @@ export class RNITableViewCellContentView extends React.PureComponent<
   
   private getProps = () => {
     const {
+      renderRequestKey,
+      onDidSetListDataEntry,
       ...viewProps
     } = this.props;
 
     return {
       // A. Group native props
       nativeProps: {
+        renderRequestKey,
+        onDidSetListDataEntry,
       },
 
       // C. Move all the default view-related
@@ -55,12 +60,18 @@ export class RNITableViewCellContentView extends React.PureComponent<
     this.nativeRef = ref;
   };
 
+  private _handleOnDidSetListDataEntry: OnDidSetListDataEntryEvent = (event) => {
+    event.stopPropagation();
+    this.props.onDidSetListDataEntry?.(event);
+  };
+
   render(){
     const props = this.getProps();
     const state = this.state;
 
     return React.createElement(RNITableViewCellContentNativeView, {
       ...props.viewProps,
+      ...props.nativeProps,
       ...((this.reactTag == null) && {
         onLayout: this._handleOnLayout,
       }),
@@ -70,6 +81,7 @@ export class RNITableViewCellContentView extends React.PureComponent<
         this.props.style,
         styles.nativeView
       ],
+      onDidSetListDataEntry: this._handleOnDidSetListDataEntry,
     });
   };
 };
