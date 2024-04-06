@@ -19,9 +19,16 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   public weak var parentTableViewCell: RNITableViewCell?;
   
   let onDidSetListDataEntry = EventDispatcher("onDidSetListDataEntry");
+  
+  public var renderRequestKeyProp: Int = -1;
+  
 
   public var renderRequestData: Dictionary<String, Any> = [:];
-  public var renderRequestKey: Int = -1;
+  
+  public var renderRequestKey: Int {
+    self.renderRequestKeyProp;
+  };
+  
   
   public func setListDataEntry(
     listDataEntry: RNITableViewListDataEntry,

@@ -16,7 +16,7 @@ public class RNITableViewCellContentViewModule: Module {
       Events("onDidSetListDataEntry");
       
       Prop("renderRequestKey"){
-        $0.renderRequestKey = $1;
+        $0.renderRequestKeyProp = $1;
       };
     };
   };
