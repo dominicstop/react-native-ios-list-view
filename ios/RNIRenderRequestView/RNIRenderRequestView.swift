@@ -10,18 +10,26 @@ import ExpoModulesCore
 import DGSwiftUtilities
 
 
+public class RNIRenderRequestView: ExpoView {
+  
+  // MARK: Properties
+  // ----------------
 
-class RNIRenderRequestView: ExpoView {
-
-  var renderRequestDelegate =
+  public var renderRequestDelegate =
     MulticastDelegate<RNIRenderRequestDelegate>();
-
-  var currentRenderRequestKey = 0;
-  var renderRequestRegistry: Dictionary<Int, RNIRenderRequestableView> = [:];
-
+    
+  public var currentRenderRequestKey = 0;
+  public var renderRequestRegistry: Dictionary<Int, RNIRenderRequestableView> = [:];
+  
+  // MARK: React Event Props
+  // -----------------------
+  
   let onRenderRequestEvent = EventDispatcher("onRenderRequest");
   
-  override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
+  // MARK: Lifecycle
+  // ---------------
+  
+  public override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
     guard let requestedView = subview as? RNIRenderRequestableView
     else { return };
     
@@ -45,7 +53,10 @@ class RNIRenderRequestView: ExpoView {
     );
   };
   
-  func createRenderRequest() -> Int {
+  // MARK: Functions
+  // ---------------
+  
+  public func createRenderRequest() -> Int {
     let renderRequestKey = self.currentRenderRequestKey;
     self.currentRenderRequestKey += 1;
     

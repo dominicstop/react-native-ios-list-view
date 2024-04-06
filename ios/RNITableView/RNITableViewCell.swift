@@ -9,15 +9,19 @@ import UIKit
 import DGSwiftUtilities
 
 
-class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
+public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
 
-  var renderRequestKey: Int?;
+  public var renderRequestKey: Int?;
 
   var _didTriggerSetup = false;
 
-  weak var renderRequestView: RNIRenderRequestView?;
+  public weak var renderRequestView: RNIRenderRequestView?;
+  public weak var reactCellContent: RNITableViewCellContentView?;
   
-  func setupIfNeeded(renderRequestView: RNIRenderRequestView){
+  // MARK: - Init + Setup
+  // --------------------
+  
+  func _setupIfNeeded(renderRequestView: RNIRenderRequestView){
     guard !self._didTriggerSetup else { return };
     self._didTriggerSetup = true;
     
@@ -28,7 +32,11 @@ class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     self.renderRequestKey = renderRequestKey;
   };
   
-  func onRenderRequestCompleted(
+  
+  // MARK: - Functions - RNIRenderRequestDelegate
+  // --------------------------------------------
+  
+  public func onRenderRequestCompleted(
     renderRequestKey: Int,
     requestedView: RNIRenderRequestableView
   ) {

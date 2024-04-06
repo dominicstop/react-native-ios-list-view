@@ -133,7 +133,7 @@ public class RNITableView: ExpoView {
         ) as! RNITableViewCell;
         
         cell.selectionStyle = .none;
-        cell.setupIfNeeded(renderRequestView: self.renderRequestView!);
+        cell._setupIfNeeded(renderRequestView: self.renderRequestView!);
         
         self.cellInstanceCount += 1;
         return cell
