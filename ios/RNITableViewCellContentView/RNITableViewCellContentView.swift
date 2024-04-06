@@ -13,15 +13,26 @@ import DGSwiftUtilities
 
 public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
 
+  // MARK: Properties
+  // ----------------
+
   public var listDataEntry: RNITableViewListDataEntry?;
   
   public weak var parentTableViewContainer: RNITableView?;
   public weak var parentTableViewCell: RNITableViewCell?;
   
+  // MARK: Properties - React Events
+  // -------------------------------
+  
   let onDidSetListDataEntry = EventDispatcher("onDidSetListDataEntry");
+  
+  // MARK: Properties - React Props
+  // ------------------------------
   
   public var renderRequestKeyProp: Int = -1;
   
+  // MARK: Properties - RNIRenderRequestableView
+  // -------------------------------------------
 
   public var renderRequestData: Dictionary<String, Any> = [:];
   
@@ -29,6 +40,8 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     self.renderRequestKeyProp;
   };
   
+  // MARK: Functions
+  // ---------------
   
   public func setListDataEntry(
     listDataEntry: RNITableViewListDataEntry,
