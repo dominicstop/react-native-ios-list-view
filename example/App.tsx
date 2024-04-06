@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ViewStyle } from 'react-native';
+
 import { TableView } from 'react-native-ios-list-view';
+
+import * as Helpers from './src/functions/Helpers';
 
 
 const LIST_DATA = (() => {
@@ -16,6 +19,16 @@ const LIST_DATA = (() => {
   return items;
 })();
 
+const DELAY_PRESETS_MS = [
+  200,
+  400,
+  600,
+  800,
+  1000,
+  1200,
+  1400,
+];
+
 const MIN_CELL_HEIGHT = 100;
 
 type ListDataItem = typeof LIST_DATA[number];
@@ -26,29 +39,46 @@ function CellContent(props: {
   orderedListDataEntryIndex: number | undefined;
   reactListDataEntryIndex: number | undefined;
 }){
-  const [counter, setCounter] = React.useState(0);
+  const [counter, setCounter] = React.useState(props.reuseIdentifier);
   const [isIntervalActive, setIsIntervalActive] = React.useState(true);
 
   const intervalRef = React.useRef<NodeJS.Timeout | undefined>();
+  
+  const intervalDelayMS = Helpers.getItemFromCyclicArray(
+    DELAY_PRESETS_MS, 
+    props.reuseIdentifier
+  );
 
   React.useEffect(() => {
     if(!isIntervalActive) return;
 
     const intervalID = setInterval(() => {
       setCounter((prevValue) => prevValue + 1); 
-    }, 1000);
+    }, intervalDelayMS);
 
     intervalRef.current = intervalID;
     return () => {
       clearTimeout(intervalID);
     };
-  }, [counter]);
+  }, []);
+
+  const timerColor = isIntervalActive
+    ? 'rgba(255,0,0,0.1)'
+    : 'rgba(0,255,0,0.1)';
+
+  const timerButtonStyle: ViewStyle = {
+    backgroundColor: timerColor,
+  };
   
   return (
     <View style={styles.cellContentContainer}>
       <View style={[styles.buttonRowContainer, styles.spacer]}>
         <TouchableOpacity
-          style={[styles.button, styles.timerButton]}
+          style={[
+            styles.button, 
+            styles.timerButton,
+            timerButtonStyle, 
+          ]}
           onPress={() => {
             if(isIntervalActive){
               clearTimeout(intervalRef.current!);
@@ -57,7 +87,7 @@ function CellContent(props: {
             } else {
               const intervalID = setInterval(() => {
                 setCounter((prevValue) => prevValue + 1); 
-              }, 1000);
+              }, intervalDelayMS);
 
               intervalRef.current = intervalID;
               setIsIntervalActive(true);
@@ -161,7 +191,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   timerButton: {
-    backgroundColor: 'rgba(255,0,0,0.1)',
   },
   resetTimerButton: {
     backgroundColor: 'rgba(0,0,255,0.1)',
