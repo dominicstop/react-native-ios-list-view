@@ -46,6 +46,7 @@ export class TableView extends
         listData: listDataProcessed,
       },
 
+      listData,
       renderCellContent,
       cellContentContainerStyle,
 
@@ -77,8 +78,25 @@ export class TableView extends
                 key={renderRequestData.renderRequestKey}
                 style={props.cellContentContainerStyle}
                 renderRequestKey={renderRequestData.renderRequestKey}
+                renderCellContent={(
+                  listDataEntry,
+                  orderedListDataEntryIndex,
+                  reactListDataEntryIndex,
+                ) => {
+
+                  const listDataItem: object | undefined = (() => {
+                    if(reactListDataEntryIndex == null) return;
+                    return props.listData[reactListDataEntryIndex];
+                  })(); 
+
+                  return props.renderCellContent(
+                    listDataItem,
+                    renderRequestData,
+                    orderedListDataEntryIndex,
+                    reactListDataEntryIndex,
+                  );
+                }}
               >
-                {props.renderCellContent(renderRequestData)}
               </RNITableViewCellContentView>
             );
           }}

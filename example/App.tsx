@@ -94,7 +94,12 @@ export default function App() {
         ) => {
           return `${item.indexID}`;
         }}
-        renderCellContent={(renderRequestData) => {
+        renderCellContent={(
+          listDataItem,
+          renderRequestData,
+          orderedListDataEntryIndex,
+          reactListDataEntryIndex,
+        ) => {
           return (
             <CellContent
               reuseIdentifier={renderRequestData.renderRequestKey}

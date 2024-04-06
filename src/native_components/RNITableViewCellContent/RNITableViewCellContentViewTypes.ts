@@ -1,5 +1,8 @@
+import * as React from 'react';
 import { ViewProps } from 'react-native';
+
 import { RNITableViewCellContentNativeViewBaseProps } from './RNITableViewCellContentNativeViewTypes';
+import { OnDidSetListDataEntryEventPayload } from './RNITableViewCellContentNativeViewEvents';
 
 
 export type RNITableViewCellContentViewInheritedRequiredProps = Pick<RNITableViewCellContentNativeViewBaseProps,
@@ -14,7 +17,19 @@ export type RNITableViewCellContentViewInheritedProps =
   & RNITableViewCellContentViewInheritedRequiredProps
   & RNITableViewCellContentViewInheritedOptionalProps;
 
+export type RenderTableViewCellContentView = (
+  listDataEntry: 
+    RNITableViewCellContentViewState['listDataEntry'],
+
+  orderedListDataEntryIndex: 
+    RNITableViewCellContentViewState['orderedListDataEntryIndex'],
+
+  reactListDataEntryIndex: 
+    RNITableViewCellContentViewState['reactListDataEntryIndex'],
+) => React.ReactElement;
+
 export type RNITableViewCellContentViewBaseProps = {
+  renderCellContent: RenderTableViewCellContentView;
 };
 
 export type RNITableViewCellContentViewProps = 
@@ -23,4 +38,15 @@ export type RNITableViewCellContentViewProps =
   & ViewProps;
 
 export type RNITableViewCellContentViewState = {
+  listDataEntry: 
+    | OnDidSetListDataEntryEventPayload['listDataEntry'] 
+    | undefined;
+
+  orderedListDataEntryIndex: 
+    | OnDidSetListDataEntryEventPayload['orderedListDataEntryIndex'] 
+    | undefined;
+
+  reactListDataEntryIndex: 
+    | OnDidSetListDataEntryEventPayload['reactListDataEntryIndex'] 
+    | undefined;
 };

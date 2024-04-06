@@ -17,6 +17,12 @@ export class RNITableViewCellContentView extends React.PureComponent<
 
   constructor(props: RNITableViewCellContentViewProps){
     super(props);
+
+    this.state = {
+      listDataEntry: undefined,
+      orderedListDataEntryIndex: undefined,
+      reactListDataEntryIndex: undefined,
+    };
   };
 
   getNativeRef: () => View | undefined = () => {
@@ -32,6 +38,7 @@ export class RNITableViewCellContentView extends React.PureComponent<
     const {
       renderRequestKey,
       onDidSetListDataEntry,
+      renderCellContent,
       ...viewProps
     } = this.props;
 
@@ -41,6 +48,9 @@ export class RNITableViewCellContentView extends React.PureComponent<
         renderRequestKey,
         onDidSetListDataEntry,
       },
+      
+      // B: Pass through props...
+      renderCellContent,
 
       // C. Move all the default view-related
       //    props here...
@@ -61,8 +71,16 @@ export class RNITableViewCellContentView extends React.PureComponent<
   };
 
   private _handleOnDidSetListDataEntry: OnDidSetListDataEntryEvent = (event) => {
+    const payload = event.nativeEvent;
+    
     event.stopPropagation();
     this.props.onDidSetListDataEntry?.(event);
+
+    this.setState({
+      listDataEntry: payload.listDataEntry,
+      orderedListDataEntryIndex: payload.orderedListDataEntryIndex,
+      reactListDataEntryIndex: payload.reactListDataEntryIndex,
+    });
   };
 
   render(){
@@ -82,6 +100,11 @@ export class RNITableViewCellContentView extends React.PureComponent<
         styles.nativeView
       ],
       onDidSetListDataEntry: this._handleOnDidSetListDataEntry,
+      children: props.renderCellContent(
+        state.listDataEntry,
+        state.orderedListDataEntryIndex,
+        state.reactListDataEntryIndex,
+      ),
     });
   };
 };

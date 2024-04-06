@@ -1,12 +1,22 @@
-import { View, ViewProps, ViewStyle } from "react-native";
-import { RNIRenderRequestViewProps, RenderRequestItem } from "../../native_components/RNIRenderRequestView";
+import { ViewProps, ViewStyle } from "react-native";
+import { RenderRequestItem } from "../../native_components/RNIRenderRequestView";
+import { RNITableViewCellContentViewState } from "../../native_components/RNITableViewCellContent";
 
 // export type TableViewInheritedProps = Pick<RNITableViewBaseProps, 
 //  | ''
 // >;
 
+export type TableViewListData = Record<string, any>;
+
 export type TableViewRenderCellContent = (
-  renderRequestData: RenderRequestItem
+  listDataItem: TableViewListData[number],
+  
+  renderRequestData: RenderRequestItem,
+  orderedListDataEntryIndex: 
+    RNITableViewCellContentViewState['orderedListDataEntryIndex'],
+
+  reactListDataEntryIndex: 
+    RNITableViewCellContentViewState['reactListDataEntryIndex'],
 ) => React.ReactElement;
 
 export type ListDataKeyExtractor<T extends object> = (
@@ -15,7 +25,7 @@ export type ListDataKeyExtractor<T extends object> = (
 ) => string;
 
 export type TableViewBaseProps = {
-  listData: Array<object>;
+  listData: TableViewListData;
   listDataKeyExtractor: ListDataKeyExtractor<Record<string, any>>;
   renderCellContent: TableViewRenderCellContent;
   cellContentContainerStyle?: ViewStyle;
