@@ -44,11 +44,11 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     let listDataOrderedEnumerated =
       reactTableViewContainer.listDataOrdered.enumerated();
   
-    let enumeratedListItem = listDataOrderedEnumerated.first {
+    let orderedListItemEnumerated = listDataOrderedEnumerated.first {
       $0.element.key == key;
     };
     
-    guard let enumeratedListItem = enumeratedListItem else { return };
+    guard let orderedListItemEnumerated = orderedListItemEnumerated else { return };
     
     let reactListDataEnumerated =
       reactTableViewContainer.listData.enumerated();
@@ -56,7 +56,7 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     /// index of `RNITableViewListDataEntry` in `listDataProp`
     let reactListItemIndex: Int? = {
       let match = reactListDataEnumerated.first {
-        $0.element.key == enumeratedListItem.element.key;
+        $0.element.key == orderedListItemEnumerated.element.key;
       };
       
       return match?.offset;
@@ -65,8 +65,8 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     guard let reactListItemIndex = reactListItemIndex else { return };
     
     self.setListDataEntry(
-      listDataEntry: enumeratedListItem.element,
-      orderedListDataEntryIndex: enumeratedListItem.offset,
+      listDataEntry: orderedListItemEnumerated.element,
+      orderedListDataEntryIndex: orderedListItemEnumerated.offset,
       reactListDataEntryIndex: reactListItemIndex
     );
   };
