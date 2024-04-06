@@ -4,8 +4,6 @@ import ReactNativeIosUtilities
 import DGSwiftUtilities
 
 
-
-
 public class RNITableView: ExpoView {
   
   enum NativeIDKey: String {
@@ -15,6 +13,11 @@ public class RNITableView: ExpoView {
   lazy var tableView = UITableView(frame: .zero, style: .plain);
   var dataSource: RNITableViewDataSource?;
   
+  public var tableViewCellRegistry = NSMapTable<NSString, RNITableViewCell>.init(
+    keyOptions: .copyIn,
+    valueOptions: .weakMemory
+  );
+
   var cellInstanceCount = 0;
   
   var renderRequestView: RNIRenderRequestView?;
@@ -131,6 +134,8 @@ public class RNITableView: ExpoView {
           for: indexPath
         ) as! RNITableViewCell;
         
+        self.tableViewCellRegistry.setObject(cell, forKey: key as NSString);
+        
         cell.selectionStyle = .none;
         cell.reactTableViewContainer = self;
         
@@ -155,8 +160,6 @@ public class RNITableView: ExpoView {
       animatingDifferences: shouldAnimateRowUpdates
     );
   };
-  
-  
   
   func _notifyOnListDataPropDidUpdate(
     old listDataOld: [RNITableViewListDataEntry],
