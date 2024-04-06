@@ -9,6 +9,10 @@ public class RNITableViewModule: Module {
       Prop("listData"){
         $0.listDataProp = $1;
       };
+      
+      Prop("minimumListCellHeight"){
+        $0.minimumListCellHeightProp = $1;
+      };
     }
   };
 };

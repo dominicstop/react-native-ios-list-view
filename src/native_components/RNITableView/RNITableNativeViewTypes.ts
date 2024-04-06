@@ -5,8 +5,8 @@ export type TableViewListItem = {
 };
 
 export type RNITableNativeViewBaseProps = {
-  // TBA
   data: Array<TableViewListItem>;
+  minimumListCellHeight: number;
 };
 
 export type RNITableNativeViewProps = 

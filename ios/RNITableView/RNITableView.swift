@@ -26,6 +26,8 @@ public class RNITableView: ExpoView {
   // MARK: Properties - RN Props
   // ---------------------------
   
+  var minimumListCellHeightProp: CGFloat = 100;
+  
   var listData: Array<RNITableViewListDataEntry> = [];
   var listDataProp: Array<NSDictionary> = [] {
     willSet {
@@ -206,15 +208,8 @@ extension RNITableView: UITableViewDelegate {
     _ tableView: UITableView,
     heightForRowAt indexPath: IndexPath
   ) -> CGFloat {
-    return 65;
-  };
   
-  public func tableView(
-    _ tableView: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt indexPath: IndexPath
-  ) {
-    
+    return self.minimumListCellHeightProp;
   };
 };
 

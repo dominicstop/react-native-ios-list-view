@@ -30,6 +30,7 @@ export class TableView extends
       listDataKeyExtractor,
       renderCellContent,
       cellContentContainerStyle,
+      minimumListCellHeight,
       ...viewProps
     } = this.props;
 
@@ -44,6 +45,8 @@ export class TableView extends
       // A. Group native props for `RNITableView`...
       nativeProps: {
         listData: listDataProcessed,
+        minimumListCellHeight:  
+          minimumListCellHeight ?? 100,
       },
 
       listData,

@@ -1,10 +1,13 @@
 import { ViewProps, ViewStyle } from "react-native";
+
 import { RenderRequestItem } from "../../native_components/RNIRenderRequestView";
 import { RNITableViewCellContentViewState } from "../../native_components/RNITableViewCellContent";
+import { RNITableViewProps } from "../../native_components/RNITableView";
 
-// export type TableViewInheritedProps = Pick<RNITableViewBaseProps, 
-//  | ''
-// >;
+
+export type TableViewInheritedProps = Pick<RNITableViewProps, 
+ | 'minimumListCellHeight'
+>;
 
 export type TableViewListData = Record<string, any>;
 
@@ -32,7 +35,7 @@ export type TableViewBaseProps = {
 };
 
 export type TableViewProps = 
-  // & TableViewInheritedProps
+  & TableViewInheritedProps
   & TableViewBaseProps 
   & ViewProps;
 
