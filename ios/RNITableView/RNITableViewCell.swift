@@ -94,7 +94,9 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     requestedView: RNIRenderRequestableView
   ) {
     guard self.renderRequestKey == renderRequestKey,
-          let reactCellContent = requestedView as? RNITableViewCellContentView
+          let reactCellContent = requestedView as? RNITableViewCellContentView,
+          
+          let reactTableViewContainer = self.reactTableViewContainer
     else { return };
     
     self.reactCellContent = reactCellContent;
@@ -112,23 +114,32 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
       "\n"
     );
     
-    requestedView.removeFromSuperview();
+    reactCellContent.removeFromSuperview();
     
-    requestedView.translatesAutoresizingMaskIntoConstraints = false;
-    self.addSubview(requestedView);
+    if (reactCellContent.bounds.width <= 0){
+      let newSize = CGSize(
+        width: reactTableViewContainer.bounds.width,
+        height: reactCellContent.bounds.height
+      );
+      
+      try? reactCellContent.updateBounds(newSize: newSize);
+    };
+    
+    reactCellContent.translatesAutoresizingMaskIntoConstraints = false;
+    self.addSubview(reactCellContent);
     
     NSLayoutConstraint.activate([
-      requestedView.centerXAnchor.constraint(
+      reactCellContent.centerXAnchor.constraint(
         equalTo: self.centerXAnchor
       ),
-      requestedView.centerYAnchor.constraint(
+      reactCellContent.centerYAnchor.constraint(
         equalTo: self.centerYAnchor
       ),
-      requestedView.widthAnchor.constraint(
+      reactCellContent.widthAnchor.constraint(
         equalTo: self.widthAnchor
       ),
       self.heightAnchor.constraint(
-        equalToConstant: requestedView.bounds.height
+        equalToConstant: reactCellContent.bounds.height
       ),
     ]);
   };

@@ -39,4 +39,9 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     
     self.onDidSetListDataEntry.callAsFunction(eventPayload);
   };
+  
+  public func updateBounds(newSize: CGSize) {
+    guard let reactBridge = self.appContext?.reactBridge else { return };
+    reactBridge.uiManager.setSize(newSize, for: self);
+  };
 };
