@@ -46,8 +46,15 @@ class RNITableViewDataSource: UITableViewDiffableDataSource<Int, String> {
     } else {
       snapshot.appendItems([fromItem], toSection: sourceIndexPath.section)
     };
-        
-    apply(snapshot, animatingDifferences: false);
+    
+    self.apply(snapshot, animatingDifferences: false);
+    
+    guard let reactTableViewCellContainer = self.reactTableViewCellContainer
+    else { return };
+    
+    reactTableViewCellContainer._updateOrderedListData(usingSnapshot: snapshot);
+    reactTableViewCellContainer._refreshCellData();
+    
   };
 };
 
