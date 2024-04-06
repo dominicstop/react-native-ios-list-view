@@ -203,6 +203,25 @@ public class RNITableView: ExpoView {
     self.listDataOrdered = listDataOrderedNew;
   };
   
+  func _refreshCellData(){
+    let allCellsRaw =
+      self.tableViewCellRegistry.objectEnumerator()?.allObjects ?? [];
+      
+    let allCells = allCellsRaw.compactMap {
+      $0 as? RNITableViewCell;
+    };
+    
+    allCells.forEach {
+       guard let listDataEntryForCell = $0.listDataEntry else { return };
+       
+      let matchingListItemForCell = self.listDataOrdered.first {
+        $0.key == listDataEntryForCell.key;
+      };
+      
+       guard let matchingListItemForCell = matchingListItemForCell else { return };
+       $0.setListDataEntry(forKey: matchingListItemForCell.key);
+    };
+  };
 };
 
 extension RNITableView: UITableViewDelegate {
