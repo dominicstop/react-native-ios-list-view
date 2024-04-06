@@ -37,6 +37,40 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
   // MARK: - Functions
   // -----------------
   
+  public func setListDataEntry(forKey key: String){
+    guard let reactTableViewContainer = self.reactTableViewContainer
+    else { return };
+    
+    let listDataOrderedEnumerated =
+      reactTableViewContainer.listDataOrdered.enumerated();
+  
+    let enumeratedListItem = listDataOrderedEnumerated.first {
+      $0.element.key == key;
+    };
+    
+    guard let enumeratedListItem = enumeratedListItem else { return };
+    
+    let reactListDataEnumerated =
+      reactTableViewContainer.listData.enumerated();
+    
+    /// index of `RNITableViewListDataEntry` in `listDataProp`
+    let reactListItemIndex: Int? = {
+      let match = reactListDataEnumerated.first {
+        $0.element.key == enumeratedListItem.element.key;
+      };
+      
+      return match?.offset;
+    }();
+    
+    guard let reactListItemIndex = reactListItemIndex else { return };
+    
+    self.setListDataEntry(
+      listDataEntry: enumeratedListItem.element,
+      orderedListDataEntryIndex: enumeratedListItem.offset,
+      reactListDataEntryIndex: reactListItemIndex
+    );
+  };
+  
   public func setListDataEntry(
     listDataEntry: RNITableViewListDataEntry,
     orderedListDataEntryIndex: Int,
@@ -65,11 +99,16 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     
     self.reactCellContent = reactCellContent;
     reactCellContent.parentTableViewCell = self;
-
+    
+    if let listDataEntry = self.listDataEntry {
+      self.setListDataEntry(forKey: listDataEntry.key);
+    };
+    
     print(
       "RNITableViewCell.onRenderRequestCompleted",
       "\n - renderRequestKey:", renderRequestKey,
       "\n - requestedView.bounds:", requestedView.bounds,
+      "\n - listDataEntry.key:", self.listDataEntry?.key ?? "N/A",
       "\n"
     );
     
