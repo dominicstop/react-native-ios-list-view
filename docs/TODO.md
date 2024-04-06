@@ -2,7 +2,6 @@
 
 <br>
 
-- [ ] **Impl**: `RNITableViewCellContent` - Create custom view for `RNITableView`'s cell content.
 - [ ] **Impl**: `TableView.renderCellContent` + `TableView.listData` - Pass the corresponding `listData` item for the current cell.
 - [ ] **Impl**: `TableView.initialCellsToRenderCount` Logic
   * Related: Cell render request logic.
@@ -14,6 +13,7 @@
 
 ## Completed Tasks
 
+- [x] **Impl**: `RNITableViewCellContent` - Create custom view for `RNITableView`'s cell content.
 - [x] **Impl**: `RNIRenderRequestableView` Protocol - Create protocol for `RNIRenderRequestView` view items.
 - [x] **Impl**: `TableView.renderCellContent` Prop - Use custom render content from the table view cell.
 - [x] **Impl**: `TableView.listData` Prop - Allow for use of custom data for the table view.
