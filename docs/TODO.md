@@ -12,7 +12,18 @@
     * The bounds of the `superview` (i.e. `RNITableViewCell`) are: `superview.bounds.size: (414.0, 100.0) `.<br><br>
 - [ ] **Fix**: `RNITableView` Cell Layout
 - [ ] **Refactor**: Rename `RNITableView` to `RNITableViewWrapper`.
-- [ ] **Impl**: Cell add/remove logic.
+- [ ] **Impl**: `TableView` - Support + test cell add/remove logic.
+- [ ] **Impl**: `TableView` - Add support for custom headers + footers.
+- [ ] **Impl**: `TableView` - Add support for list sections.
+- [ ] **Impl**: `TableView` - Expose configuration of `UIItableView` as a prop.
+- [ ] **Impl**: `TableView` - Expose configuration of `UITableViewCell` as a prop.
+- [ ] **Impl**: `TableView` - Expose lifecycle events.
+- [ ] **Impl**: `TableView` - Support all the standard props from RN `ScrollView` component.
+- [ ] **Impl**: `TableView` - Add support for using `UIItableView` preset/standard layouts.
+- [ ] **Refactor**: Ex - Extract test in `App` to its own separate file.
+- [ ] **Update**: Ex - Update example test layout.
+- [ ] **Impl**: Ex - Add different tests via routes + screens.
+- [ ] 
 
 <br><br>
 
