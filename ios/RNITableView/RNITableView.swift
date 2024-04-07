@@ -226,13 +226,6 @@ public class RNITableView: ExpoView {
 };
 
 extension RNITableView: UITableViewDelegate {
-  public func tableView(
-    _ tableView: UITableView,
-    heightForRowAt indexPath: IndexPath
-  ) -> CGFloat {
-  
-    return self.minimumListCellHeightProp;
-  };
 };
 
 extension RNITableView: UITableViewDragDelegate {

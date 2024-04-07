@@ -20,11 +20,16 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
   public weak var reactRenderRequestView: RNIRenderRequestView?;
   public weak var reactCellContent: RNITableViewCellContentView?;
   
+  public var cellHeightConstraint: NSLayoutConstraint?;
+  
   // MARK: - Init + Setup
   // --------------------
   
   func _setupIfNeeded(renderRequestView: RNIRenderRequestView){
-    guard !self._didTriggerSetup else { return };
+    guard !self._didTriggerSetup,
+          let reactTableViewContainer = self.reactTableViewContainer
+    else { return };
+    
     self._didTriggerSetup = true;
     
     self.reactRenderRequestView = renderRequestView;
@@ -32,6 +37,13 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     
     let renderRequestKey = renderRequestView.createRenderRequest();
     self.renderRequestKey = renderRequestKey;
+    
+    let cellHeightConstraint = self.heightAnchor.constraint(
+      equalToConstant: reactTableViewContainer.minimumListCellHeightProp
+    );
+    
+    cellHeightConstraint.isActive = true;
+    self.cellHeightConstraint = cellHeightConstraint;
   };
   
   // MARK: - Functions
@@ -129,17 +141,14 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     self.addSubview(reactCellContent);
     
     NSLayoutConstraint.activate([
-      reactCellContent.centerXAnchor.constraint(
-        equalTo: self.centerXAnchor
+      reactCellContent.leadingAnchor.constraint(
+        equalTo: self.leadingAnchor
       ),
-      reactCellContent.centerYAnchor.constraint(
-        equalTo: self.centerYAnchor
+      reactCellContent.trailingAnchor.constraint(
+        equalTo: self.trailingAnchor
       ),
-      reactCellContent.widthAnchor.constraint(
-        equalTo: self.widthAnchor
-      ),
-      self.heightAnchor.constraint(
-        equalToConstant: reactCellContent.bounds.height
+      reactCellContent.topAnchor.constraint(
+        equalTo: self.topAnchor
       ),
     ]);
   };
