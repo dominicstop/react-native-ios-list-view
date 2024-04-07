@@ -134,7 +134,7 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
         height: reactCellContent.bounds.height
       );
       
-      try? reactCellContent.updateBounds(newSize: newSize);
+      reactCellContent.updateBounds(newSize: newSize);
     };
     
     reactCellContent.translatesAutoresizingMaskIntoConstraints = false;

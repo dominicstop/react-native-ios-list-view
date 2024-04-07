@@ -66,6 +66,8 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     // WIP - To be impl.
     print(
       "RNITableViewCellContentView.notifyOnReactLayout",
+      "\n - self.listDataEntry.key:", self.listDataEntry?.key ?? "N/A",
+      "\n - self.renderRequestKey:", self.renderRequestKey,
       "\n - layoutRect.size:", layoutRect.size,
       "\n - layoutRect.origin:", layoutRect.origin,
       "\n - self.bounds.size:", self.bounds.size,
@@ -73,6 +75,17 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       "\n - self.frame.origin:", self.frame.origin,
       "\n"
     );
+    
+    guard let parentTableViewContainer = self.parentTableViewContainer,
+          let parentTableViewCell = self.parentTableViewCell,
+          let cellHeightConstraint = parentTableViewCell.cellHeightConstraint,
+          
+          layoutRect.height > 0,
+          layoutRect.height >= parentTableViewContainer.minimumListCellHeightProp
+    else { return };
+    
+    cellHeightConstraint.constant = layoutRect.height;
+    parentTableViewCell.layoutIfNeeded();
   };
   
   // MARK: Functions
