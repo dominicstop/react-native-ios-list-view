@@ -1,3 +1,5 @@
+import { LorumIpsumWordsList } from "../constants/LorumIpsumText";
+
 /** wrapper func for setState that returns a promise */
 // eslint-disable-next-line consistent-this
 export function setStateAsync<T extends {}>(
@@ -48,4 +50,40 @@ export function getItemFromCyclicArray<T = unknown>(
   index: number
 ): T {
   return array[index % array.length];
+};
+
+export function capitalizeString(string: string){
+  const firstLetter = string.charAt(0).toUpperCase();
+  const restOfString = string.slice(1);
+
+  return firstLetter + restOfString;
+};
+
+export function getRandomDummyWord(){
+  const randomIndex = getRandomInt(LorumIpsumWordsList.length);
+  return LorumIpsumWordsList[randomIndex];
+};
+
+export function getRandomDummyText(
+  wordCount: number,
+  shouldCapitalize: boolean = true
+){
+  let words: Array<string> = [];
+
+  for(let index = 0; index < wordCount; index++){
+    const randomWord = getRandomDummyWord();
+    words.push(randomWord);
+  };
+
+  var sentence = words.reduce((prevValue, currentValue) => {
+    return `${prevValue} ${currentValue}`;
+  }, "");
+
+  sentence = sentence + ".";
+
+  if(shouldCapitalize){
+    sentence = capitalizeString(sentence);
+  };
+
+  return sentence;
 };
