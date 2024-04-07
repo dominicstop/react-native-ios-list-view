@@ -40,6 +40,41 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     self.renderRequestKeyProp;
   };
   
+  //
+  //
+  
+  public override func layoutSubviews() {
+    super.layoutSubviews();
+    print(
+      "RNITableViewCellContentView.layoutSubviews",
+      "\n - self.renderRequestKey:", self.renderRequestKey,
+      "\n - self.listDataEntry.key:", self.listDataEntry?.key ?? "N/A",
+      "\n - self.bounds.size.width:", self.bounds.size.width,
+      "\n - self.bounds.size.height:", self.bounds.size.height,
+      "\n - self.frame.origin:", self.frame.origin,
+      "\n - superview.className:", self.superview?.className ?? "N/A",
+      "\n - superview.bounds.size:", self.superview?.bounds.size.debugDescription ?? "N/A",
+      "\n - superview.frame.origin:", self.superview?.frame.origin.debugDescription ?? "N/A",
+      "\n"
+    );
+  };
+  
+  // MARK: React Module Functions
+  // ----------------------------
+  
+  func notifyOnReactLayout(forRect layoutRect: CGRect){
+    // WIP - To be impl.
+    print(
+      "RNITableViewCellContentView.notifyOnReactLayout",
+      "\n - layoutRect.size:", layoutRect.size,
+      "\n - layoutRect.origin:", layoutRect.origin,
+      "\n - self.bounds.size:", self.bounds.size,
+      "\n - self.frame.size:", self.frame.size,
+      "\n - self.frame.origin:", self.frame.origin,
+      "\n"
+    );
+  };
+  
   // MARK: Functions
   // ---------------
   

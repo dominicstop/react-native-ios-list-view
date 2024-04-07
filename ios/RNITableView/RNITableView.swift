@@ -106,6 +106,7 @@ public class RNITableView: ExpoView {
   
   public override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
     super.insertReactSubview(subview, at: atIndex);
+    subview.removeFromSuperview();
     
     guard let nativeID = subview.nativeID,
           let nativeIDKey = NativeIDKey(rawValue: nativeID)

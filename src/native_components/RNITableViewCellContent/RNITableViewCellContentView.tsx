@@ -1,10 +1,13 @@
 
 import * as React from 'react';
-import { LayoutChangeEvent, StyleSheet, Text, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
+
+import { CGRectInit } from 'react-native-ios-utilities';
 
 import { RNITableViewCellContentViewProps, RNITableViewCellContentViewState } from './RNITableViewCellContentViewTypes';
 import { RNITableViewCellContentNativeView } from './RNITableViewCellContentNativeView';
 import { OnDidSetListDataEntryEvent } from './RNITableViewCellContentNativeViewEvents';
+import { RNITableViewCellContentViewModule } from './RNITableViewCellContentViewModule';
 
 
 export class RNITableViewCellContentView extends React.PureComponent<
@@ -58,12 +61,42 @@ export class RNITableViewCellContentView extends React.PureComponent<
     };
   };
 
+  notifyOnReactLayout = async (rect: CGRectInit) => {
+    const reactTag = this.getNativeReactTag();
+    if(typeof reactTag !== 'number') return;
+
+    await RNITableViewCellContentViewModule.notifyOnReactLayout(
+      reactTag,
+      rect,
+    );
+  };
+
   // Event Handlers
   // --------------
 
   private _handleOnLayout = ({nativeEvent}: LayoutChangeEvent) => {
-    // @ts-ignore
-    this.reactTag = nativeEvent.target;
+    if(this.reactTag == null){
+      // @ts-ignore
+      this.reactTag = nativeEvent.target;
+    };
+    
+    this.notifyOnReactLayout({
+      height: nativeEvent.layout.height,
+      width: nativeEvent.layout.width,
+      x: nativeEvent.layout.x,
+      y: nativeEvent.layout.y,
+    });
+
+    console.log(
+      "RNITableViewCellContentView._handleOnLayout",
+      "\n - listDataEntry.key:", this.state.listDataEntry?.key ?? -1,
+      "\n - orderedListDataEntryIndex:", this.state.orderedListDataEntryIndex ?? -1,
+      "\n - reactListDataEntryIndex:", this.state.reactListDataEntryIndex ?? -1,
+      "\n - height:", nativeEvent.layout.height,
+      "\n - width:", nativeEvent.layout.width,
+      "\n - x:", nativeEvent.layout.x,
+      "\n - y:", nativeEvent.layout.y,
+    );
   };
 
   private _handleOnNativeRef = (ref: View) => {
@@ -91,8 +124,8 @@ export class RNITableViewCellContentView extends React.PureComponent<
       ...props.viewProps,
       ...props.nativeProps,
       ...((this.reactTag == null) && {
-        onLayout: this._handleOnLayout,
       }),
+      onLayout: this._handleOnLayout,
       // @ts-ignore
       ref: this._handleOnNativeRef,
       style: [
