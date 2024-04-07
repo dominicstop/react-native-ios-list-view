@@ -5,7 +5,11 @@
 - [ ] **Impl**: `TableView.initialCellsToRenderCount` Logic
   * Related: Cell render request logic.
   * Problem: We don't know how many cells to render beforehand; this causes the cells to render sequentially on screen.
-  * Solution: Initial pool of cells via ahead of time rendering for cells (i.e. mount + render a bunch of cells in advanced), then throw away any excess cells after the table view has completed rendering the initial cells to show.<br><br>
+  * Solution: Initial pool of cells via ahead of time rendering for cells (i.e. mount + render a bunch of cells in advanced), then throw away any excess cells after the table view has completed rendering the initial cells to show.
+  * Observation: `RNITableViewCellContentView.onLayout` (JS) vs `RNITableViewCellContentView.layoutSubviews` (Native)
+    * Logging - `onLayout` always reports the correct width + height correctly (e.g. `height: 100`, `width: 241.5`).
+    * However,  `layoutSubviews` says that the bounds for the view are different (e.g. `bounds.size.width: 414.0`, `bounds.size.height: 0.0 `).
+    * The bounds of the `superview` (i.e. `RNITableViewCell`) are: `superview.bounds.size: (414.0, 100.0) `.<br><br>
 - [ ] **Fix**: `RNITableView` Cell Layout
 - [ ] **Refactor**: Rename `RNITableView` to `RNITableViewWrapper`.
 - [ ] **Impl**: Cell add/remove logic.
