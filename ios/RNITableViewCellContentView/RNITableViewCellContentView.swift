@@ -18,8 +18,11 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
 
   public var listDataEntry: RNITableViewListDataEntry?;
   
-  public weak var parentTableViewContainer: RNITableView?;
   public weak var parentTableViewCell: RNITableViewCell?;
+  
+  public var parentTableViewContainer: RNITableView? {
+    self.parentTableViewCell?.reactTableViewContainer;
+  };
   
   // MARK: Properties - React Events
   // -------------------------------
