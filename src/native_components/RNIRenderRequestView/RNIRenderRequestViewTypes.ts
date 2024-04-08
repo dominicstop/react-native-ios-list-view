@@ -1,5 +1,5 @@
-import { View, ViewProps, ViewStyle } from 'react-native';
-import { RNIRenderRequestNativeViewBaseProps } from './RNIRenderRequestNativeViewTypes';
+import { ViewProps } from 'react-native';
+// import { RNIRenderRequestNativeViewBaseProps } from './RNIRenderRequestNativeViewTypes';
 
 // export type RNIRenderRequestViewInheritedProps = Pick<RNIRenderRequestNativeViewBaseProps,
 //  | 'tba'
@@ -12,6 +12,7 @@ export type RNIRenderRequestViewRenderItem = (
 
 export type RNIRenderRequestViewBaseProps = {
   renderItem: RNIRenderRequestViewRenderItem;
+  initialRenderRequestItems?: Array<RenderRequestItem>;
 };
 
 export type RNIRenderRequestViewProps = 

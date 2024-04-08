@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { LayoutChangeEvent, StyleSheet, Text, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 
 import { RNIRenderRequestViewProps, RNIRenderRequestViewState } from './RNIRenderRequestViewTypes';
 import { RNIRenderRequestNativeView } from './RNIRenderRequestNativeView';
@@ -18,8 +18,11 @@ export class RNIRenderRequestView extends React.PureComponent<
   constructor(props: RNIRenderRequestViewProps){
     super(props);
 
+    const initialRenderRequestItems = 
+      props.initialRenderRequestItems ?? [];
+
     this.state = {
-      renderRequests: [],
+      renderRequests: initialRenderRequestItems,
     };
   };
 
