@@ -9,16 +9,12 @@ public class RNITableView: ExpoView {
   enum NativeIDKey: String {
     case renderRequest;
   };
+  
+  lazy var cellManager: RNITableViewCellManager = .init(reactTableViewWrapper: self);
 
   lazy var tableView = UITableView(frame: .zero, style: .plain);
-  var dataSource: RNITableViewDataSource?;
   
-  public var tableViewCellRegistry = NSMapTable<NSString, RNITableViewCell>.init(
-    keyOptions: .copyIn,
-    valueOptions: .weakMemory
-  );
-
-  var cellInstanceCount = 0;
+  var dataSource: RNITableViewDataSource?;
   
   var renderRequestView: RNIRenderRequestView?;
   
@@ -136,15 +132,13 @@ public class RNITableView: ExpoView {
           for: indexPath
         ) as! RNITableViewCell;
         
-        self.tableViewCellRegistry.setObject(cell, forKey: key as NSString);
-        
         cell.selectionStyle = .none;
         cell.reactTableViewContainer = self;
         
         cell._setupIfNeeded(renderRequestView: self.renderRequestView!);
         cell.setListDataEntry(forKey: key);
         
-        self.cellInstanceCount += 1;
+        self.cellManager.registerCell(cell, forKey: key);
         return cell
       }
     );
@@ -205,12 +199,7 @@ public class RNITableView: ExpoView {
   };
   
   func _refreshCellData(){
-    let allCellsRaw =
-      self.tableViewCellRegistry.objectEnumerator()?.allObjects ?? [];
-      
-    let allCells = allCellsRaw.compactMap {
-      $0 as? RNITableViewCell;
-    };
+    let allCells = self.cellManager.cellInstances;
     
     allCells.forEach {
        guard let listDataEntryForCell = $0.listDataEntry else { return };

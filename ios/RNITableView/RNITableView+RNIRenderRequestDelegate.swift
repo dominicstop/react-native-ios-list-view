@@ -15,8 +15,10 @@ extension RNITableView: RNIRenderRequestDelegate {
   ) {
     let renderRequestView = self.renderRequestView!;
     
+    let cellInstanceCount = self.cellManager.cellInstanceCount;
+    
     let didRegisterAllCells =
-      renderRequestView.renderRequestRegistry.count == self.cellInstanceCount;
+      renderRequestView.renderRequestRegistry.count == cellInstanceCount;
       
     guard didRegisterAllCells else { return };
   };
