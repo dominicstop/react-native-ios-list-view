@@ -87,6 +87,15 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
           layoutRect.height >= parentTableViewContainer.minimumListCellHeightProp
     else { return };
     
+    let cellManager = parentTableViewContainer.cellManager;
+    
+    cellManager.setCellHeight(
+      forCell: parentTableViewCell,
+      size: layoutRect.size
+    );
+    
+    cellManager._debugPrintCellHeightCache();
+    
     cellHeightConstraint.constant = layoutRect.height;
     parentTableViewCell.layoutIfNeeded();
   };
