@@ -65,10 +65,10 @@ export class RNITableViewCellContentView extends React.PureComponent<
     const reactTag = this.getNativeReactTag();
     if(typeof reactTag !== 'number') return;
 
-    await RNITableViewCellContentViewModule.notifyOnReactLayout(
-      reactTag,
-      rect,
-    );
+    await RNITableViewCellContentViewModule.notifyOnReactLayout(reactTag, {
+      layoutRect: rect,
+      renderRequestKey: this.props.renderRequestKey,
+    });
   };
 
   // Event Handlers

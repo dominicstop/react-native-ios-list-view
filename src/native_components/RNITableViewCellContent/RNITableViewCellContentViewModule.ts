@@ -1,10 +1,16 @@
 import { requireNativeModule } from 'expo-modules-core';
 import { CGRectInit } from 'react-native-ios-utilities';
 
+import { RenderRequestKey } from '../RNIRenderRequestView';
+
+
 interface RNITableViewCellContentViewModule {
   notifyOnReactLayout(
     node: number,
-    args: CGRectInit
+    args: {
+      layoutRect: CGRectInit,
+      renderRequestKey: RenderRequestKey,
+    },
   ): Promise<void>;
 };
 

@@ -19,14 +19,28 @@ public class RNITableViewCellContentViewModule: Module {
     
       DispatchQueue.main.async {
         do {
-          let detachedView = try RNIModuleHelpers.getView(
+          let view = try RNIModuleHelpers.getView(
             withErrorType: RNIListViewError.self,
             forNode: reactTag,
             type: RNITableViewCellContentView.self
           );
-        
-          let layoutRect = try CGRect(fromDict: args);
-          detachedView.notifyOnReactLayout(forRect: layoutRect);
+          
+          let layoutRectDict = try args.getValueFromDictionary(
+            forKey: "layoutRect",
+            type: Dictionary<String, Any>.self
+          );
+          
+          let renderRequestKey = try args.getValueFromDictionary(
+            forKey: "renderRequestKey",
+            type: Int.self
+          );
+          
+          let layoutRect = try CGRect(fromDict: layoutRectDict);
+          
+          view.notifyOnReactLayout(
+            forRect: layoutRect,
+            renderRequestKey: renderRequestKey
+          );
           
           promise.resolve();
         

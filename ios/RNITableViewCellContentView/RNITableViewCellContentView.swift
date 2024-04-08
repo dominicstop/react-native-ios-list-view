@@ -65,8 +65,11 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   // MARK: React Module Functions
   // ----------------------------
   
-  func notifyOnReactLayout(forRect layoutRect: CGRect){
-    // WIP - To be impl.
+  func notifyOnReactLayout(
+    forRect layoutRect: CGRect,
+    renderRequestKey: Int
+  ){
+  
     print(
       "RNITableViewCellContentView.notifyOnReactLayout",
       "\n - self.listDataEntry.key:", self.listDataEntry?.key ?? "N/A",
@@ -94,7 +97,19 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       layoutRect.height
     );
     
-    guard let listDataEntry = self.listDataEntry else { return };
+    let listDataEntry: RNITableViewListDataEntry? = {
+      if let listDataEntry = self.listDataEntry {
+        return listDataEntry;
+      };
+      
+      let cellForRenderRequestKey = cellManager.cellInstances.first {
+        $0.renderRequestKey == renderRequestKey;
+      };
+      
+      return cellForRenderRequestKey?.listDataEntry;
+    }();
+    
+    guard let listDataEntry = listDataEntry else { return };
     
     cellManager.setCellHeight(
       forKey: listDataEntry.key,
