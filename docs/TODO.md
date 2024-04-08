@@ -12,7 +12,7 @@
     * The bounds of the `superview` (i.e. `RNITableViewCell`) are: `superview.bounds.size: (414.0, 100.0) `.
   * Observation: Explicitly setting the size of `RNITableViewCellContentView` via `uiManager.setSize` in native stops `onLayout` events from firing.
     *  i.e. `RNITableViewCellContentView` no longer updates it's layout, and sticks to the size set via `uiManager.setSize`.<br><br>
-- [ ] **Fix**: `RNITableView` Cell Layout
+- [ ] **Impl**: `RNITableView` - Support self sizing cells (i,e, variable cell height). 
 - [ ] **Refactor**: Rename `RNITableView` to `RNITableViewWrapper`.
 - [ ] **Impl**: `TableView` - Support + test cell add/remove logic.
 - [ ] **Impl**: `TableView` - Add support for custom headers + footers.
@@ -22,7 +22,6 @@
 - [ ] **Impl**: `TableView` - Expose lifecycle events.
 - [ ] **Impl**: `TableView` - Support all the standard props from RN `ScrollView` component.
 - [ ] **Impl**: `TableView` - Add support for using `UIItableView` preset/standard layouts.
-- [ ] **Refactor**: Ex - Extract test in `App` to its own separate file.
 - [ ] **Update**: Ex - Update example test layout.
 - [ ] **Impl**: Ex - Add different tests via routes + screens.
 - [ ] 
@@ -31,6 +30,7 @@
 
 ## Completed Tasks
 
+- [x] **Refactor**: Ex - Extract test in `App` to its own separate file.
 - [x] **Impl**: `TableView.renderCellContent` + `TableView.listData` - Pass the corresponding `listData` item for the current cell.
 - [x] **Impl**: `RNITableViewCellContent` - Create custom view for `RNITableView`'s cell content.
 - [x] **Impl**: `RNIRenderRequestableView` Protocol - Create protocol for `RNIRenderRequestView` view items.
