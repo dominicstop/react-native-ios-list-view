@@ -9,8 +9,9 @@ import UIKit
 import DGSwiftUtilities
 
 
-public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
-
+public class RNITableViewCell:
+  UITableViewCell, RNIRenderRequestDelegate, RNITableViewCellManagerDelegate {
+  
   public var renderRequestKey: Int?;
   public var listDataEntry: RNITableViewListDataEntry?;
 
@@ -105,10 +106,9 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     renderRequestKey: Int,
     requestedView: RNIRenderRequestableView
   ) {
+  
     guard self.renderRequestKey == renderRequestKey,
-          let reactCellContent = requestedView as? RNITableViewCellContentView,
-          
-          let reactTableViewContainer = self.reactTableViewContainer
+          let reactCellContent = requestedView as? RNITableViewCellContentView
     else { return };
     
     self.reactCellContent = reactCellContent;
@@ -128,15 +128,6 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
     
     reactCellContent.removeFromSuperview();
     
-    if (reactCellContent.bounds.width <= 0){
-      let newSize = CGSize(
-        width: reactTableViewContainer.bounds.width,
-        height: reactCellContent.bounds.height
-      );
-      
-      reactCellContent.updateBounds(newSize: newSize);
-    };
-    
     reactCellContent.translatesAutoresizingMaskIntoConstraints = false;
     self.addSubview(reactCellContent);
     
@@ -151,5 +142,16 @@ public class RNITableViewCell: UITableViewCell, RNIRenderRequestDelegate {
         equalTo: self.topAnchor
       ),
     ]);
+  };
+  
+  // MARK: - Functions: RNITableViewCellManagerDelegate
+  // --------------------------------------------------
+  
+  public func notifyForCellHeightChange(newHeight: CGFloat) {
+    guard let cellHeightConstraint = self.cellHeightConstraint else { return };
+    
+    cellHeightConstraint.constant = newHeight;
+    self.updateConstraints();
+    self.layoutIfNeeded();
   };
 };

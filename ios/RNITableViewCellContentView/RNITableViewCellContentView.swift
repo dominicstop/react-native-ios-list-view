@@ -80,24 +80,26 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     );
     
     guard let parentTableViewContainer = self.parentTableViewContainer,
-          let parentTableViewCell = self.parentTableViewCell,
-          let cellHeightConstraint = parentTableViewCell.cellHeightConstraint,
-          
-          layoutRect.height > 0,
-          layoutRect.height >= parentTableViewContainer.minimumListCellHeightProp
+          layoutRect.height > 0
     else { return };
     
     let cellManager = parentTableViewContainer.cellManager;
     
-    cellManager.setCellHeight(
-      forCell: parentTableViewCell,
-      size: layoutRect.size
+    defer {
+      cellManager._debugPrintCellHeightCache();
+    };
+    
+    let newHeight = max(
+      parentTableViewContainer.minimumListCellHeightProp,
+      layoutRect.height
     );
     
-    cellManager._debugPrintCellHeightCache();
+    guard let listDataEntry = self.listDataEntry else { return };
     
-    cellHeightConstraint.constant = layoutRect.height;
-    parentTableViewCell.layoutIfNeeded();
+    cellManager.setCellHeight(
+      forKey: listDataEntry.key,
+      withHeight: newHeight
+    );
   };
   
   // MARK: Functions

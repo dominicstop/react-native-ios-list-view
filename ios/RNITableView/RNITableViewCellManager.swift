@@ -46,23 +46,23 @@ final public class RNITableViewCellManager {
   };
   
   public func setCellHeight(
-    forCell cell: RNITableViewCell,
-    size: CGSize
+    forKey key: String,
+    withHeight newHeight: CGFloat
   ){
-    guard let reactTableViewWrapper = self.reactTableViewWrapper,
-          let listDataEntry = cell.listDataEntry
+    let oldHeight = self.cellHeightCache[key] ?? 0;
+    
+    guard newHeight > 0,
+          oldHeight != newHeight
     else { return };
     
-    let newHeight = size.height;
-    let tableViewWidth = reactTableViewWrapper.bounds.width;
+    self.cellHeightCache[key] = newHeight;
     
-    guard tableViewWidth > 0,
-          newHeight > 0,
-          
-          cell.bounds.width == tableViewWidth
-    else { return };
+    let cellForKey = self.cellInstances.first {
+      $0.listDataEntry?.key == key;
+    };
     
-    self.cellHeightCache[listDataEntry.key] = newHeight;
+    guard let cellForKey = cellForKey else { return };
+    cellForKey.notifyForCellHeightChange(newHeight: newHeight);
   };
   
   func _debugPrintCellHeightCache(){
