@@ -96,6 +96,7 @@ export class RNITableViewCellContentView extends React.PureComponent<
       "\n - width:", nativeEvent.layout.width,
       "\n - x:", nativeEvent.layout.x,
       "\n - y:", nativeEvent.layout.y,
+      "\n "
     );
   };
 
@@ -114,6 +115,15 @@ export class RNITableViewCellContentView extends React.PureComponent<
       orderedListDataEntryIndex: payload.orderedListDataEntryIndex,
       reactListDataEntryIndex: payload.reactListDataEntryIndex,
     });
+
+    console.log(
+      "RNITableViewCellContentView._handleOnDidSetListDataEntry",
+      "\n - listDataEntry:", payload.listDataEntry,
+      "\n - orderedListDataEntryIndex:", payload.orderedListDataEntryIndex,
+      "\n - reactListDataEntryIndex:", payload.reactListDataEntryIndex,
+      "\n "
+    );
+
   };
 
   render(){
