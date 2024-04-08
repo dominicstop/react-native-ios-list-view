@@ -50,6 +50,17 @@ public class RNITableViewCell:
   // MARK: - Functions
   // -----------------
   
+  func _setCellHeight(newHeight: CGFloat){
+    guard let cellHeightConstraint = self.cellHeightConstraint else { return };
+    
+    cellHeightConstraint.constant = newHeight;
+    self.updateConstraints();
+    self.layoutIfNeeded();
+  };
+  
+  // MARK: - Public Functions
+  // ------------------------
+  
   public func setListDataEntry(forKey key: String){
     guard let reactTableViewContainer = self.reactTableViewContainer
     else { return };
@@ -148,10 +159,6 @@ public class RNITableViewCell:
   // --------------------------------------------------
   
   public func notifyForCellHeightChange(newHeight: CGFloat) {
-    guard let cellHeightConstraint = self.cellHeightConstraint else { return };
-    
-    cellHeightConstraint.constant = newHeight;
-    self.updateConstraints();
-    self.layoutIfNeeded();
+    self._setCellHeight(newHeight: newHeight);
   };
 };
