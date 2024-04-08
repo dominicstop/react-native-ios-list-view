@@ -105,10 +105,10 @@ export function CellContent(props: {
 
 const styles = StyleSheet.create({
   rootContainer: {
-    paddingLeft: 10,
     paddingHorizontal: 10,
     minHeight: MIN_CELL_HEIGHT,
     justifyContent: 'center',
+    paddingVertical: 5,
   },
   buttonRowContainer: {
     flexDirection: 'row',
