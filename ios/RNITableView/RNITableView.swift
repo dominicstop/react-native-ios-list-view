@@ -136,7 +136,7 @@ public class RNITableView: ExpoView {
         cell.reactTableViewContainer = self;
         
         cell._setupIfNeeded(renderRequestView: self.renderRequestView!);
-        cell.setListDataEntry(forKey: key);
+        cell._notifyWillDisplay(forKey: key);
         
         self.cellManager.registerCell(cell, forKey: key);
         return cell

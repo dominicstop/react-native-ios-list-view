@@ -54,8 +54,20 @@ public class RNITableViewCell:
     guard let cellHeightConstraint = self.cellHeightConstraint else { return };
     
     cellHeightConstraint.constant = newHeight;
-    self.updateConstraints();
     self.layoutIfNeeded();
+  };
+  
+  func _notifyWillDisplay(forKey key: String){
+    self.setListDataEntry(forKey: key);
+    
+    guard let reactTableViewContainer = reactTableViewContainer
+    else { return };
+    
+    let cellManager = reactTableViewContainer.cellManager;
+    let cachedHeight = cellManager.cellHeightCache[key];
+    
+    guard let cachedHeight = cachedHeight else { return };
+    self._setCellHeight(newHeight: cachedHeight);
   };
   
   // MARK: - Public Functions
