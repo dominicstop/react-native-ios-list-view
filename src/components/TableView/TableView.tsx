@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Dimensions, LayoutChangeEvent, StyleSheet, ViewStyle } from 'react-native';
 
 import { RNITableView, RNITableViewListDataItem } from '../../native_components/RNITableView';
 
@@ -21,6 +21,7 @@ export class TableView extends
     super(props);
 
     this.state = {
+      tableViewWidth: Dimensions.get('window').width,
     };
   };
 
@@ -59,6 +60,12 @@ export class TableView extends
     };
   };
 
+  private _handleOnLayout = (event: LayoutChangeEvent) => {
+    this.setState({
+      tableViewWidth: event.nativeEvent.layout.width,
+    });
+  };
+
   // Render
   // -----
   
@@ -66,12 +73,18 @@ export class TableView extends
     const props = this.getProps();
     const state = this.state;
 
+    const cellContentContainerStyle: ViewStyle = {
+      width: state.tableViewWidth,
+      minHeight: props.nativeProps.minimumListCellHeight
+    };
+
     return (
       <RNITableView
         {...props.viewProps}
         {...props.nativeProps}
         ref={r => { this.nativeRef = r! }}
         style={[styles.nativeView, props.viewProps.style]}
+        onLayout={this._handleOnLayout}
       >
         <RNIRenderRequestView
           nativeID={NATIVE_ID_KEYS.renderRequest}
@@ -79,7 +92,10 @@ export class TableView extends
             return (
               <RNITableViewCellContentView
                 key={renderRequestData.renderRequestKey}
-                style={props.cellContentContainerStyle}
+                style={[
+                  cellContentContainerStyle,
+                  props.cellContentContainerStyle,
+                ]}
                 renderRequestKey={renderRequestData.renderRequestKey}
                 renderCellContent={(
                   listDataEntry,

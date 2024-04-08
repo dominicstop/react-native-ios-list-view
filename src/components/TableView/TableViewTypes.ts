@@ -40,5 +40,5 @@ export type TableViewProps =
   & ViewProps;
 
 export type TableViewState = {
-  // TBA
+  tableViewWidth: number;
 };

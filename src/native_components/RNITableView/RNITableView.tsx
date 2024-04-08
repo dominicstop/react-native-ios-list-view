@@ -28,9 +28,11 @@ export class RNITableView extends React.PureComponent<RNITableViewProps> {
   // Event Handlers
   // --------------
 
-  private _handleOnLayout = ({nativeEvent}: LayoutChangeEvent) => {
+  private _handleOnLayout = (event: LayoutChangeEvent) => {
+    this.props.onLayout?.(event);
+
     // @ts-ignore
-    this.reactTag = nativeEvent.target;
+    this.reactTag = event.nativeEvent.target;
   };
 
   private _handleOnNativeRef = (ref: View) => {
