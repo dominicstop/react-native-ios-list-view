@@ -9,7 +9,9 @@
   * Observation: `RNITableViewCellContentView.onLayout` (JS) vs `RNITableViewCellContentView.layoutSubviews` (Native)
     * Logging - `onLayout` always reports the correct width + height correctly (e.g. `height: 100`, `width: 241.5`).
     * However,  `layoutSubviews` says that the bounds for the view are different (e.g. `bounds.size.width: 414.0`, `bounds.size.height: 0.0 `).
-    * The bounds of the `superview` (i.e. `RNITableViewCell`) are: `superview.bounds.size: (414.0, 100.0) `.<br><br>
+    * The bounds of the `superview` (i.e. `RNITableViewCell`) are: `superview.bounds.size: (414.0, 100.0) `.
+  * Observation: Explicitly setting the size of `RNITableViewCellContentView` via `uiManager.setSize` in native stops `onLayout` events from firing.
+    *  i.e. `RNITableViewCellContentView` no longer updates it's layout, and sticks to the size set via `uiManager.setSize`.<br><br>
 - [ ] **Fix**: `RNITableView` Cell Layout
 - [ ] **Refactor**: Rename `RNITableView` to `RNITableViewWrapper`.
 - [ ] **Impl**: `TableView` - Support + test cell add/remove logic.
