@@ -42,6 +42,9 @@ final public class RNITableViewCellManager {
   // -----------------
   
   public func registerCell(_ cell: RNITableViewCell, forKey key: String){
+    guard self.cellRegistry.object(forKey: key as NSString) == nil
+    else { return };
+    
     self.cellRegistry.setObject(cell, forKey: key as NSString);
   };
   

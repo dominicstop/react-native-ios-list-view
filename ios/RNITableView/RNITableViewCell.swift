@@ -84,7 +84,8 @@ public class RNITableViewCell:
       $0.element.key == key;
     };
     
-    guard let orderedListItemEnumerated = orderedListItemEnumerated else { return };
+    guard let orderedListItemEnumerated = orderedListItemEnumerated
+    else { return };
     
     let reactListDataEnumerated =
       reactTableViewContainer.listData.enumerated();
