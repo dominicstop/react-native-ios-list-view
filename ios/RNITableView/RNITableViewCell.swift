@@ -36,8 +36,9 @@ public class RNITableViewCell:
     self.reactRenderRequestView = renderRequestView;
     renderRequestView.renderRequestDelegate.add(self);
     
-    let renderRequestKey = renderRequestView.createRenderRequest();
-    self.renderRequestKey = renderRequestKey;
+    renderRequestView.createRenderRequest() {
+      self.renderRequestKey = $0;
+    };
     
     let cellHeightConstraint = self.heightAnchor.constraint(
       equalToConstant: reactTableViewContainer.minimumListCellHeightProp

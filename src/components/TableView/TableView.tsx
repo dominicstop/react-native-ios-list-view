@@ -4,13 +4,15 @@ import { Dimensions, LayoutChangeEvent, StyleSheet, ViewStyle } from 'react-nati
 import { RNITableView, RNITableViewListDataItem } from '../../native_components/RNITableView';
 
 import type { TableViewProps, TableViewState } from './TableViewTypes';
-import { RNIRenderRequestView } from '../../native_components/RNIRenderRequestView';
+import { RNIRenderRequestView, RenderRequestItem } from '../../native_components/RNIRenderRequestView';
 import { RNITableViewCellContentView } from '../../native_components/RNITableViewCellContent';
 
 
 const NATIVE_ID_KEYS = {
   renderRequest: "renderRequest",
 };
+
+const WINDOW_SIZE = Dimensions.get('window');
 
 export class TableView extends 
   React.PureComponent<TableViewProps, TableViewState> {
@@ -21,7 +23,7 @@ export class TableView extends
     super(props);
 
     this.state = {
-      tableViewWidth: Dimensions.get('window').width,
+      tableViewWidth: WINDOW_SIZE.width,
     };
   };
 
@@ -32,6 +34,7 @@ export class TableView extends
       renderCellContent,
       cellContentContainerStyle,
       minimumListCellHeight,
+      initialCellsToRenderCount,
       ...viewProps
     } = this.props;
 
@@ -42,17 +45,30 @@ export class TableView extends
       });
     });
 
+    const minimumListCellHeightDefault = minimumListCellHeight ?? 100;
+    
+    const initialCellsToRenderCountWithDefault = (() => {
+      if(initialCellsToRenderCount != null){
+        return initialCellsToRenderCount;
+      };
+
+      const base = Math.ceil(WINDOW_SIZE.height / minimumListCellHeightDefault);
+      const baseAdj = base + 3;
+
+      return Math.max(baseAdj, 6);
+    })();
+
     return {
       // A. Group native props for `RNITableView`...
       nativeProps: {
         listData: listDataProcessed,
-        minimumListCellHeight:  
-          minimumListCellHeight ?? 100,
+        minimumListCellHeight: minimumListCellHeightDefault,
       },
 
       listData,
       renderCellContent,
       cellContentContainerStyle,
+      initialCellsToRenderCount: initialCellsToRenderCountWithDefault,
 
       // B. Move all the default view-related
       //    props here...
@@ -78,6 +94,16 @@ export class TableView extends
       minHeight: props.nativeProps.minimumListCellHeight
     };
 
+    const initialRenderRequestItems = (() => {
+      const items: Array<RenderRequestItem> = [];
+      
+      for(let index = 0; index < props.initialCellsToRenderCount; index++){
+        items.push({ renderRequestKey: index });
+      };
+
+      return items;
+    })();
+
     return (
       <RNITableView
         {...props.viewProps}
@@ -88,6 +114,7 @@ export class TableView extends
       >
         <RNIRenderRequestView
           nativeID={NATIVE_ID_KEYS.renderRequest}
+          initialRenderRequestItems={initialRenderRequestItems}
           renderItem={(renderRequestData) => {
             return (
               <RNITableViewCellContentView

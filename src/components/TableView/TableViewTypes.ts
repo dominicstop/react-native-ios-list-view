@@ -28,6 +28,7 @@ export type ListDataKeyExtractor<T extends object> = (
 ) => string;
 
 export type TableViewBaseProps = {
+  initialCellsToRenderCount?: number;
   listData: TableViewListData;
   listDataKeyExtractor: ListDataKeyExtractor<Record<string, any>>;
   renderCellContent: TableViewRenderCellContent;

@@ -56,13 +56,28 @@ public class RNIRenderRequestView: ExpoView {
   // MARK: Functions
   // ---------------
   
-  public func createRenderRequest() -> Int {
+  public func createRenderRequest(
+    onRenderRequestKeyCreateBlock: (Int) -> Void
+  ) {
     let renderRequestKey = self.currentRenderRequestKey;
     self.currentRenderRequestKey += 1;
     
-    self.onRenderRequestEvent.callAsFunction([
-      "renderRequestKey": renderRequestKey,
-    ]);
+    onRenderRequestKeyCreateBlock(renderRequestKey);
+    let match = self.renderRequestRegistry[renderRequestKey];
+    
+    if let match = match {
+      self.renderRequestDelegate.invoke {
+        $0.onRenderRequestCompleted(
+          renderRequestKey: renderRequestKey,
+          requestedView: match
+        );
+      };
+    
+    } else {
+      self.onRenderRequestEvent.callAsFunction([
+        "renderRequestKey": renderRequestKey,
+      ]);
+    };
     
     print(
       "RNIRenderRequestView.createRenderRequest",
@@ -70,7 +85,5 @@ public class RNIRenderRequestView: ExpoView {
       "\n - renderRequestRegistry.count:", self.renderRequestRegistry.count,
       "\n"
     );
-    
-    return renderRequestKey;
   };
 };
