@@ -24,7 +24,6 @@ export class RNITableView extends React.PureComponent<RNITableViewProps> {
     return this.nativeRef?.nativeTag ?? this.reactTag
   };
 
-
   // Event Handlers
   // --------------
 
