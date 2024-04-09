@@ -43,6 +43,8 @@ public class RNIRenderRequestView: ExpoView {
       );
     };
     
+    requestedView.notifyOnRenderRequestCompleted();
+    
     print(
       "RNIRenderRequestView.insertReactSubview",
       "\n - renderRequestKey:", renderRequestKey,

@@ -8,6 +8,9 @@
 import Foundation
 
 public protocol RNIRenderRequestableView: UIView {
+
   var renderRequestKey: Int { get };
   var renderRequestData: Dictionary<String, Any> { get };
+  
+  func notifyOnRenderRequestCompleted();
 };

@@ -141,4 +141,7 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     guard let reactBridge = self.appContext?.reactBridge else { return };
     reactBridge.uiManager.setSize(newSize, for: self);
   };
+  
+  public func notifyOnRenderRequestCompleted(){
+  };
 };
