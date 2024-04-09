@@ -3,19 +3,31 @@ import { ViewProps } from 'react-native';
 
 import { RNITableViewCellContentNativeViewBaseProps } from './RNITableViewCellContentNativeViewTypes';
 import { OnDidSetListDataEntryEventPayload } from './RNITableViewCellContentNativeViewEvents';
+import { RNITableViewProps } from '../RNITableView/RNITableViewTypes';
 
 
-export type RNITableViewCellContentViewInheritedRequiredProps = Pick<RNITableViewCellContentNativeViewBaseProps,
- | 'renderRequestKey'
+type InheritedNativeRequiredProps = Pick<
+  RNITableViewCellContentNativeViewBaseProps,
+  | 'renderRequestKey'
 >;
 
-export type RNITableViewCellContentViewInheritedOptionalProps = Partial<Pick<RNITableViewCellContentNativeViewBaseProps,
- | 'onDidSetListDataEntry'
+type InheritedNativeOptionalProps = Partial<Pick<
+  RNITableViewCellContentNativeViewBaseProps,
+  | 'onDidSetListDataEntry'
 >>;
 
+type InheritedNativeProps = 
+  & InheritedNativeRequiredProps
+  & InheritedNativeOptionalProps;
+
+type InheritedPropsFromRNITableView = Pick<
+  RNITableViewProps,
+  | 'minimumListCellHeight'
+>;
+
 export type RNITableViewCellContentViewInheritedProps = 
-  & RNITableViewCellContentViewInheritedRequiredProps
-  & RNITableViewCellContentViewInheritedOptionalProps;
+  & InheritedNativeProps
+  & InheritedPropsFromRNITableView;
 
 export type RenderTableViewCellContentView = (
   listDataEntry: 

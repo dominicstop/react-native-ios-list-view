@@ -119,6 +119,7 @@ export class TableView extends
             return (
               <RNITableViewCellContentView
                 key={renderRequestData.renderRequestKey}
+                minimumListCellHeight={props.nativeProps.minimumListCellHeight}
                 style={[
                   cellContentContainerStyle,
                   props.cellContentContainerStyle,

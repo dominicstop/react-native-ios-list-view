@@ -31,6 +31,4 @@ export const DELAY_PRESETS_MS = [
   1400,
 ];
 
-export const MIN_CELL_HEIGHT = 100;
-
 export type ListDataItem = typeof DUMMY_LIST_DATA[number];

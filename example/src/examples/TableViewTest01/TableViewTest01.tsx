@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { TableView } from 'react-native-ios-list-view';
 
-import { DUMMY_LIST_DATA, ListDataItem, MIN_CELL_HEIGHT } from './Constants';
+import { DUMMY_LIST_DATA, ListDataItem } from './Constants';
 import { CellContent } from './CellContent';
 
 import * as Helpers from '../../functions/Helpers';
@@ -14,7 +14,7 @@ export function TableViewTest01Screen() {
       <TableView
         style={styles.tableView}
         listData={DUMMY_LIST_DATA}
-        minimumListCellHeight={MIN_CELL_HEIGHT}
+        minimumListCellHeight={100}
         initialCellsToRenderCount={0}
         listDataKeyExtractor={(
           item: Record<string, ListDataItem>, 

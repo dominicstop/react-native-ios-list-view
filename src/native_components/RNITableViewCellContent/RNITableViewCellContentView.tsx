@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { CGRectInit } from 'react-native-ios-utilities';
 
@@ -40,6 +40,7 @@ export class RNITableViewCellContentView extends React.PureComponent<
   private getProps = () => {
     const {
       renderRequestKey,
+      minimumListCellHeight,
       onDidSetListDataEntry,
       renderCellContent,
       ...viewProps
@@ -53,6 +54,7 @@ export class RNITableViewCellContentView extends React.PureComponent<
       },
       
       // B: Pass through props...
+      minimumListCellHeight,
       renderCellContent,
 
       // C. Move all the default view-related
@@ -123,12 +125,15 @@ export class RNITableViewCellContentView extends React.PureComponent<
       "\n - reactListDataEntryIndex:", payload.reactListDataEntryIndex,
       "\n "
     );
-
   };
 
   render(){
     const props = this.getProps();
     const state = this.state;
+
+    const nativeViewStyle: ViewStyle = {
+      minHeight: props.minimumListCellHeight
+    };
 
     return React.createElement(RNITableViewCellContentNativeView, {
       ...props.viewProps,
@@ -139,8 +144,9 @@ export class RNITableViewCellContentView extends React.PureComponent<
       // @ts-ignore
       ref: this._handleOnNativeRef,
       style: [
+        nativeViewStyle,
         this.props.style,
-        styles.nativeView
+        styles.nativeView,
       ],
       onDidSetListDataEntry: this._handleOnDidSetListDataEntry,
       children: props.renderCellContent(

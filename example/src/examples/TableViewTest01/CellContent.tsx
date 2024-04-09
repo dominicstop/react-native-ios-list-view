@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ViewStyle } from 'react-native';
 
 import * as Helpers from '../../functions/Helpers';
-import { DELAY_PRESETS_MS, ListDataItem, MIN_CELL_HEIGHT } from './Constants';
+import { DELAY_PRESETS_MS, ListDataItem } from './Constants';
 
 
 export function CellContent(props: {
@@ -106,7 +106,6 @@ export function CellContent(props: {
 const styles = StyleSheet.create({
   rootContainer: {
     paddingHorizontal: 10,
-    minHeight: MIN_CELL_HEIGHT,
     justifyContent: 'center',
     paddingVertical: 5,
   },
