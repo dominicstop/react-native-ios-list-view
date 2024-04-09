@@ -7,7 +7,10 @@
   * Problem: We don't know how many cells to render beforehand; this causes the cells to render sequentially on screen.
   * Solution: Initial pool of cells via ahead of time rendering for cells (i.e. mount + render a bunch of cells in advanced), then throw away any excess cells after the table view has completed rendering the initial cells to show.
   * Note: `TableView` state, e.g. `INITIAL_UNSYNCED`, `SYNCED`, etc.
-    * Refine: `isRenderRequestSynced: boolean`<br><br>
+    * Refine: `isRenderRequestSynced: boolean`
+  * Bug: Touch events no longer work when pre-rendering requested cells.
+    * Explicitly creating a `RCTTouchHandler` instance does not work
+    * Experiment: Updated `onRenderRequestCompleted` to add the "requested cell content views" to the window (instead of the cell), and the touch events work.<br><br>
 - [ ] **Impl**: `RNITableView` - Support self sizing cells (i,e, variable cell height). 
   * Observation: `RNITableViewCellContentView.onLayout` (JS) vs `RNITableViewCellContentView.layoutSubviews` (Native)
     * Logging - `onLayout` always reports the correct width + height correctly (e.g. `height: 100`, `width: 241.5`).
