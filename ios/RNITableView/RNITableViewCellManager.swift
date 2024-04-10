@@ -54,10 +54,7 @@ final public class RNITableViewCellManager {
   ){
     let oldHeight = self.cellHeightCache[key] ?? 0;
     
-    guard newHeight > 0,
-          oldHeight != newHeight
-    else { return };
-    
+    guard newHeight > 0 else { return };
     self.cellHeightCache[key] = newHeight;
     
     let cellForKey = self.cellInstances.first {
@@ -65,6 +62,24 @@ final public class RNITableViewCellManager {
     };
     
     guard let cellForKey = cellForKey else { return };
+    
+    let shouldNotify: Bool = {
+      if oldHeight != newHeight {
+        return true;
+      };
+      
+      if cellForKey.bounds.height != newHeight {
+        return true;
+      };
+      
+      if cellForKey.cellHeightConstraint?.constant != newHeight {
+        return true;
+      };
+      
+      return false;
+    }();
+    
+    guard shouldNotify else { return };
     cellForKey.notifyForCellHeightChange(newHeight: newHeight);
   };
   
