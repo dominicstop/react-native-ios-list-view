@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, LayoutChangeEvent, StyleSheet, ViewStyle } from 'react-native';
+import { Dimensions, LayoutChangeEvent, StyleSheet, View, Text, ViewStyle } from 'react-native';
 
 import { RNITableView, RNITableViewListDataItem } from '../../native_components/RNITableView';
 
@@ -137,10 +137,12 @@ export class TableView extends
                   })(); 
 
                   return props.renderCellContent(
-                    listDataItem,
+                    // NOTE: This assumes that `renderRequestKey` == `listData` order.
+                    // This might not always be true though
+                    listDataItem ?? props.listData[renderRequestData.renderRequestKey],
                     renderRequestData,
-                    orderedListDataEntryIndex,
-                    reactListDataEntryIndex,
+                    orderedListDataEntryIndex ?? renderRequestData.renderRequestKey,
+                    reactListDataEntryIndex ?? renderRequestData.renderRequestKey,
                   );
                 }}
               >
