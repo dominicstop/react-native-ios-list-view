@@ -15,6 +15,8 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
 
   // MARK: Properties
   // ----------------
+  
+  var _touchHandler: RCTTouchHandler?;
 
   public var listDataEntry: RNITableViewListDataEntry?;
   
@@ -60,6 +62,35 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       "\n - superview.frame.origin:", self.superview?.frame.origin.debugDescription ?? "N/A",
       "\n"
     );
+  };
+  
+  func _setupTouchHandlerIfNeeded(){
+    guard self._touchHandler == nil,
+          let appContext = self.appContext,
+          let bridge = appContext.reactBridge
+    else { return };
+    
+    let touchHandler = RCTTouchHandler(bridge: bridge);
+    guard let touchHandler = touchHandler else { return };
+    
+    touchHandler.attach(to: self);
+  };
+  
+  public func setListDataEntry(
+    listDataEntry: RNITableViewListDataEntry,
+    orderedListDataEntryIndex: Int,
+    reactListDataEntryIndex: Int
+  ){
+  
+    self.listDataEntry = listDataEntry;
+    
+    let eventPayload: Dictionary<String, Any> = [
+      "listDataEntry": listDataEntry.asDictionary!,
+      "orderedListDataEntryIndex": orderedListDataEntryIndex,
+      "reactListDataEntryIndex": reactListDataEntryIndex,
+    ];
+    
+    self.onDidSetListDataEntry.callAsFunction(eventPayload);
   };
   
   // MARK: React Module Functions
