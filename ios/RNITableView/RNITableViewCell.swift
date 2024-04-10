@@ -41,11 +41,26 @@ public class RNITableViewCell:
       self.renderRequestKey = $0;
     };
     
+    guard self.cellHeightConstraint == nil else { return };
+    let cellManager = reactTableViewContainer.cellManager;
+    
+    let cellHeight: CGFloat = {
+      let fallbackHeight = reactTableViewContainer.minimumListCellHeightProp;
+      
+      guard let listDataEntry = self.listDataEntry else {
+        return fallbackHeight;
+      };
+      
+      let cachedHeight = cellManager.cellHeightCache[listDataEntry.key];
+      return cachedHeight ?? fallbackHeight;
+    }();
+    
     let cellHeightConstraint = self.heightAnchor.constraint(
-      equalToConstant: reactTableViewContainer.minimumListCellHeightProp
+      equalToConstant: cellHeight
     );
     
     cellHeightConstraint.isActive = true;
+    
     self.cellHeightConstraint = cellHeightConstraint;
   };
   
@@ -53,10 +68,22 @@ public class RNITableViewCell:
   // -----------------
   
   func _setCellHeight(newHeight: CGFloat){
-    guard let cellHeightConstraint = self.cellHeightConstraint else { return };
+    guard let reactTableViewContainer = self.reactTableViewContainer,
+          let cellHeightConstraint = self.cellHeightConstraint,
+          let tableView = reactTableViewContainer.tableView
+    else { return };
     
+    let oldHeight = cellHeightConstraint.constant;
+    
+    tableView.beginUpdates();
     cellHeightConstraint.constant = newHeight;
+    
+    if oldHeight != newHeight {
+      self.setNeedsLayout();
+    };
+    
     self.layoutIfNeeded();
+    tableView.endUpdates();
   };
   
   func _notifyWillDisplay(
@@ -72,8 +99,9 @@ public class RNITableViewCell:
     let cellManager = reactTableViewContainer.cellManager;
     let cachedHeight = cellManager.cellHeightCache[key];
     
-    guard let cachedHeight = cachedHeight else { return };
-    self._setCellHeight(newHeight: cachedHeight);
+    if let cachedHeight = cachedHeight {
+      self._setCellHeight(newHeight: cachedHeight);
+    };
   };
   
   // MARK: - Public Functions
