@@ -116,7 +116,6 @@ public class RNITableView: ExpoView {
         cell._setupIfNeeded(renderRequestView: self.renderRequestView!);
         cell._notifyWillDisplay(forKey: key, indexPath: indexPath);
         
-        self.cellManager.registerCell(cell, forKey: key);
         return cell
       }
     );

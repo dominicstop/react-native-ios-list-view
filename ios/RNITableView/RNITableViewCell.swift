@@ -41,16 +41,17 @@ public class RNITableViewCell:
     else { return };
     
     self._didTriggerSetup = true;
+    let cellManager = reactTableViewContainer.cellManager;
     
     self.reactRenderRequestView = renderRequestView;
     renderRequestView.renderRequestDelegate.add(self);
     
     renderRequestView.createRenderRequest() {
       self.renderRequestKey = $0;
+      cellManager.registerCell(self, forKey: String($0))
     };
     
     guard self.cellHeightConstraint == nil else { return };
-    let cellManager = reactTableViewContainer.cellManager;
     
     let cellHeight: CGFloat = {
       let fallbackHeight = reactTableViewContainer.minimumListCellHeightProp;
