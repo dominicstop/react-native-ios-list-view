@@ -12,6 +12,7 @@ import DGSwiftUtilities
 public class RNITableViewCell:
   UITableViewCell, RNIRenderRequestDelegate, RNITableViewCellManagerDelegate {
   
+  public var indexPath: IndexPath?;
   public var renderRequestKey: Int?;
   public var listDataEntry: RNITableViewListDataEntry?;
 
@@ -58,7 +59,11 @@ public class RNITableViewCell:
     self.layoutIfNeeded();
   };
   
-  func _notifyWillDisplay(forKey key: String){
+  func _notifyWillDisplay(
+    forKey key: String,
+    indexPath: IndexPath
+  ){
+    self.indexPath = indexPath;
     self.setListDataEntry(forKey: key);
     
     guard let reactTableViewContainer = reactTableViewContainer
