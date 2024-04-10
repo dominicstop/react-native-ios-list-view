@@ -35,6 +35,11 @@ public class RNITableViewCell:
     fatalError("init(coder) has not been implemented");
   };
   
+  public override func prepareForReuse() {
+    guard self._didTriggerSetup else { return };
+    self.alpha = 0.01;
+  };
+  
   func _setupIfNeeded(renderRequestView: RNIRenderRequestView){
     guard !self._didTriggerSetup,
           let reactTableViewContainer = self.reactTableViewContainer
@@ -83,6 +88,13 @@ public class RNITableViewCell:
     
     let oldHeight = cellHeightConstraint.constant;
     
+    UIView.setAnimationsEnabled(false)
+    CATransaction.begin();
+    
+    CATransaction.setCompletionBlock {
+      UIView.setAnimationsEnabled(true);
+    };
+    
     tableView.beginUpdates();
     cellHeightConstraint.constant = newHeight;
     
@@ -91,7 +103,9 @@ public class RNITableViewCell:
     };
     
     self.layoutIfNeeded();
+    
     tableView.endUpdates();
+    CATransaction.commit();
   };
   
   func _notifyWillDisplay(
@@ -215,5 +229,6 @@ public class RNITableViewCell:
   
   public func notifyForCellHeightChange(newHeight: CGFloat) {
     self._setCellHeight(newHeight: newHeight);
+    self.alpha = 1;
   };
 };
