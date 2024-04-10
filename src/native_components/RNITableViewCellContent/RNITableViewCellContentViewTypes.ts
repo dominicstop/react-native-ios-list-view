@@ -50,6 +50,8 @@ export type RNITableViewCellContentViewProps =
   & ViewProps;
 
 export type RNITableViewCellContentViewState = {
+  renderCounter: number;
+
   listDataEntry: 
     | OnDidSetListDataEntryEventPayload['listDataEntry'] 
     | undefined;

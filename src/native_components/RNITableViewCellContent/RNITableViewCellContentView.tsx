@@ -22,6 +22,8 @@ export class RNITableViewCellContentView extends React.PureComponent<
     super(props);
 
     this.state = {
+      renderCounter: 0,
+
       listDataEntry: undefined,
       orderedListDataEntryIndex: undefined,
       reactListDataEntryIndex: undefined,
@@ -112,11 +114,13 @@ export class RNITableViewCellContentView extends React.PureComponent<
     event.stopPropagation();
     this.props.onDidSetListDataEntry?.(event);
 
-    this.setState({
+    this.setState((prevState) => ({
+      ...prevState,
+      renderCounter: prevState.renderCounter + 1,
       listDataEntry: payload.listDataEntry,
       orderedListDataEntryIndex: payload.orderedListDataEntryIndex,
       reactListDataEntryIndex: payload.reactListDataEntryIndex,
-    });
+    }));
 
     console.log(
       "RNITableViewCellContentView._handleOnDidSetListDataEntry",
