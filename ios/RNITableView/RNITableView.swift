@@ -89,12 +89,35 @@ public class RNITableView: ExpoView {
       ),
     ]);
     
-    let dataSource = self._createDataSource();
+    let dataSource = self._setupCreateDataSource();
     dataSource.reactTableViewCellContainer = self;
     self.dataSource = dataSource;
     
     dataSource.defaultRowAnimation = .top;
     tableView.dataSource = dataSource;
+  };
+  
+  func _setupCreateDataSource() -> RNITableViewDataSource {
+    return RNITableViewDataSource(
+      tableView: self.tableView!,
+      cellProvider: { [unowned self] tableView, indexPath, key in
+        
+        // Create the cell as you'd usually do.
+        let cell = tableView.dequeueReusableCell(
+          withIdentifier: "id",
+          for: indexPath
+        ) as! RNITableViewCell;
+        
+        cell.selectionStyle = .none;
+        cell.reactTableViewContainer = self;
+        
+        cell._setupIfNeeded(renderRequestView: self.renderRequestView!);
+        cell._notifyWillDisplay(forKey: key);
+        
+        self.cellManager.registerCell(cell, forKey: key);
+        return cell
+      }
+    );
   };
   
   // MARK: Functions - RN Lifecycle
@@ -120,29 +143,6 @@ public class RNITableView: ExpoView {
   
   // MARK: Functions
   // ---------------
-  
-  func _createDataSource() -> RNITableViewDataSource {
-    return RNITableViewDataSource(
-      tableView: self.tableView,
-      cellProvider: { [unowned self] tableView, indexPath, key in
-        
-        // Create the cell as you'd usually do.
-        let cell = tableView.dequeueReusableCell(
-          withIdentifier: "id",
-          for: indexPath
-        ) as! RNITableViewCell;
-        
-        cell.selectionStyle = .none;
-        cell.reactTableViewContainer = self;
-        
-        cell._setupIfNeeded(renderRequestView: self.renderRequestView!);
-        cell._notifyWillDisplay(forKey: key);
-        
-        self.cellManager.registerCell(cell, forKey: key);
-        return cell
-      }
-    );
-  };
   
   func _applySnapshot(shouldAnimateRowUpdates: Bool = false) {
     guard let dataSource = self.dataSource else { return };
