@@ -4,10 +4,10 @@ import * as Helpers from '../../functions/Helpers';
 export const DUMMY_LIST_DATA = (() => {
   const items = [];
 
-  for(let index = 0; index < 100; index++){
+  for(let index = 0; index < 1000; index++){
     const wordCount = Math.max(
-      2,
-      Helpers.getRandomInt(7),
+      3,
+      Helpers.getRandomInt(30),
     );
 
     const dummyText = Helpers.getRandomDummyText(wordCount);
