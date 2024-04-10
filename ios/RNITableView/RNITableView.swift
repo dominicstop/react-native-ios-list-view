@@ -12,7 +12,7 @@ public class RNITableView: ExpoView {
   
   lazy var cellManager: RNITableViewCellManager = .init(reactTableViewWrapper: self);
 
-  lazy var tableView = UITableView(frame: .zero, style: .plain);
+  public var tableView: UITableView?;
   
   var dataSource: RNITableViewDataSource?;
   
@@ -59,6 +59,8 @@ public class RNITableView: ExpoView {
     guard !self._didTriggerSetup else { return };
     
     let tableView = UITableView();
+    self.tableView = tableView;
+    
     tableView.dragInteractionEnabled = true;
     tableView.separatorStyle = .none;
     
