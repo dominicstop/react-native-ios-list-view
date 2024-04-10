@@ -64,6 +64,9 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     );
   };
   
+  // MARK: Functions
+  // ---------------
+  
   func _setupTouchHandlerIfNeeded(){
     guard self._touchHandler == nil,
           let appContext = self.appContext,
@@ -146,26 +149,8 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       forKey: listDataEntry.key,
       withHeight: newHeight
     );
-  };
-  
-  // MARK: Functions
-  // ---------------
-  
-  public func setListDataEntry(
-    listDataEntry: RNITableViewListDataEntry,
-    orderedListDataEntryIndex: Int,
-    reactListDataEntryIndex: Int
-  ){
-  
-    self.listDataEntry = listDataEntry;
     
-    let eventPayload: Dictionary<String, Any> = [
-      "listDataEntry": listDataEntry.asDictionary!,
-      "orderedListDataEntryIndex": orderedListDataEntryIndex,
-      "reactListDataEntryIndex": reactListDataEntryIndex,
-    ];
-    
-    self.onDidSetListDataEntry.callAsFunction(eventPayload);
+    self.bounds.size.height = newHeight;
   };
   
   public func updateBounds(newSize: CGSize) {
@@ -173,6 +158,10 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     reactBridge.uiManager.setSize(newSize, for: self);
   };
   
+  // MARK: - Functions - RNIRenderRequestableView
+  // --------------------------------------------
+  
   public func notifyOnRenderRequestCompleted(){
+    // no-op
   };
 };
