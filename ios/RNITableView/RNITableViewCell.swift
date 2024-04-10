@@ -27,6 +27,14 @@ public class RNITableViewCell:
   // MARK: - Init + Setup
   // --------------------
   
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier);
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder) has not been implemented");
+  };
+  
   func _setupIfNeeded(renderRequestView: RNIRenderRequestView){
     guard !self._didTriggerSetup,
           let reactTableViewContainer = self.reactTableViewContainer
@@ -55,12 +63,11 @@ public class RNITableViewCell:
       return cachedHeight ?? fallbackHeight;
     }();
     
-    let cellHeightConstraint = self.heightAnchor.constraint(
+    let cellHeightConstraint = self.contentView.heightAnchor.constraint(
       equalToConstant: cellHeight
     );
     
     cellHeightConstraint.isActive = true;
-    
     self.cellHeightConstraint = cellHeightConstraint;
   };
   
@@ -187,17 +194,17 @@ public class RNITableViewCell:
     reactCellContent.removeFromSuperview();
     
     reactCellContent.translatesAutoresizingMaskIntoConstraints = false;
-    self.addSubview(reactCellContent);
+    self.contentView.addSubview(reactCellContent);
     
     NSLayoutConstraint.activate([
       reactCellContent.leadingAnchor.constraint(
-        equalTo: self.leadingAnchor
+        equalTo: self.contentView.leadingAnchor
       ),
       reactCellContent.trailingAnchor.constraint(
-        equalTo: self.trailingAnchor
+        equalTo: self.contentView.trailingAnchor
       ),
       reactCellContent.topAnchor.constraint(
-        equalTo: self.topAnchor
+        equalTo: self.contentView.topAnchor
       ),
     ]);
   };
