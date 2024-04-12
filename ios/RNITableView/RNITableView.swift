@@ -12,6 +12,9 @@ public class RNITableView: ExpoView {
   
   lazy var cellManager: RNITableViewCellManager = .init(reactTableViewWrapper: self);
 
+  // MARK: - Properties
+  // ------------------
+  
   public var tableView: UITableView?;
   
   var dataSource: RNITableViewDataSource?;

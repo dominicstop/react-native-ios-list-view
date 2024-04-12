@@ -9,11 +9,13 @@ import UIKit
 
 
 extension RNITableView: UITableViewDragDelegate {
+
   public func tableView(
     _ tableView: UITableView,
     itemsForBeginning session: UIDragSession,
     at indexPath: IndexPath
   ) -> [UIDragItem] {
+  
     guard let dataSource = self.dataSource,
           let item = dataSource.itemIdentifier(for: indexPath)
     else {
