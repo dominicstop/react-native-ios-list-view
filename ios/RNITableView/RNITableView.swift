@@ -10,16 +10,18 @@ public class RNITableView: ExpoView {
     case renderRequest;
   };
   
-  lazy var cellManager: RNITableViewCellManager = .init(reactTableViewWrapper: self);
-
   // MARK: - Properties
   // ------------------
   
   public var tableView: UITableView?;
+  public var dataSource: RNITableViewDataSource?;
   
-  var dataSource: RNITableViewDataSource?;
+  public var listDataOrdered: Array<RNITableViewListDataEntry> = [];
   
-  var renderRequestView: RNIRenderRequestView?;
+  public lazy var cellManager =
+    RNITableViewCellManager(reactTableViewWrapper: self);
+
+  public var renderRequestView: RNIRenderRequestView?;
   
   var _didTriggerSetup = false;
   

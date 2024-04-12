@@ -10,18 +10,18 @@ import UIKit
 import ReactNativeIosUtilities
 
 
-class RNITableViewDataSource: UITableViewDiffableDataSource<Int, String> {
+public class RNITableViewDataSource: UITableViewDiffableDataSource<Int, String> {
 
-  weak var reactTableViewCellContainer: RNITableView?;
+  public weak var reactTableViewCellContainer: RNITableView?;
 
-  override func tableView(
+  public override func tableView(
     _ tableView: UITableView,
     canMoveRowAt indexPath: IndexPath
   ) -> Bool {
     return true;
   };
   
-  override func tableView(
+  public override func tableView(
     _ tableView: UITableView,
     moveRowAt sourceIndexPath: IndexPath,
     to destinationIndexPath: IndexPath
