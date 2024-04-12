@@ -23,9 +23,13 @@ public class RNITableView: ExpoView {
 
   public var renderRequestView: RNIRenderRequestView?;
   
-  var _didTriggerSetup = false;
+  public var dragState: RNITableViewDragState = .idle {
+    willSet {
+      print("RNITableView.dragState - willSet - newValue: \(newValue)");
+    }
+  };
   
-  var listDataOrdered: Array<RNITableViewListDataEntry> = [];
+  var _didTriggerSetup = false;
   
   // MARK: Properties - RN Props
   // ---------------------------

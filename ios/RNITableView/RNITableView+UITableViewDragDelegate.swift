@@ -28,4 +28,20 @@ extension RNITableView: UITableViewDragDelegate {
 
     return [dragItem]
   };
+  
+  public func tableView(
+    _ tableView: UITableView,
+    dragSessionWillBegin session: UIDragSession
+  ) {
+    
+    self.dragState = .dragging;
+  };
+  
+  public func tableView(
+    _ tableView: UITableView,
+    dragSessionDidEnd session: UIDragSession
+  ) {
+  
+    self.dragState = .dropping;
+  };
 };

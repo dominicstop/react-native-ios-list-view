@@ -28,4 +28,11 @@ extension RNITableView: UITableViewDropDelegate {
   ) {
     // no-op
   };
+  
+  public func tableView(
+    _ tableView: UITableView,
+    dropSessionDidEnd session: UIDropSession
+  ) {
+    self.dragState = .dropped;
+  };
 };
