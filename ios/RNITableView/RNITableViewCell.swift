@@ -17,6 +17,7 @@ public class RNITableViewCell:
   public var listDataEntry: RNITableViewListDataEntry?;
 
   var _didTriggerSetup = false;
+  var _didSetInitialSize = false;
   
   public weak var reactTableViewContainer: RNITableView?;
   public weak var reactRenderRequestView: RNIRenderRequestView?;
@@ -37,7 +38,12 @@ public class RNITableViewCell:
   
   public override func prepareForReuse() {
     guard self._didTriggerSetup else { return };
-    self.alpha = 0.01;
+    
+    if let reactTableViewContainer = self.reactTableViewContainer,
+       !reactTableViewContainer.dragState.isDraggingOrDropping {
+      
+      self.alpha = 0.01;
+    };
   };
   
   func _setupIfNeeded(renderRequestView: RNIRenderRequestView){
@@ -77,10 +83,25 @@ public class RNITableViewCell:
     self.cellHeightConstraint = cellHeightConstraint;
   };
   
+  // MARK: - Functions - Lifecycle
+  // -----------------------------
+  
+  public override func didMoveToSuperview() {
+    guard self._didTriggerSetup,
+          self.superview != nil
+    else { return };
+    
+    print("didMoveToSuperview - cellRegistry.count - \(self.reactTableViewContainer?.cellManager.cellInstanceCount ?? -1)");
+  }
+  
   // MARK: - Functions
   // -----------------
   
-  func _setCellHeight(newHeight: CGFloat){
+  func _setCellHeight(
+    newHeight: CGFloat,
+    isAnimated: Bool,
+    shouldUpdateTableView: Bool
+  ){
     guard let reactTableViewContainer = self.reactTableViewContainer,
           let cellHeightConstraint = self.cellHeightConstraint,
           let tableView = reactTableViewContainer.tableView
@@ -88,14 +109,19 @@ public class RNITableViewCell:
     
     let oldHeight = cellHeightConstraint.constant;
     
-    UIView.setAnimationsEnabled(false)
-    CATransaction.begin();
-    
-    CATransaction.setCompletionBlock {
-      UIView.setAnimationsEnabled(true);
+    if !isAnimated {
+      UIView.setAnimationsEnabled(false)
+      CATransaction.begin();
+      
+      CATransaction.setCompletionBlock {
+        UIView.setAnimationsEnabled(true);
+      };
     };
     
-    tableView.beginUpdates();
+    if shouldUpdateTableView {
+      tableView.beginUpdates();
+    };
+    
     cellHeightConstraint.constant = newHeight;
     
     if oldHeight != newHeight {
@@ -104,8 +130,41 @@ public class RNITableViewCell:
     
     self.layoutIfNeeded();
     
-    tableView.endUpdates();
-    CATransaction.commit();
+    if shouldUpdateTableView {
+      tableView.endUpdates();
+    };
+    
+    if !isAnimated {
+      CATransaction.commit();
+    };
+  };
+  
+  func _setCellHeight(newHeight: CGFloat){
+    if !self._didSetInitialSize {
+      self._setCellHeight(
+        newHeight: newHeight,
+        isAnimated: false,
+        shouldUpdateTableView: true
+      );
+      
+      self._didSetInitialSize = true;
+      
+    } else if let reactTableViewContainer = self.reactTableViewContainer,
+              reactTableViewContainer.dragState.isDraggingOrDropping {
+        
+      self._setCellHeight(
+        newHeight: newHeight,
+        isAnimated: true,
+        shouldUpdateTableView: false
+      );
+      
+    } else {
+      self._setCellHeight(
+        newHeight: newHeight,
+        isAnimated: false,
+        shouldUpdateTableView: true
+      );
+    };
   };
   
   func _notifyWillDisplay(
@@ -229,6 +288,11 @@ public class RNITableViewCell:
   
   public func notifyForCellHeightChange(newHeight: CGFloat) {
     self._setCellHeight(newHeight: newHeight);
-    self.alpha = 1;
+    
+    if let reactTableViewContainer = self.reactTableViewContainer,
+       !reactTableViewContainer.dragState.isDraggingOrDropping {
+      
+      self.alpha = 1;
+    };
   };
 };
