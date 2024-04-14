@@ -6,7 +6,6 @@ export const COLOR_CHOICES = {
   'pink': Colors.PINK,
   'red': Colors.RED,
   'orange': Colors.ORANGE,
-  'yellow': Colors.YELLOW,
   'green': Colors.GREEN,
   'blue': Colors.BLUE,
   'purple': Colors.PURPLE,

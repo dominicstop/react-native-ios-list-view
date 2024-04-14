@@ -16,6 +16,26 @@ export function CellContent(props: {
   listDataCount: number;
 }){
 
+  const listIndex = props.reactListDataEntryIndex ?? 0;
+
+  const listIndexPrefix = (() => {
+    const index = `${listIndex + 1}`;
+
+    if(index.length == 1){
+      return `000`;
+    };
+
+    if(index.length == 2){
+      return `00`;
+    };
+
+    if(index.length == 3){
+      return `0`;
+    };
+
+    return "";
+  })();
+
   const rootContainerStyle: ViewStyle = {
     backgroundColor: props.listDataItem?.colorHex,
   };
@@ -79,6 +99,9 @@ export function CellContent(props: {
       <View style={styles.middleOuterContainer}>
        <View style={styles.middleInnerContainer}>
          <View style={styles.middleTopContainer}>
+            <Text style={styles.indexText}>
+              {`${listIndexPrefix + listIndex}`}
+            </Text>
             <Text style={styles.colorNameText}>
               {props.listDataItem?.colorName ?? "N/A"}
             </Text>
@@ -160,7 +183,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.15)',
-    paddingVertical: 7,
+    paddingVertical: 6,
   },
   moveButtonIcon: {
     width: 25,
@@ -196,6 +219,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '800',
     letterSpacing: 1.5,
+    marginLeft: 7,
   },
   colorHexText: {
     color: 'rgba(255,255,255,0.85)',
@@ -204,10 +228,13 @@ const styles = StyleSheet.create({
     letterSpacing: 2.75,
   },
   indexText: {
-    color: 'rgba(255,255,255,0.6)',
-    fontSize: 18,
-    fontWeight: '600',
-    letterSpacing: 1.5,
+    color: 'rgba(255,255,255,0.5)',
+    fontSize: 21,
+    fontWeight: '500',
+    letterSpacing: 1.8,
+    fontVariant: ['tabular-nums'],
+    textDecorationLine: 'underline',
+    textDecorationColor: 'rgba(255,255,255,0.2)',
   },
   rightButtonsContainer: {
   },
