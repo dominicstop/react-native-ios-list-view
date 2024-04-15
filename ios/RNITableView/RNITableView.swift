@@ -157,8 +157,9 @@ public class RNITableView: ExpoView {
   func _applySnapshot(shouldAnimateRowUpdates: Bool = false) {
     guard let dataSource = self.dataSource else { return };
   
-    var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
-    snapshot.appendSections([0]);
+    // WIP
+    var snapshot = RNITableViewDataSourceSnapshot();
+    snapshot.appendSections(["0"]);
     snapshot.appendItems(self.listDataOrdered.map({$0.key}));
     
     dataSource.apply(
@@ -197,7 +198,7 @@ public class RNITableView: ExpoView {
   };
   
   func _updateOrderedListData(
-    usingSnapshot snapshot: NSDiffableDataSourceSnapshot<Int, String>
+    usingSnapshot snapshot: RNITableViewDataSourceSnapshot
   ){
     
     let snapshotItems = snapshot.itemIdentifiers;

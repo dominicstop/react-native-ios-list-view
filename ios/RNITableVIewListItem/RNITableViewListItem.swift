@@ -9,8 +9,11 @@ import Foundation
 import DGSwiftUtilities
 
 
+public typealias RNITableViewListSectionIdentifier = String;
+public typealias RNITableViewListItemIdentifier = String;
+
 public struct RNITableViewListItem: Hashable, Encodable {
-  public var key: String;
+  public var key: RNITableViewListItemIdentifier;
 };
 
 extension RNITableViewListItem: InitializableFromDictionary {
