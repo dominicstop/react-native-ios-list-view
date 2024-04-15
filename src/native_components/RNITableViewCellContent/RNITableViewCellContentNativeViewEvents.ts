@@ -1,8 +1,8 @@
 import { NativeSyntheticEvent } from "react-native";
-import { RNITableViewListDataItem } from "../RNITableView/RNITableViewTypes";
+import { RNITableViewListItem } from "../RNITableView/RNITableViewTypes";
 
 export type OnDidSetListDataEntryEventPayload = {
-  listDataEntry: RNITableViewListDataItem;
+  listDataEntry: RNITableViewListItem;
   orderedListDataEntryIndex: number;
   reactListDataEntryIndex: number;
 };

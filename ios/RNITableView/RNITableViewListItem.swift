@@ -1,5 +1,5 @@
 //
-//  RNITableViewListDataEntry.swift
+//  RNITableViewListItem.swift
 //  ReactNativeIosListView
 //
 //  Created by Dominic Go on 4/4/24.
@@ -9,11 +9,11 @@ import Foundation
 import DGSwiftUtilities
 
 
-public struct RNITableViewListDataEntry: Hashable, Encodable {
+public struct RNITableViewListItem: Hashable, Encodable {
   public var key: String;
 };
 
-extension RNITableViewListDataEntry: InitializableFromDictionary {
+extension RNITableViewListItem: InitializableFromDictionary {
   public init(fromDict dict: Dictionary<String, Any>) throws {
     let key = try? dict.getValueFromDictionary(
       forKey: "key",

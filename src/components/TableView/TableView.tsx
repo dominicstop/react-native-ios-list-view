@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimensions, LayoutChangeEvent, StyleSheet, View, Text, ViewStyle } from 'react-native';
 
-import { RNITableView, RNITableViewListDataItem } from '../../native_components/RNITableView';
+import { RNITableView, RNITableViewListItem } from '../../native_components/RNITableView';
 
 import type { TableViewProps, TableViewState } from './TableViewTypes';
 import { RNIRenderRequestView, RenderRequestItem } from '../../native_components/RNIRenderRequestView';
@@ -38,7 +38,7 @@ export class TableView extends
       ...viewProps
     } = this.props;
 
-    const listDataProcessed: Array<RNITableViewListDataItem> = listData.map((item, index) => {
+    const listDataProcessed: Array<RNITableViewListItem> = listData.map((item, index) => {
       return ({
         key: listDataKeyExtractor(item, index),
         data: item,

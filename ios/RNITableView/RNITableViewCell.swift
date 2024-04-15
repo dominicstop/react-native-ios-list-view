@@ -14,7 +14,7 @@ public class RNITableViewCell:
   
   public var indexPath: IndexPath?;
   public var renderRequestKey: Int?;
-  public var listDataEntry: RNITableViewListDataEntry?;
+  public var listDataEntry: RNITableViewListItem?;
 
   var _didTriggerSetup = false;
   var _didSetInitialSize = false;
@@ -224,7 +224,7 @@ public class RNITableViewCell:
   };
   
   public func setListDataEntry(
-    listDataEntry: RNITableViewListDataEntry,
+    listDataEntry: RNITableViewListItem,
     orderedListDataEntryIndex: Int,
     reactListDataEntryIndex: Int
   ){

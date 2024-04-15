@@ -18,7 +18,7 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   
   var _touchHandler: RCTTouchHandler?;
 
-  public var listDataEntry: RNITableViewListDataEntry?;
+  public var listDataEntry: RNITableViewListItem?;
   
   public weak var parentTableViewCell: RNITableViewCell?;
   
@@ -80,7 +80,7 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   };
   
   public func setListDataEntry(
-    listDataEntry: RNITableViewListDataEntry,
+    listDataEntry: RNITableViewListItem,
     orderedListDataEntryIndex: Int,
     reactListDataEntryIndex: Int
   ){
@@ -131,7 +131,7 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       layoutRect.height
     );
     
-    let listDataEntry: RNITableViewListDataEntry? = {
+    let listDataEntry: RNITableViewListItem? = {
       if let listDataEntry = self.listDataEntry {
         return listDataEntry;
       };

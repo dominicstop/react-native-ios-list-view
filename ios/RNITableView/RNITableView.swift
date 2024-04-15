@@ -16,7 +16,7 @@ public class RNITableView: ExpoView {
   public var tableView: UITableView?;
   public var dataSource: RNITableViewDataSource?;
   
-  public var listDataOrdered: Array<RNITableViewListDataEntry> = [];
+  public var listDataOrdered: Array<RNITableViewListItem> = [];
   
   public lazy var cellManager =
     RNITableViewCellManager(reactTableViewWrapper: self);
@@ -36,14 +36,14 @@ public class RNITableView: ExpoView {
   
   var minimumListCellHeightProp: CGFloat = 100;
   
-  var listData: Array<RNITableViewListDataEntry> = [];
+  var listData: Array<RNITableViewListItem> = [];
   var listDataProp: Array<NSDictionary> = [] {
     willSet {
       let oldValue = self.listDataProp;
       guard newValue != oldValue else { return };
       
       let listDataNew = newValue.compactMap {
-        try? RNITableViewListDataEntry(fromDict: $0 as! Dictionary<String, Any>);
+        try? RNITableViewListItem(fromDict: $0 as! Dictionary<String, Any>);
       };
       
       let listDataOld = self.listData;
@@ -129,7 +129,7 @@ public class RNITableView: ExpoView {
       }
     );
   };
-  
+
   // MARK: Functions - RN Lifecycle
   // ------------------------------
   
@@ -168,8 +168,8 @@ public class RNITableView: ExpoView {
   };
   
   func _notifyOnListDataPropDidUpdate(
-    old listDataOld: [RNITableViewListDataEntry],
-    new listDataNew: [RNITableViewListDataEntry]
+    old listDataOld: [RNITableViewListItem],
+    new listDataNew: [RNITableViewListItem]
   ){
   
     let newItems = listDataNew.filter { item in
@@ -202,7 +202,7 @@ public class RNITableView: ExpoView {
     
     let snapshotItems = snapshot.itemIdentifiers;
     let listDataOrderedNew = snapshotItems.map {
-      RNITableViewListDataEntry(key: $0);
+      RNITableViewListItem(key: $0);
     };
     
     self.listDataOrdered = listDataOrderedNew;

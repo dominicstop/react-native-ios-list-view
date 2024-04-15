@@ -6,13 +6,13 @@ export type RNITableViewInheritedProps = Pick<RNITableNativeViewBaseProps,
  | 'minimumListCellHeight'
 >;
 
-export type RNITableViewListDataItem = {
+export type RNITableViewListItem = {
   key: string;
 };
 
 
 export type RNITableViewBaseProps = {
-  listData: Array<RNITableViewListDataItem>;
+  listData: Array<RNITableViewListItem>;
 };
 
 export type RNITableViewProps = 
