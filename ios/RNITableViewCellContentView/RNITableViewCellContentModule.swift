@@ -52,7 +52,7 @@ public class RNITableViewCellContentViewModule: Module {
     };
 
     View(RNITableViewCellContentView.self) {
-      Events("onDidSetListDataEntry");
+      Events("onDidSetListItem");
       
       Prop("renderRequestKey"){
         $0.renderRequestKeyProp = $1;

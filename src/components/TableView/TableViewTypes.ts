@@ -15,11 +15,11 @@ export type TableViewRenderCellContent = (
   listDataItem: TableViewListData[number],
   
   renderRequestData: RenderRequestItem,
-  orderedListDataEntryIndex: 
-    RNITableViewCellContentViewState['orderedListDataEntryIndex'],
+  orderedListItemIndex: 
+    RNITableViewCellContentViewState['orderedListItemIndex'],
 
-  reactListDataEntryIndex: 
-    RNITableViewCellContentViewState['reactListDataEntryIndex'],
+  reactListItemIndex: 
+    RNITableViewCellContentViewState['reactListItemIndex'],
 ) => React.ReactElement;
 
 export type ListDataKeyExtractor<T extends object> = (

@@ -1,12 +1,12 @@
 import type { ViewProps } from 'react-native';
 
 import { RenderRequestKey } from '../RNIRenderRequestView';
-import { OnDidSetListDataEntryEvent } from './RNITableViewCellContentNativeViewEvents';
+import { OnDidSetListItemEvent } from './RNITableViewCellContentNativeViewEvents';
 
 
 export type RNITableViewCellContentNativeViewBaseProps = {
   renderRequestKey: RenderRequestKey;
-  onDidSetListDataEntry: OnDidSetListDataEntryEvent;
+  onDidSetListItem: OnDidSetListItemEvent;
 };
 
 export type RNITableViewCellContentNativeViewProps = 

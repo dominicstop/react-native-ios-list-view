@@ -126,14 +126,14 @@ export class TableView extends
                 ]}
                 renderRequestKey={renderRequestData.renderRequestKey}
                 renderCellContent={(
-                  listDataEntry,
-                  orderedListDataEntryIndex,
-                  reactListDataEntryIndex,
+                  listItem,
+                  orderedListItemIndex,
+                  reactListItemIndex,
                 ) => {
 
                   const listDataItem: object | undefined = (() => {
-                    if(reactListDataEntryIndex == null) return;
-                    return props.listData[reactListDataEntryIndex];
+                    if(reactListItemIndex == null) return;
+                    return props.listData[reactListItemIndex];
                   })(); 
 
                   return props.renderCellContent(
@@ -141,8 +141,8 @@ export class TableView extends
                     // This might not always be true though
                     listDataItem ?? props.listData[renderRequestData.renderRequestKey],
                     renderRequestData,
-                    orderedListDataEntryIndex ?? renderRequestData.renderRequestKey,
-                    reactListDataEntryIndex ?? renderRequestData.renderRequestKey,
+                    orderedListItemIndex ?? renderRequestData.renderRequestKey,
+                    reactListItemIndex ?? renderRequestData.renderRequestKey,
                   );
                 }}
               >

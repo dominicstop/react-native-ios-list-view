@@ -212,14 +212,14 @@ public class RNITableView: ExpoView {
     let allCells = self.cellManager.cellInstances;
     
     allCells.forEach {
-       guard let listDataEntryForCell = $0.listDataEntry else { return };
+       guard let listItemForCell = $0.listItem else { return };
        
       let matchingListItemForCell = self.listDataOrdered.first {
-        $0.key == listDataEntryForCell.key;
+        $0.key == listItemForCell.key;
       };
       
        guard let matchingListItemForCell = matchingListItemForCell else { return };
-       $0.setListDataEntry(forKey: matchingListItemForCell.key);
+       $0.setListItem(forKey: matchingListItemForCell.key);
     };
   };
 };

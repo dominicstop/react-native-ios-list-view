@@ -6,7 +6,7 @@ import { CGRectInit } from 'react-native-ios-utilities';
 
 import { RNITableViewCellContentViewProps, RNITableViewCellContentViewState } from './RNITableViewCellContentViewTypes';
 import { RNITableViewCellContentNativeView } from './RNITableViewCellContentNativeView';
-import { OnDidSetListDataEntryEvent } from './RNITableViewCellContentNativeViewEvents';
+import { OnDidSetListItemEvent } from './RNITableViewCellContentNativeViewEvents';
 import { RNITableViewCellContentViewModule } from './RNITableViewCellContentViewModule';
 
 
@@ -24,9 +24,9 @@ export class RNITableViewCellContentView extends React.PureComponent<
     this.state = {
       renderCounter: 0,
 
-      listDataEntry: undefined,
-      orderedListDataEntryIndex: undefined,
-      reactListDataEntryIndex: undefined,
+      listItem: undefined,
+      orderedListItemIndex: undefined,
+      reactListItemIndex: undefined,
     };
   };
 
@@ -43,7 +43,7 @@ export class RNITableViewCellContentView extends React.PureComponent<
     const {
       renderRequestKey,
       minimumListCellHeight,
-      onDidSetListDataEntry,
+      onDidSetListItem,
       renderCellContent,
       ...viewProps
     } = this.props;
@@ -52,7 +52,7 @@ export class RNITableViewCellContentView extends React.PureComponent<
       // A. Group native props
       nativeProps: {
         renderRequestKey,
-        onDidSetListDataEntry,
+        onDidSetListItem,
       },
       
       // B: Pass through props...
@@ -93,9 +93,9 @@ export class RNITableViewCellContentView extends React.PureComponent<
 
     console.log(
       "RNITableViewCellContentView._handleOnLayout",
-      "\n - listDataEntry.key:", this.state.listDataEntry?.key ?? -1,
-      "\n - orderedListDataEntryIndex:", this.state.orderedListDataEntryIndex ?? -1,
-      "\n - reactListDataEntryIndex:", this.state.reactListDataEntryIndex ?? -1,
+      "\n - listItem.key:", this.state.listItem?.key ?? -1,
+      "\n - orderedListItemIndex:", this.state.orderedListItemIndex ?? -1,
+      "\n - reactListItemIndex:", this.state.reactListItemIndex ?? -1,
       "\n - height:", nativeEvent.layout.height,
       "\n - width:", nativeEvent.layout.width,
       "\n - x:", nativeEvent.layout.x,
@@ -108,25 +108,25 @@ export class RNITableViewCellContentView extends React.PureComponent<
     this.nativeRef = ref;
   };
 
-  private _handleOnDidSetListDataEntry: OnDidSetListDataEntryEvent = (event) => {
+  private _handleOnDidSetListItem: OnDidSetListItemEvent = (event) => {
     const payload = event.nativeEvent;
     
     event.stopPropagation();
-    this.props.onDidSetListDataEntry?.(event);
+    this.props.onDidSetListItem?.(event);
 
     this.setState((prevState) => ({
       ...prevState,
       renderCounter: prevState.renderCounter + 1,
-      listDataEntry: payload.listDataEntry,
-      orderedListDataEntryIndex: payload.orderedListDataEntryIndex,
-      reactListDataEntryIndex: payload.reactListDataEntryIndex,
+      listItem: payload.listItem,
+      orderedListItemIndex: payload.orderedListItemIndex,
+      reactListItemIndex: payload.reactListItemIndex,
     }));
 
     console.log(
-      "RNITableViewCellContentView._handleOnDidSetListDataEntry",
-      "\n - listDataEntry:", payload.listDataEntry,
-      "\n - orderedListDataEntryIndex:", payload.orderedListDataEntryIndex,
-      "\n - reactListDataEntryIndex:", payload.reactListDataEntryIndex,
+      "RNITableViewCellContentView._handleOnDidSetListItem",
+      "\n - listItem:", payload.listItem,
+      "\n - orderedListItemIndex:", payload.orderedListItemIndex,
+      "\n - reactListItemIndex:", payload.reactListItemIndex,
       "\n "
     );
   };
@@ -152,11 +152,11 @@ export class RNITableViewCellContentView extends React.PureComponent<
         this.props.style,
         styles.nativeView,
       ],
-      onDidSetListDataEntry: this._handleOnDidSetListDataEntry,
+      onDidSetListItem: this._handleOnDidSetListItem,
       children: props.renderCellContent(
-        state.listDataEntry,
-        state.orderedListDataEntryIndex,
-        state.reactListDataEntryIndex,
+        state.listItem,
+        state.orderedListItemIndex,
+        state.reactListItemIndex,
       ),
     });
   };

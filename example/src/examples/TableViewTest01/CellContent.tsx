@@ -8,8 +8,8 @@ import { DELAY_PRESETS_MS, ListDataItem } from './Constants';
 export function CellContent(props: {
   reuseIdentifier: number;
   listDataItem: ListDataItem | undefined;
-  orderedListDataEntryIndex: number | undefined;
-  reactListDataEntryIndex: number | undefined;
+  orderedListItemIndex: number | undefined;
+  reactListItemIndex: number | undefined;
 }){
   const [counter, setCounter] = React.useState(props.reuseIdentifier);
   const [isIntervalActive, setIsIntervalActive] = React.useState(true);
@@ -95,9 +95,9 @@ export function CellContent(props: {
         {`message: ${props.listDataItem?.message ?? 'N/A'}`}
       </Text>
       <Text style={styles.label}>
-        {`orderedIndex: ${props.orderedListDataEntryIndex ?? '-1'}`}
+        {`orderedIndex: ${props.orderedListItemIndex ?? '-1'}`}
         {' - '}
-        {`listIndex: ${props.reactListDataEntryIndex ?? '-1'}`}
+        {`listIndex: ${props.reactListItemIndex ?? '-1'}`}
       </Text>
     </View>
   );

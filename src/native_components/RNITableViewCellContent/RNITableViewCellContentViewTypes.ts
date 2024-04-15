@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ViewProps } from 'react-native';
 
 import { RNITableViewCellContentNativeViewBaseProps } from './RNITableViewCellContentNativeViewTypes';
-import { OnDidSetListDataEntryEventPayload } from './RNITableViewCellContentNativeViewEvents';
+import { OnDidSetListItemEventPayload } from './RNITableViewCellContentNativeViewEvents';
 import { RNITableViewProps } from '../RNITableView/RNITableViewTypes';
 
 
@@ -13,7 +13,7 @@ type InheritedNativeRequiredProps = Pick<
 
 type InheritedNativeOptionalProps = Partial<Pick<
   RNITableViewCellContentNativeViewBaseProps,
-  | 'onDidSetListDataEntry'
+  | 'onDidSetListItem'
 >>;
 
 type InheritedNativeProps = 
@@ -30,14 +30,14 @@ export type RNITableViewCellContentViewInheritedProps =
   & InheritedPropsFromRNITableView;
 
 export type RenderTableViewCellContentView = (
-  listDataEntry: 
-    RNITableViewCellContentViewState['listDataEntry'],
+  listItem: 
+    RNITableViewCellContentViewState['listItem'],
 
-  orderedListDataEntryIndex: 
-    RNITableViewCellContentViewState['orderedListDataEntryIndex'],
+  orderedListItemIndex: 
+    RNITableViewCellContentViewState['orderedListItemIndex'],
 
-  reactListDataEntryIndex: 
-    RNITableViewCellContentViewState['reactListDataEntryIndex'],
+  reactListItemIndex: 
+    RNITableViewCellContentViewState['reactListItemIndex'],
 ) => React.ReactElement;
 
 export type RNITableViewCellContentViewBaseProps = {
@@ -52,15 +52,15 @@ export type RNITableViewCellContentViewProps =
 export type RNITableViewCellContentViewState = {
   renderCounter: number;
 
-  listDataEntry: 
-    | OnDidSetListDataEntryEventPayload['listDataEntry'] 
+  listItem: 
+    | OnDidSetListItemEventPayload['listItem'] 
     | undefined;
 
-  orderedListDataEntryIndex: 
-    | OnDidSetListDataEntryEventPayload['orderedListDataEntryIndex'] 
+  orderedListItemIndex: 
+    | OnDidSetListItemEventPayload['orderedListItemIndex'] 
     | undefined;
 
-  reactListDataEntryIndex: 
-    | OnDidSetListDataEntryEventPayload['reactListDataEntryIndex'] 
+  reactListItemIndex: 
+    | OnDidSetListItemEventPayload['reactListItemIndex'] 
     | undefined;
 };

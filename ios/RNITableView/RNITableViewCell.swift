@@ -14,7 +14,7 @@ public class RNITableViewCell:
   
   public var indexPath: IndexPath?;
   public var renderRequestKey: Int?;
-  public var listDataEntry: RNITableViewListItem?;
+  public var listItem: RNITableViewListItem?;
 
   var _didTriggerSetup = false;
   var _didSetInitialSize = false;
@@ -67,11 +67,11 @@ public class RNITableViewCell:
     let cellHeight: CGFloat = {
       let fallbackHeight = reactTableViewContainer.minimumListCellHeightProp;
       
-      guard let listDataEntry = self.listDataEntry else {
+      guard let listItem = self.listItem else {
         return fallbackHeight;
       };
       
-      let cachedHeight = cellManager.cellHeightCache[listDataEntry.key];
+      let cachedHeight = cellManager.cellHeightCache[listItem.key];
       return cachedHeight ?? fallbackHeight;
     }();
     
@@ -172,7 +172,7 @@ public class RNITableViewCell:
     indexPath: IndexPath
   ){
     self.indexPath = indexPath;
-    self.setListDataEntry(forKey: key);
+    self.setListItem(forKey: key);
     
     guard let reactTableViewContainer = reactTableViewContainer
     else { return };
@@ -188,7 +188,7 @@ public class RNITableViewCell:
   // MARK: - Public Functions
   // ------------------------
   
-  public func setListDataEntry(forKey key: String){
+  public func setListItem(forKey key: String){
     guard let reactTableViewContainer = self.reactTableViewContainer
     else { return };
     
@@ -205,7 +205,7 @@ public class RNITableViewCell:
     let reactListDataEnumerated =
       reactTableViewContainer.listData.enumerated();
     
-    /// index of `RNITableViewListDataEntry` in `listDataProp`
+    /// index of `RNITableViewListItem` in `listDataProp`
     let reactListItemIndex: Int? = {
       let match = reactListDataEnumerated.first {
         $0.element.key == orderedListItemEnumerated.element.key;
@@ -216,25 +216,25 @@ public class RNITableViewCell:
     
     guard let reactListItemIndex = reactListItemIndex else { return };
     
-    self.setListDataEntry(
-      listDataEntry: orderedListItemEnumerated.element,
-      orderedListDataEntryIndex: orderedListItemEnumerated.offset,
-      reactListDataEntryIndex: reactListItemIndex
+    self.setListItem(
+      listItem: orderedListItemEnumerated.element,
+      orderedListItemIndex: orderedListItemEnumerated.offset,
+      reactListItemIndex: reactListItemIndex
     );
   };
   
-  public func setListDataEntry(
-    listDataEntry: RNITableViewListItem,
-    orderedListDataEntryIndex: Int,
-    reactListDataEntryIndex: Int
+  public func setListItem(
+    listItem: RNITableViewListItem,
+    orderedListItemIndex: Int,
+    reactListItemIndex: Int
   ){
-    self.listDataEntry = listDataEntry;
+    self.listItem = listItem;
     
     guard let reactCellContent = self.reactCellContent else { return };
-    reactCellContent.setListDataEntry(
-      listDataEntry: listDataEntry,
-      orderedListDataEntryIndex: orderedListDataEntryIndex,
-      reactListDataEntryIndex: reactListDataEntryIndex
+    reactCellContent.setListItem(
+      listItem: listItem,
+      orderedListItemIndex: orderedListItemIndex,
+      reactListItemIndex: reactListItemIndex
     );
   };
   
@@ -253,15 +253,15 @@ public class RNITableViewCell:
     self.reactCellContent = reactCellContent;
     reactCellContent.parentTableViewCell = self;
     
-    if let listDataEntry = self.listDataEntry {
-      self.setListDataEntry(forKey: listDataEntry.key);
+    if let listItem = self.listItem {
+      self.setListItem(forKey: listItem.key);
     };
     
     print(
       "RNITableViewCell.onRenderRequestCompleted",
       "\n - renderRequestKey:", renderRequestKey,
       "\n - requestedView.bounds:", requestedView.bounds,
-      "\n - listDataEntry.key:", self.listDataEntry?.key ?? "N/A",
+      "\n - listItem.key:", self.listItem?.key ?? "N/A",
       "\n"
     );
     

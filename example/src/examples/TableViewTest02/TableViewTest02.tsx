@@ -25,16 +25,16 @@ export function TableViewTest02Screen() {
         renderCellContent={(
           listDataItem,
           renderRequestData,
-          orderedListDataEntryIndex,
-          reactListDataEntryIndex,
+          orderedListItemIndex,
+          reactListItemIndex,
         ) => {
           return (
             <CellContent
               listDataCount={DUMMY_LIST_DATA.length}
               reuseIdentifier={renderRequestData.renderRequestKey}
               listDataItem={listDataItem}
-              orderedListDataEntryIndex={orderedListDataEntryIndex}
-              reactListDataEntryIndex={reactListDataEntryIndex}
+              orderedListItemIndex={orderedListItemIndex}
+              reactListItemIndex={reactListItemIndex}
             />
           );
         }}

@@ -58,7 +58,7 @@ final public class RNITableViewCellManager {
     self.cellHeightCache[key] = newHeight;
     
     let cellForKey = self.cellInstances.first {
-      $0.listDataEntry?.key == key;
+      $0.listItem?.key == key;
     };
     
     guard let cellForKey = cellForKey else { return };

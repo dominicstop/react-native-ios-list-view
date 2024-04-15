@@ -18,7 +18,7 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   
   var _touchHandler: RCTTouchHandler?;
 
-  public var listDataEntry: RNITableViewListItem?;
+  public var listItem: RNITableViewListItem?;
   
   public weak var parentTableViewCell: RNITableViewCell?;
   
@@ -29,7 +29,7 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   // MARK: Properties - React Events
   // -------------------------------
   
-  let onDidSetListDataEntry = EventDispatcher("onDidSetListDataEntry");
+  let onDidSetListItem = EventDispatcher("onDidSetListItem");
   
   // MARK: Properties - React Props
   // ------------------------------
@@ -53,7 +53,7 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     print(
       "RNITableViewCellContentView.layoutSubviews",
       "\n - self.renderRequestKey:", self.renderRequestKey,
-      "\n - self.listDataEntry.key:", self.listDataEntry?.key ?? "N/A",
+      "\n - self.listItem.key:", self.listItem?.key ?? "N/A",
       "\n - self.bounds.size.width:", self.bounds.size.width,
       "\n - self.bounds.size.height:", self.bounds.size.height,
       "\n - self.frame.origin:", self.frame.origin,
@@ -79,21 +79,21 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     touchHandler.attach(to: self);
   };
   
-  public func setListDataEntry(
-    listDataEntry: RNITableViewListItem,
-    orderedListDataEntryIndex: Int,
-    reactListDataEntryIndex: Int
+  public func setListItem(
+    listItem: RNITableViewListItem,
+    orderedListItemIndex: Int,
+    reactListItemIndex: Int
   ){
   
-    self.listDataEntry = listDataEntry;
+    self.listItem = listItem;
     
     let eventPayload: Dictionary<String, Any> = [
-      "listDataEntry": listDataEntry.asDictionary!,
-      "orderedListDataEntryIndex": orderedListDataEntryIndex,
-      "reactListDataEntryIndex": reactListDataEntryIndex,
+      "listItem": listItem.asDictionary!,
+      "orderedListItemIndex": orderedListItemIndex,
+      "reactListItemIndex": reactListItemIndex,
     ];
     
-    self.onDidSetListDataEntry.callAsFunction(eventPayload);
+    self.onDidSetListItem.callAsFunction(eventPayload);
   };
   
   // MARK: React Module Functions
@@ -106,7 +106,7 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   
     print(
       "RNITableViewCellContentView.notifyOnReactLayout",
-      "\n - self.listDataEntry.key:", self.listDataEntry?.key ?? "N/A",
+      "\n - self.listItem.key:", self.listItem?.key ?? "N/A",
       "\n - self.renderRequestKey:", self.renderRequestKey,
       "\n - layoutRect.size:", layoutRect.size,
       "\n - layoutRect.origin:", layoutRect.origin,
@@ -131,22 +131,22 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       layoutRect.height
     );
     
-    let listDataEntry: RNITableViewListItem? = {
-      if let listDataEntry = self.listDataEntry {
-        return listDataEntry;
+    let listItem: RNITableViewListItem? = {
+      if let listItem = self.listItem {
+        return listItem;
       };
       
       let cellForRenderRequestKey = cellManager.cellInstances.first {
         $0.renderRequestKey == renderRequestKey;
       };
       
-      return cellForRenderRequestKey?.listDataEntry;
+      return cellForRenderRequestKey?.listItem;
     }();
     
-    guard let listDataEntry = listDataEntry else { return };
+    guard let listItem = listItem else { return };
     
     cellManager.setCellHeight(
-      forKey: listDataEntry.key,
+      forKey: listItem.key,
       withHeight: newHeight
     );
     

@@ -1,15 +1,15 @@
 import { NativeSyntheticEvent } from "react-native";
 import { RNITableViewListItem } from "../RNITableView/RNITableViewTypes";
 
-export type OnDidSetListDataEntryEventPayload = {
-  listDataEntry: RNITableViewListItem;
-  orderedListDataEntryIndex: number;
-  reactListDataEntryIndex: number;
+export type OnDidSetListItemEventPayload = {
+  listItem: RNITableViewListItem;
+  orderedListItemIndex: number;
+  reactListItemIndex: number;
 };
 
-export type OnDidSetListDataEntryEventObject = 
-  NativeSyntheticEvent<OnDidSetListDataEntryEventPayload>;
+export type OnDidSetListItemEventObject = 
+  NativeSyntheticEvent<OnDidSetListItemEventPayload>;
 
-export type OnDidSetListDataEntryEvent = (
-  event: OnDidSetListDataEntryEventObject
+export type OnDidSetListItemEvent = (
+  event: OnDidSetListItemEventObject
 ) => void;

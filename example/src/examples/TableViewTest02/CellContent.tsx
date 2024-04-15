@@ -12,8 +12,8 @@ import { LabelValueText } from './LabelValueText';
 export function CellContent(props: {
   reuseIdentifier: number;
   listDataItem: ListDataItem | undefined;
-  orderedListDataEntryIndex: number | undefined;
-  reactListDataEntryIndex: number | undefined;
+  orderedListItemIndex: number | undefined;
+  reactListItemIndex: number | undefined;
   listDataCount: number;
 }){
 
@@ -67,7 +67,7 @@ export function CellContent(props: {
     <View style={styles.rootContainer}>
       <CellContentHeading
         style={styles.spacer}
-        index={props.orderedListDataEntryIndex ?? 0}
+        index={props.orderedListItemIndex ?? 0}
         listDataItem={props.listDataItem}
         colorPalette={colorPalette}
       />

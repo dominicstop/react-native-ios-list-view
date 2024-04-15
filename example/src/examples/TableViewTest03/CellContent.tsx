@@ -11,12 +11,12 @@ import { RNIImageView } from 'react-native-ios-utilities';
 export function CellContent(props: {
   reuseIdentifier: number;
   listDataItem: ListDataItem | undefined;
-  orderedListDataEntryIndex: number | undefined;
-  reactListDataEntryIndex: number | undefined;
+  orderedListItemIndex: number | undefined;
+  reactListItemIndex: number | undefined;
   listDataCount: number;
 }){
 
-  const listIndex = props.reactListDataEntryIndex ?? 0;
+  const listIndex = props.reactListItemIndex ?? 0;
 
   const listIndexPrefix = (() => {
     const index = `${listIndex + 1}`;
