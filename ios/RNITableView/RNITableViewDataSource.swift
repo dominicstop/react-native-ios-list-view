@@ -37,30 +37,19 @@ public class RNITableViewDataSource: UITableViewDiffableDataSource<
     moveRowAt sourceIndexPath: IndexPath,
     to destinationIndexPath: IndexPath
   ) {
-    guard let fromItem = itemIdentifier(for: sourceIndexPath),
-          sourceIndexPath != destinationIndexPath
-    else { return }
-        
+    guard sourceIndexPath != destinationIndexPath,
+    
+          let sourceItemID = itemIdentifier(for: sourceIndexPath),
+          let destinationItemID = itemIdentifier(for: destinationIndexPath)
+    else { return };
+    
     var snapshot = self.snapshot();
-    snapshot.deleteItems([fromItem]);
-        
-    if let toItem = itemIdentifier(for: destinationIndexPath) {
-       let isAfter = destinationIndexPath.row > sourceIndexPath.row;
-            
-      if isAfter {
-        snapshot.insertItems([fromItem], afterItem: toItem);
-          
-      } else {
-        snapshot.insertItems([fromItem], beforeItem: toItem);
-      };
+    
+    if destinationIndexPath.row > sourceIndexPath.row {
+      snapshot.moveItem(sourceItemID, afterItem: destinationItemID);
       
     } else {
-      let targetSectionID = self.sectionIdentifier(
-        forSectionIndex: sourceIndexPath.section,
-        usingSnapshot: snapshot
-      );
-      
-      snapshot.appendItems([fromItem], toSection: targetSectionID);
+      snapshot.moveItem(sourceItemID, beforeItem: destinationItemID);
     };
     
     self.apply(snapshot, animatingDifferences: false);
