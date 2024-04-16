@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ViewStyle } from 'react-native';
 
+import { TableView, TableViewNativeListItem} from 'react-native-ios-list-view';
+
 import * as Helpers from '../../functions/Helpers';
 import * as Colors from '../../constants/Colors';
 
@@ -9,10 +11,12 @@ import { RNIImageView } from 'react-native-ios-utilities';
 
 
 export function CellContent(props: {
+  tableViewRef:  React.RefObject<TableView>;
   reuseIdentifier: number;
   listDataItem: ListDataItem | undefined;
   orderedListItemIndex: number | undefined;
   reactListItemIndex: number | undefined;
+  nativeListItem: TableViewNativeListItem | undefined;
   listDataCount: number;
 }){
 
@@ -55,6 +59,21 @@ export function CellContent(props: {
             styles.moveUpButton,
           ]}
           onPress={() => {
+            const tableViewRef = props.tableViewRef?.current;
+            if(tableViewRef == null) return;
+
+            const keyForItem = props.nativeListItem?.key;
+            if(keyForItem == null) return;
+
+            tableViewRef?.requestToMoveListItem({
+              mode: 'moveUp',
+              numberOfPlaces: 1,
+              sourceConfig: {
+                mode: 'matchingKey',
+                key: keyForItem,
+              },
+              shouldAnimateDifference: true,
+            });
           }}
         >
           <RNIImageView
@@ -78,6 +97,21 @@ export function CellContent(props: {
             styles.moveDownButton,
           ]}
           onPress={() => {
+            const tableViewRef = props.tableViewRef?.current;
+            if(tableViewRef == null) return;
+
+            const keyForItem = props.nativeListItem?.key;
+            if(keyForItem == null) return;
+
+            tableViewRef?.requestToMoveListItem({
+              mode: 'moveDown',
+              numberOfPlaces: 1,
+              sourceConfig: {
+                mode: 'matchingKey',
+                key: keyForItem,
+              },
+              shouldAnimateDifference: true,
+            });
           }}
         >
           <RNIImageView

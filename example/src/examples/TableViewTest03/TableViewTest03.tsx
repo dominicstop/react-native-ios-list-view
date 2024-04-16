@@ -8,9 +8,12 @@ import { CellContent } from './CellContent';
 
 
 export function TableViewTest03Screen() {
+  const tableViewRef = React.useRef<TableView>(null);
+
   return (
     <View style={styles.rootContainer}>
       <TableView
+        ref={tableViewRef}
         style={styles.tableView}
         listData={DUMMY_LIST_DATA}
         minimumListCellHeight={CELL_HEIGHT}
@@ -25,14 +28,17 @@ export function TableViewTest03Screen() {
           renderRequestData,
           orderedListItemIndex,
           reactListItemIndex,
+          nativeListItem,
         ) => {
           return (
             <CellContent
+              tableViewRef={tableViewRef}
               listDataCount={DUMMY_LIST_DATA.length}
               reuseIdentifier={renderRequestData.renderRequestKey}
               listDataItem={listDataItem}
               orderedListItemIndex={orderedListItemIndex}
               reactListItemIndex={reactListItemIndex}
+              nativeListItem={nativeListItem}
             />
           );
         }}

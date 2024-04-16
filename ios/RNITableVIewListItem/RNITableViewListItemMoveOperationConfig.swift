@@ -51,7 +51,7 @@ public struct RNITableViewListItemMoveOperationConfig {
         );
         
       case let .moveUp(numberOfPlaces):
-        let destinationItemIndex = sourceItemIndex + numberOfPlaces;
+        let destinationItemIndex = sourceItemIndex - numberOfPlaces;
         let itemsInSection = snapshot.itemIdentifiers(inSection: sourceItemSectionID);
         
         let match = itemsInSection.enumerated().first {
@@ -71,7 +71,7 @@ public struct RNITableViewListItemMoveOperationConfig {
         destinationID = match.element;
         
       case let .moveDown(numberOfPlaces):
-        let destinationItemIndex = sourceItemIndex - numberOfPlaces;
+        let destinationItemIndex = sourceItemIndex + numberOfPlaces;
         let itemsInSection = snapshot.itemIdentifiers(inSection: sourceItemSectionID);
         
         let match = itemsInSection.enumerated().first {
@@ -102,8 +102,11 @@ public struct RNITableViewListItemMoveOperationConfig {
       switch self.moveOperationMode {
         case let .moveToSpecificPosition(_, shouldMoveItemAfterDestination):
           return shouldMoveItemAfterDestination;
+        
+        case .moveUp:
+          return false;
           
-        default:
+        case .moveDown:
           return true;
       }
     }();
