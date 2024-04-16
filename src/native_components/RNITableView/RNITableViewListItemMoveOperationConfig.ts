@@ -3,5 +3,7 @@ import { RNITableViewListItemTargetPositionConfig } from "./RNITableViewListItem
 export type RNITableViewListItemMoveOperationConfig = {
   sourceConfig: RNITableViewListItemTargetPositionConfig; 
   destinationKey: RNITableViewListItemTargetPositionConfig;
+  
   animatingDifference: boolean;
+  shouldMoveItemAfterDestination: boolean;
 };

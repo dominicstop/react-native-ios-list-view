@@ -14,8 +14,10 @@ import DGSwiftUtilities
 
 
 public struct RNITableViewListItemMoveOperationConfig {
+
   public var sourceConfig: RNITableViewListItemTargetPositionConfig;
   public var destinationConfig: RNITableViewListItemTargetPositionConfig;
+  
   public var shouldAnimateDifference: Bool;
 };
 
@@ -30,5 +32,8 @@ extension RNITableViewListItemMoveOperationConfig: InitializableFromDictionary {
       
     self.shouldAnimateDifference =
       try dict.getValueFromDictionary(forKey: "shouldAnimateDifference");
+      
+    self.shouldMoveItemAfterDestination =
+      try dict.getValueFromDictionary(forKey: "shouldMoveItemAfterDestination");
   };
 };
