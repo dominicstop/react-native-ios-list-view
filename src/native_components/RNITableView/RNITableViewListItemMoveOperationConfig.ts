@@ -2,7 +2,7 @@ import { RNITableViewListItemTargetPositionConfig } from "./RNITableViewListItem
 
 export type RNITableViewListItemMoveOperationMode = {
   mode: 'moveToSpecificPosition';
-  destinationKey: RNITableViewListItemTargetPositionConfig;
+  destinationConfig: RNITableViewListItemTargetPositionConfig;
   shouldMoveItemAfterDestination: boolean;
 } | {
   mode: 'moveUp';
@@ -14,7 +14,7 @@ export type RNITableViewListItemMoveOperationMode = {
 
 export type RNITableViewListItemMoveOperationBaseConfig = {
   sourceConfig: RNITableViewListItemTargetPositionConfig; 
-  animatingDifference: boolean;
+  shouldAnimateDifference: boolean;
 };
 
 export type RNITableViewListItemMoveOperationConfig = 

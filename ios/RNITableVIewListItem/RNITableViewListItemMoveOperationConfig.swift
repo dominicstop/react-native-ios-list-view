@@ -120,8 +120,7 @@ public struct RNITableViewListItemMoveOperationConfig {
 extension RNITableViewListItemMoveOperationConfig: InitializableFromDictionary {
   
   public init(fromDict dict: Dictionary<String, Any>) throws {
-    self.moveOperationMode =
-      try dict.getValueFromDictionary(forKey: "moveOperationMode");
+    self.moveOperationMode = try .init(fromDict: dict);
   
     self.sourceConfig =
       try dict.getValueFromDictionary(forKey: "sourceConfig");
