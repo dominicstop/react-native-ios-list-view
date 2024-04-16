@@ -15,11 +15,9 @@ import DGSwiftUtilities
 
 public struct RNITableViewListItemMoveOperationConfig {
 
+  public var moveOperationMode: RNITableViewListItemMoveOperationMode;
   public var sourceConfig: RNITableViewListItemTargetPositionConfig;
-  public var destinationConfig: RNITableViewListItemTargetPositionConfig;
-  
   public var shouldAnimateDifference: Bool;
-  public var shouldMoveItemAfterDestination: Bool;
   
   public func applyConfig(
     toSnapshot snapshot: inout RNITableViewDataSourceSnapshot,
@@ -38,10 +36,60 @@ public struct RNITableViewListItemMoveOperationConfig {
       );
     };
     
-    let destinationID = try? sourceConfig.getMatchingItemIdentifier(
-      inSnapshot: snapshot,
-      withReactListItems: reactListItems
-    );
+    let sourceItemIndex = snapshot.indexOfItem(sourceItemID)!;
+      
+    let sourceItemSectionID =
+      snapshot.sectionIdentifier(containingItem: sourceItemID)!;
+    
+    var destinationID: RNITableViewListItemIdentifier?;
+    
+    switch self.moveOperationMode {
+      case let .moveToSpecificPosition(destinationConfig, _):
+        destinationID = try destinationConfig.getMatchingItemIdentifier(
+          inSnapshot: snapshot,
+          withReactListItems: reactListItems
+        );
+        
+      case let .moveUp(numberOfPlaces):
+        let destinationItemIndex = sourceItemIndex + numberOfPlaces;
+        let itemsInSection = snapshot.itemIdentifiers(inSection: sourceItemSectionID);
+        
+        let match = itemsInSection.enumerated().first {
+          $0.offset == destinationItemIndex;
+        };
+        
+        guard let match = match else {
+          throw RNIListViewError(
+            errorCode: .unexpectedNilValue,
+            description: "Moving item up is out of bounds",
+            extraDebugValues: [
+              "numberOfPlaces": numberOfPlaces,
+            ]
+          );
+        };
+        
+        destinationID = match.element;
+        
+      case let .moveDown(numberOfPlaces):
+        let destinationItemIndex = sourceItemIndex - numberOfPlaces;
+        let itemsInSection = snapshot.itemIdentifiers(inSection: sourceItemSectionID);
+        
+        let match = itemsInSection.enumerated().first {
+          $0.offset == destinationItemIndex;
+        };
+        
+        guard let match = match else {
+          throw RNIListViewError(
+            errorCode: .unexpectedNilValue,
+            description: "Moving item down is out of bounds",
+            extraDebugValues: [
+              "numberOfPlaces": numberOfPlaces,
+            ]
+          );
+        };
+        
+        destinationID = match.element;
+    };
     
     guard let destinationID = destinationID else {
       throw RNIListViewError(
@@ -50,11 +98,21 @@ public struct RNITableViewListItemMoveOperationConfig {
       );
     };
     
-    if self.shouldMoveItemAfterDestination {
+    let shouldMoveItemAfterDestination: Bool = {
+      switch self.moveOperationMode {
+        case let .moveToSpecificPosition(_, shouldMoveItemAfterDestination):
+          return shouldMoveItemAfterDestination;
+          
+        default:
+          return true;
+      }
+    }();
+    
+    if shouldMoveItemAfterDestination {
       snapshot.moveItem(sourceItemID, afterItem: destinationID);
       
     } else {
-      snapshot.moveItem(sourceItemID, afterItem: destinationID);
+      snapshot.moveItem(sourceItemID, beforeItem: destinationID);
     };
   };
 };
@@ -62,16 +120,13 @@ public struct RNITableViewListItemMoveOperationConfig {
 extension RNITableViewListItemMoveOperationConfig: InitializableFromDictionary {
   
   public init(fromDict dict: Dictionary<String, Any>) throws {
+    self.moveOperationMode =
+      try dict.getValueFromDictionary(forKey: "moveOperationMode");
+  
     self.sourceConfig =
       try dict.getValueFromDictionary(forKey: "sourceConfig");
       
-    self.destinationConfig =
-      try dict.getValueFromDictionary(forKey: "destinationConfig");
-      
     self.shouldAnimateDifference =
       try dict.getValueFromDictionary(forKey: "shouldAnimateDifference");
-      
-    self.shouldMoveItemAfterDestination =
-      try dict.getValueFromDictionary(forKey: "shouldMoveItemAfterDestination");
   };
 };
