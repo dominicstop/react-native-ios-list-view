@@ -88,6 +88,8 @@ export class TableView extends
   requestToMoveListItem = async (
     config: RNITableViewListItemMoveOperationConfig
   ) => {
+    console.log("TableView.requestToMoveListItem");
+    
     this.nativeRef.requestToMoveListItem(config);
   };
 
@@ -135,7 +137,7 @@ export class TableView extends
                 ]}
                 renderRequestKey={renderRequestData.renderRequestKey}
                 renderCellContent={(
-                  listItem,
+                  nativeListItem,
                   orderedListItemIndex,
                   reactListItemIndex,
                 ) => {
@@ -152,6 +154,7 @@ export class TableView extends
                     renderRequestData,
                     orderedListItemIndex ?? renderRequestData.renderRequestKey,
                     reactListItemIndex ?? renderRequestData.renderRequestKey,
+                    nativeListItem,
                   );
                 }}
               >
