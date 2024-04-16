@@ -4,6 +4,8 @@ import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 
 import { RNITableViewProps } from './RNITableViewTypes';
 import { RNITableNativeView } from './RNITableNativeView';
+import { RNITableViewModule } from './RNITableViewModule';
+import { RNITableViewListItemMoveOperationConfig } from './RNITableViewListItemMoveOperationConfig';
 
 
 export class RNITableView extends React.PureComponent<RNITableViewProps> {
@@ -22,6 +24,18 @@ export class RNITableView extends React.PureComponent<RNITableViewProps> {
   getNativeReactTag: () => number | undefined = () => {
     // @ts-ignore
     return this.nativeRef?.nativeTag ?? this.reactTag
+  };
+
+  requestToMoveListItem = async (
+    config: RNITableViewListItemMoveOperationConfig
+  ) => {
+    const reactTag = this.getNativeReactTag();
+    if(reactTag == null) return;
+    
+    await RNITableViewModule.requestToMoveListItem(
+      reactTag,
+      config
+    );
   };
 
   // Event Handlers

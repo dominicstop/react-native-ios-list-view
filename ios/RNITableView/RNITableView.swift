@@ -150,7 +150,32 @@ public class RNITableView: ExpoView {
         break;
     };
   };
+
+  // MARK: Module Functions
+  // ----------------------
   
+  public func requestToMoveListItem(usingDict dict: Dictionary<String, Any>) throws {
+    guard let dataSource = self.dataSource else {
+      throw RNIListViewError(
+        errorCode: .unexpectedNilValue,
+        description: "dataSource is nil"
+      );
+    };
+    
+    let config = try RNITableViewListItemMoveOperationConfig(fromDict: dict);
+    var snapshot = dataSource.snapshot();
+    
+    try config.applyConfig(
+      toSnapshot: &snapshot,
+      withReactListItems: self.listData
+    );
+    
+    dataSource.apply(
+      snapshot,
+      animatingDifferences: config.shouldAnimateDifference
+    );
+  };
+
   // MARK: Functions
   // ---------------
   
@@ -201,6 +226,7 @@ public class RNITableView: ExpoView {
     usingSnapshot snapshot: RNITableViewDataSourceSnapshot
   ){
     
+    // WIP - does not take sections into account
     let snapshotItems = snapshot.itemIdentifiers;
     let listDataOrderedNew = snapshotItems.map {
       RNITableViewListItem(key: $0);

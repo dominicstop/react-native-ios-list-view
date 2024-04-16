@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimensions, LayoutChangeEvent, StyleSheet, View, Text, ViewStyle } from 'react-native';
 
-import { RNITableView, RNITableViewListItem } from '../../native_components/RNITableView';
+import { RNITableView, RNITableViewListItem, RNITableViewListItemMoveOperationConfig } from '../../native_components/RNITableView';
 
 import type { TableViewProps, TableViewState } from './TableViewTypes';
 import { RNIRenderRequestView, RenderRequestItem } from '../../native_components/RNIRenderRequestView';
@@ -80,6 +80,15 @@ export class TableView extends
     this.setState({
       tableViewWidth: event.nativeEvent.layout.width,
     });
+  };
+
+  // Public Functions
+  // ----------------
+
+  requestToMoveListItem = async (
+    config: RNITableViewListItemMoveOperationConfig
+  ) => {
+    this.nativeRef.requestToMoveListItem(config);
   };
 
   // Render
