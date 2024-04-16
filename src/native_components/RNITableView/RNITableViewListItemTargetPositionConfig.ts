@@ -2,7 +2,7 @@
 
 export type RNITableViewListItemTargetPositionConfig = {
   mode: 'matchingKey';
-  key: number;
+  key: string;
 } | {
   // to be impl.
   mode: 'matchingOrderedIndex' & never;

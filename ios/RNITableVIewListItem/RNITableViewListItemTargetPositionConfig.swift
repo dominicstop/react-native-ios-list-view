@@ -112,13 +112,16 @@ extension RNITableViewListItemTargetPositionConfig: InitializableFromDictionary 
     };
     
     let section = try? dict.getValueFromDictionary(
-      forKey: "key",
+      forKey: "targetSection",
       type: String.self
     );
     
     switch modeString {
       case "matchingKey":
-        guard let key: String = try dict.getValueFromDictionary(forKey: "key") else {
+        guard let key = try? dict.getValueFromDictionary(
+          forKey: "key",
+          type: String.self
+        ) else {
           throw RNIListViewError(
             errorCode: .guardCheckFailed,
             description: "Unable to parse value for key in dict",
