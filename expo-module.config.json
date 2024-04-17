@@ -4,7 +4,8 @@
     "modules": [
       "RNITableViewModule",
       "RNIRenderRequestViewModule",
-      "RNITableViewCellContentViewModule"
+      "RNITableViewCellContentViewModule",
+      "RNITableHeaderViewModule"
     ],
     "podspecPath": "./ios/ReactNativeIosListView.podspec"
   }
