@@ -36,6 +36,7 @@ export class TableView extends
       cellContentContainerStyle,
       minimumListCellHeight,
       initialCellsToRenderCount,
+      tableHeaderContainerStyle,
 
       listDataKeyExtractor,
       renderCellContent,
@@ -70,14 +71,17 @@ export class TableView extends
         minimumListCellHeight: minimumListCellHeightDefault,
       },
 
+      // B. Pass-through props...
       listData,
       cellContentContainerStyle,
-      initialCellsToRenderCount: initialCellsToRenderCountWithDefault,
-
+      tableHeaderContainerStyle,
       renderCellContent,
       renderListHeader,
+    
+      // C. Props w/ default
+      initialCellsToRenderCount: initialCellsToRenderCountWithDefault,
 
-      // B. Move all the default view-related
+      // D. Move all the default view-related
       //    props here...
       viewProps,
     };
@@ -95,8 +99,6 @@ export class TableView extends
   requestToMoveListItem = async (
     config: RNITableViewListItemMoveOperationConfig
   ) => {
-    console.log("TableView.requestToMoveListItem");
-    
     this.nativeRef.requestToMoveListItem(config);
   };
 
@@ -135,6 +137,7 @@ export class TableView extends
         {shouldRenderListHeader && (
           <RNITableHeaderView
             nativeID={NATIVE_ID_KEYS.listHeader}
+            style={props.tableHeaderContainerStyle}
           >
             {props.renderListHeader?.()}
           </RNITableHeaderView>

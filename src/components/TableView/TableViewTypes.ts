@@ -37,6 +37,7 @@ export type TableViewBaseProps = {
   initialCellsToRenderCount?: number;
   listData: TableViewListData;
   cellContentContainerStyle?: ViewStyle;
+  tableHeaderContainerStyle?: ViewStyle;
 
   listDataKeyExtractor: ListDataKeyExtractor<Record<string, any>>;
   renderCellContent: TableViewRenderCellContent;
