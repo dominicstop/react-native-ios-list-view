@@ -13,7 +13,12 @@
 - [ ] **Impl**: `TableView` - Add support for using `UIItableView` preset/standard layouts.
 - [ ] **Update**: Ex - Update example test layout.
 - [ ] **Impl**: Ex - Add different tests via routes + screens.
-- [ ] 
+
+<br>
+
+- [ ] Impl: `TableView.dragInteractionEnabled` prop.
+- [ ] Impl: `TableView.separatorStyle` prop.
+- [ ] Impl: `TableView.editingModeConfig` prop - Allow for the configuration of the `UITableView.isEditing` UI.
 
 <br><br>
 
