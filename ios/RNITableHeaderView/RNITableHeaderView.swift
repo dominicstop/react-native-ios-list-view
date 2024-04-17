@@ -16,11 +16,17 @@ public class RNITableHeaderView: ExpoView {
   // MARK: Properties
   // ----------------
   
-  public var reactTableViewWrapper: RNITableView?;
+  public weak var reactTableViewWrapper: RNITableView?;
   
   
   public override func layoutSubviews() {
     super.layoutSubviews();
+    
+    guard let reactTableViewWrapper = self.reactTableViewWrapper,
+          let tableView = reactTableViewWrapper.tableView
+    else { return };
+    
+    tableView.tableHeaderView = self;
     
     print(
       "RNITableHeaderView.layoutSubviews",

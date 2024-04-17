@@ -8,6 +8,7 @@ public class RNITableView: ExpoView {
   
   enum NativeIDKey: String {
     case renderRequest;
+    case listHeader;
   };
   
   // MARK: - Properties
@@ -134,9 +135,6 @@ public class RNITableView: ExpoView {
   // ------------------------------
   
   public override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
-    super.insertReactSubview(subview, at: atIndex);
-    subview.removeFromSuperview();
-    
     guard let nativeID = subview.nativeID,
           let nativeIDKey = NativeIDKey(rawValue: nativeID)
     else { return };
@@ -145,6 +143,12 @@ public class RNITableView: ExpoView {
       case (let renderRequestView as RNIRenderRequestView, .renderRequest):
         self.renderRequestView = renderRequestView;
         renderRequestView.renderRequestDelegate.add(self);
+        
+      case (let listHeaderView as RNITableHeaderView, .listHeader):
+        guard let tableView = self.tableView else { return  };
+        
+        listHeaderView.reactTableViewWrapper = self;
+        tableView.tableHeaderView = listHeaderView;
         
       default:
         break;

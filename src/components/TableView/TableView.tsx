@@ -1,15 +1,18 @@
 import React from 'react';
-import { Dimensions, LayoutChangeEvent, StyleSheet, View, Text, ViewStyle } from 'react-native';
-
-import { RNITableView, RNITableViewListItem, RNITableViewListItemMoveOperationConfig } from '../../native_components/RNITableView';
+import { Dimensions, LayoutChangeEvent, StyleSheet, ViewStyle } from 'react-native';
 
 import type { TableViewProps, TableViewState } from './TableViewTypes';
-import { RNIRenderRequestView, RenderRequestItem } from '../../native_components/RNIRenderRequestView';
+
+import { RNITableView, RNITableViewListItem, RNITableViewListItemMoveOperationConfig } from '../../native_components/RNITableView';
 import { RNITableViewCellContentView } from '../../native_components/RNITableViewCellContent';
+import { RNITableHeaderView } from '../../native_components/RNITableHeaderView';
+
+import { RNIRenderRequestView, RenderRequestItem } from '../../native_components/RNIRenderRequestView';
 
 
 const NATIVE_ID_KEYS = {
   renderRequest: "renderRequest",
+  listHeader: "listHeader",
 };
 
 const WINDOW_SIZE = Dimensions.get('window');
@@ -30,11 +33,13 @@ export class TableView extends
   private getProps = () => {
     const {
       listData,
-      listDataKeyExtractor,
-      renderCellContent,
       cellContentContainerStyle,
       minimumListCellHeight,
       initialCellsToRenderCount,
+
+      listDataKeyExtractor,
+      renderCellContent,
+      renderListHeader,
       ...viewProps
     } = this.props;
 
@@ -66,9 +71,11 @@ export class TableView extends
       },
 
       listData,
-      renderCellContent,
       cellContentContainerStyle,
       initialCellsToRenderCount: initialCellsToRenderCountWithDefault,
+
+      renderCellContent,
+      renderListHeader,
 
       // B. Move all the default view-related
       //    props here...
@@ -115,6 +122,8 @@ export class TableView extends
       return items;
     })();
 
+    const shouldRenderListHeader = props.renderCellContent != null;
+
     return (
       <RNITableView
         {...props.viewProps}
@@ -123,6 +132,13 @@ export class TableView extends
         style={[styles.nativeView, props.viewProps.style]}
         onLayout={this._handleOnLayout}
       >
+        {shouldRenderListHeader && (
+          <RNITableHeaderView
+            nativeID={NATIVE_ID_KEYS.listHeader}
+          >
+            {props.renderListHeader?.()}
+          </RNITableHeaderView>
+        )}
         <RNIRenderRequestView
           nativeID={NATIVE_ID_KEYS.renderRequest}
           initialRenderRequestItems={initialRenderRequestItems}
