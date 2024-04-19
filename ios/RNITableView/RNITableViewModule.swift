@@ -41,6 +41,10 @@ public class RNITableViewModule: Module {
       Prop("isEditingConfig"){
         $0.isEditingConfigProps = $1;
       };
+      
+      Prop("dragInteractionEnabled"){
+        $0.dragInteractionEnabledProp = $1;
+      };
     }
   };
 };

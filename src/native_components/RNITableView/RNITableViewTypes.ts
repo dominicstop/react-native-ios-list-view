@@ -15,6 +15,7 @@ export type RNITableViewListItem = {
 export type RNITableViewBaseProps = {
   listData: Array<RNITableViewListItem>;
   isEditingConfig: RNITableViewEditingConfig | undefined;
+  dragInteractionEnabled: boolean;
 };
 
 export type RNITableViewProps = 

@@ -79,6 +79,17 @@ public class RNITableView: ExpoView {
     }
   };
   
+  public var dragInteractionEnabledProp: Bool = false {
+    willSet {
+      let oldValue = self.dragInteractionEnabledProp;
+      guard newValue != oldValue,
+            self.tableView?.dragInteractionEnabled != newValue
+      else { return };
+      
+      self.tableView?.dragInteractionEnabled = newValue;
+    }
+  };
+  
   // MARK: Init + Setup
   // ------------------
   
@@ -93,10 +104,10 @@ public class RNITableView: ExpoView {
     let tableView = UITableView();
     self.tableView = tableView;
     
-    tableView.dragInteractionEnabled = true;
-    tableView.separatorStyle = .none;
-    
+    tableView.dragInteractionEnabled = self.dragInteractionEnabledProp;
     tableView.isEditing = self.isEditingConfig.isEditing;
+    
+    tableView.separatorStyle = .none;
     
     tableView.delegate = self;
     tableView.dragDelegate = self;

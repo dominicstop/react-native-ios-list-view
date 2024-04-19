@@ -11,6 +11,7 @@ export type TableViewInheritedRequiredProps = Pick<RNITableViewProps,
 
 export type TableViewInheritedOptionalProps = Partial<Pick<RNITableViewProps, 
  | 'isEditingConfig'
+ | 'dragInteractionEnabled'
 >>;
 
 export type TableViewInheritedProps = 

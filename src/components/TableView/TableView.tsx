@@ -34,6 +34,7 @@ export class TableView extends
       initialCellsToRenderCount,
       tableHeaderContainerStyle,
       isEditingConfig,
+      dragInteractionEnabled,
 
       listDataKeyExtractor,
       renderCellContent,
@@ -66,6 +67,7 @@ export class TableView extends
       nativeProps: {
         listData: listDataProcessed,
         minimumListCellHeight: minimumListCellHeightDefault,
+        dragInteractionEnabled: dragInteractionEnabled ?? false,
         isEditingConfig,
       },
 
