@@ -4,3 +4,8 @@ export type RNITableViewEditingReorderControlMode  =
   | 'hidden'
   | 'customView'
   | 'entireCell';
+
+export type RNITableViewEditingEditControlMode =
+  | 'none'
+  | 'delete'
+  | 'insert';
