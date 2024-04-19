@@ -9,3 +9,10 @@ export type RNITableViewEditingEditControlMode =
   | 'none'
   | 'delete'
   | 'insert';
+
+export type RNITableViewEditingConfig = {
+  isEditing: boolean;
+  defaultReorderControlMode: RNITableViewEditingReorderControlMode;
+  defaultEditControlMode: RNITableViewEditingEditControlMode;
+};
+
