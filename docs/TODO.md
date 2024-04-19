@@ -19,6 +19,8 @@
 - [ ] Impl: `TableView.dragInteractionEnabled` prop.
 - [ ] Impl: `TableView.separatorStyle` prop.
 - [ ] Impl: `TableView.editingModeConfig` prop - Allow for the configuration of the `UITableView.isEditing` UI.
+- [ ] Impl: `TableView.dataSourceMode`
+  * Modes: `exact`, `newOrRemovedEntriesOnly`.
 
 <br><br>
 
