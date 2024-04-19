@@ -37,6 +37,10 @@ public class RNITableViewModule: Module {
       Prop("minimumListCellHeight"){
         $0.minimumListCellHeightProp = $1;
       };
+      
+      Prop("isEditingConfig"){
+        $0.isEditingConfigProps = $1;
+      };
     }
   };
 };

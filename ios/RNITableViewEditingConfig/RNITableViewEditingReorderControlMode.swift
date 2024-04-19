@@ -6,7 +6,6 @@
 //
 
 import UIKit;
-import React
 import DGSwiftUtilities;
 
 
@@ -22,7 +21,7 @@ public enum RNITableViewEditingReorderControlMode: String {
   func apply(
     toWrapper wrapper: TableViewCellReorderControlWrapper,
     cellView: RNITableViewCell,
-    reactTargetView: RCTView?
+    targetView: UIView?
   ) throws {
     guard let reorderControlView = wrapper.wrappedObject,
           let imageView = wrapper.imageView
@@ -117,7 +116,7 @@ public enum RNITableViewEditingReorderControlMode: String {
         );
         
       case .customView:
-        guard let reactTargetView = reactTargetView else {
+        guard let targetView = targetView else {
           throw RNIListViewError(errorCode: .unexpectedNilValue);
         };
         

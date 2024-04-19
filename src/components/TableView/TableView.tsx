@@ -33,6 +33,7 @@ export class TableView extends
       minimumListCellHeight,
       initialCellsToRenderCount,
       tableHeaderContainerStyle,
+      isEditingConfig,
 
       listDataKeyExtractor,
       renderCellContent,
@@ -65,6 +66,7 @@ export class TableView extends
       nativeProps: {
         listData: listDataProcessed,
         minimumListCellHeight: minimumListCellHeightDefault,
+        isEditingConfig,
       },
 
       // B. Pass-through props...

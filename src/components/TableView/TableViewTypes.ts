@@ -5,9 +5,17 @@ import { RNITableViewCellContentViewState } from "../../native_components/RNITab
 import { RNITableViewProps } from "../../native_components/RNITableView";
 
 
-export type TableViewInheritedProps = Pick<RNITableViewProps, 
+export type TableViewInheritedRequiredProps = Pick<RNITableViewProps, 
  | 'minimumListCellHeight'
 >;
+
+export type TableViewInheritedOptionalProps = Partial<Pick<RNITableViewProps, 
+ | 'isEditingConfig'
+>>;
+
+export type TableViewInheritedProps = 
+  & TableViewInheritedRequiredProps
+  & TableViewInheritedOptionalProps;
 
 export type TableViewListData = Record<string, any>;
 

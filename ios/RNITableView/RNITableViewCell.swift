@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import React
 import DGSwiftUtilities
 
 
@@ -18,12 +19,20 @@ public class RNITableViewCell:
 
   var _didTriggerSetup = false;
   var _didSetInitialSize = false;
+  var _didSetupReorderControl = false;
   
   public weak var reactTableViewContainer: RNITableView?;
   public weak var reactRenderRequestView: RNIRenderRequestView?;
   public weak var reactCellContent: RNITableViewCellContentView?;
   
+  public var reorderOrderViewWrapper: TableViewCellReorderControlWrapper?;
+  public weak var reorderControlTargetView: UIView?;
+  
   public var cellHeightConstraint: NSLayoutConstraint?;
+  
+  public var isEditingConfig: RNITableViewEditingConfig {
+    self.reactTableViewContainer?.isEditingConfig ?? .default;
+  };
   
   // MARK: - Init + Setup
   // --------------------
@@ -34,16 +43,6 @@ public class RNITableViewCell:
 
   required init?(coder: NSCoder) {
     fatalError("init(coder) has not been implemented");
-  };
-  
-  public override func prepareForReuse() {
-    guard self._didTriggerSetup else { return };
-    
-    if let reactTableViewContainer = self.reactTableViewContainer,
-       !reactTableViewContainer.dragState.isDraggingOrDropping {
-      
-      self.alpha = 0.01;
-    };
   };
   
   func _setupIfNeeded(renderRequestView: RNIRenderRequestView){
@@ -86,16 +85,93 @@ public class RNITableViewCell:
   // MARK: - Functions - Lifecycle
   // -----------------------------
   
+  public override func prepareForReuse() {
+    guard self._didTriggerSetup else { return };
+    
+    if let reactTableViewContainer = self.reactTableViewContainer,
+       !reactTableViewContainer.dragState.isDraggingOrDropping {
+      
+      self.alpha = 0.01;
+    };
+    
+    self._resetReorderControlIfNeeded();
+  };
+  
   public override func didMoveToSuperview() {
     guard self._didTriggerSetup,
           self.superview != nil
     else { return };
     
     print("didMoveToSuperview - cellRegistry.count - \(self.reactTableViewContainer?.cellManager.cellInstanceCount ?? -1)");
-  }
+  };
+  
+  public override func layoutSubviews() {
+    super.layoutSubviews();
+    
+    self._getRefToReorderControlIfNeeded();
+    self._setupReorderControlIfNeeded();
+  };
   
   // MARK: - Functions
   // -----------------
+  
+  func _getRefToReorderControlIfNeeded(){
+    guard self.isEditingConfig.isEditing,
+          self.reorderOrderViewWrapper == nil
+    else { return };
+    
+    for subview in self.subviews {
+      guard let wrapper = TableViewCellReorderControlWrapper(objectToWrap: subview)
+      else { continue };
+      
+      self.reorderOrderViewWrapper = wrapper;
+      break;
+    };
+  };
+  
+  func _setupReorderControlIfNeeded(){
+    guard !self._didSetupReorderControl,
+          self.isEditingConfig.isEditing,
+          let reorderOrderViewWrapper = self.reorderOrderViewWrapper,
+          reorderOrderViewWrapper.wrappedObject != nil
+    else { return };
+    
+    self._didSetupReorderControl = true;
+    
+    let reorderControlTargetView: UIView? = {
+      guard self.isEditingConfig.defaultReorderControlMode == .customView
+      else { return nil };
+      
+      if let reorderControlTargetView = self.reorderControlTargetView {
+        return reorderControlTargetView;
+      };
+      
+      guard let reactCellContent = self.reactCellContent else { return nil };
+      
+      let match = reactCellContent.recursivelyFindSubview {
+        $0.nativeID == RNITableView.NativeIDKey.customReorderControl.rawValue;
+      };
+      
+      self.reorderControlTargetView = match;
+      return match;
+    }();
+    
+    let reorderControlMode = self.isEditingConfig.defaultReorderControlMode;
+    
+    try? reorderControlMode.apply(
+      toWrapper: reorderOrderViewWrapper,
+      cellView: self,
+      targetView: reorderControlTargetView
+    );
+  };
+  
+  func _resetReorderControlIfNeeded(){
+    guard self._didSetupReorderControl else { return };
+    self._didSetupReorderControl = false;
+    
+    self.reorderOrderViewWrapper = nil;
+    self.reorderControlTargetView = nil;
+  };
   
   func _setCellHeight(
     newHeight: CGFloat,

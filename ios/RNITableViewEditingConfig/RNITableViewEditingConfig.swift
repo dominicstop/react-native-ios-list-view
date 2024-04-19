@@ -10,6 +10,12 @@ import DGSwiftUtilities
 
 
 public struct RNITableViewEditingConfig {
+  public static var `default`: Self = .init(
+    isEditing: false,
+    defaultReorderControlMode: .visible,
+    defaultEditControlMode: .none
+  );
+
   public var isEditing: Bool;
   public var defaultReorderControlMode: RNITableViewEditingReorderControlMode;
   public var defaultEditControlMode: RNITableViewEditingEditControlMode;

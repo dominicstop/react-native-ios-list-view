@@ -6,7 +6,7 @@ import DGSwiftUtilities
 
 public class RNITableView: ExpoView {
   
-  enum NativeIDKey: String {
+  public enum NativeIDKey: String {
     case renderRequest;
     case listHeader;
     case customReorderControl;
@@ -36,10 +36,10 @@ public class RNITableView: ExpoView {
   // MARK: Properties - RN Props
   // ---------------------------
   
-  var minimumListCellHeightProp: CGFloat = 100;
+  public var minimumListCellHeightProp: CGFloat = 100;
   
-  var listData: Array<RNITableViewListItem> = [];
-  var listDataProp: Array<NSDictionary> = [] {
+  public var listData: Array<RNITableViewListItem> = [];
+  public var listDataProp: Array<NSDictionary> = [] {
     willSet {
       let oldValue = self.listDataProp;
       guard newValue != oldValue else { return };
@@ -56,7 +56,28 @@ public class RNITableView: ExpoView {
     }
   };
   
-  var listDataKeyProp: String?;
+  public var isEditingConfig: RNITableViewEditingConfig = .default;
+  public var isEditingConfigProps: Dictionary<String, Any>? {
+    willSet {
+      let isEditingConfig: RNITableViewEditingConfig = {
+        guard let newValue = newValue else {
+          return .default;
+        };
+        
+        return (try? .init(fromDict: newValue)) ?? .default;
+      }();
+      
+      self.isEditingConfig = isEditingConfig;
+      
+      if let tableView = self.tableView,
+         tableView.isEditing != isEditingConfig.isEditing {
+         
+        DispatchQueue.main.async {
+          tableView.setEditing(isEditingConfig.isEditing, animated: false);
+        };
+      };
+    }
+  };
   
   // MARK: Init + Setup
   // ------------------
@@ -74,6 +95,8 @@ public class RNITableView: ExpoView {
     
     tableView.dragInteractionEnabled = true;
     tableView.separatorStyle = .none;
+    
+    tableView.isEditing = self.isEditingConfig.isEditing;
     
     tableView.delegate = self;
     tableView.dragDelegate = self;
@@ -123,6 +146,8 @@ public class RNITableView: ExpoView {
         
         cell.selectionStyle = .none;
         cell.reactTableViewContainer = self;
+        
+        cell.showsReorderControl = false;
         
         cell._setupIfNeeded(renderRequestView: self.renderRequestView!);
         cell._notifyWillDisplay(forKey: key, indexPath: indexPath);
