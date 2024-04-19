@@ -9,7 +9,7 @@ import Foundation
 import DGSwiftUtilities
 
 
-public struct RNITableViewEditingConfig {
+public struct RNITableViewEditingConfig: Equatable {
   public static var `default`: Self = .init(
     isEditing: false,
     defaultReorderControlMode: .visible,

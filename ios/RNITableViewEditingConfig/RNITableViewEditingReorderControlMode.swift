@@ -18,18 +18,29 @@ public enum RNITableViewEditingReorderControlMode: String {
   case entireCell;
   case customView;
   
-  func apply(
+  public var shouldWrapReorderControl: Bool {
+    switch self {
+      case .center, .entireCell, .customView:
+        return true;
+        
+      default:
+        return false;
+    };
+  };
+  
+  @discardableResult
+  public func apply(
     toWrapper wrapper: TableViewCellReorderControlWrapper,
     cellView: RNITableViewCell,
     targetView: UIView?
-  ) throws {
+  ) throws -> UIView? {
+  
     guard let reorderControlView = wrapper.wrappedObject,
           let imageView = wrapper.imageView
     else {
       throw RNIListViewError(errorCode: .unexpectedNilValue);
     };
     
-    @discardableResult
     func wrapCellViewInContainer(
       wrapperParentView: UIView,
       isCentered: Bool
@@ -94,23 +105,26 @@ public enum RNITableViewEditingReorderControlMode: String {
     switch self {
       case .visible:
         imageView.alpha = 1;
+        return nil;
         
       case .hidden:
         cellView.isHidden = true;
+        return nil;
         
       case .invisible:
         imageView.alpha = 0.01;
+        return nil;
         
       case .center:
         imageView.alpha = 0.01;
-        wrapCellViewInContainer(
+        return wrapCellViewInContainer(
           wrapperParentView: cellView,
           isCentered: true
         );
         
       case .entireCell:
         imageView.alpha = 0.01;
-        wrapCellViewInContainer(
+        return wrapCellViewInContainer(
           wrapperParentView: cellView,
           isCentered: false
         );
@@ -121,10 +135,14 @@ public enum RNITableViewEditingReorderControlMode: String {
         };
         
         imageView.alpha = 0.01;
-        wrapCellViewInContainer(
-          wrapperParentView: cellView,
+        return wrapCellViewInContainer(
+          wrapperParentView: targetView,
           isCentered: false
         );
     };
+  };
+  
+  public func requiresCellReset(prevValue: Self) -> Bool {
+    return prevValue.shouldWrapReorderControl != self.shouldWrapReorderControl;
   };
 };

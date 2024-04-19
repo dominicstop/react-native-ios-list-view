@@ -26,7 +26,9 @@ public class RNITableViewCell:
   public weak var reactCellContent: RNITableViewCellContentView?;
   
   public var reorderOrderViewWrapper: TableViewCellReorderControlWrapper?;
+  public weak var reorderControlContainer: UIView?;
   public weak var reorderControlTargetView: UIView?;
+  
   
   public var cellHeightConstraint: NSLayoutConstraint?;
   
@@ -158,7 +160,7 @@ public class RNITableViewCell:
     
     let reorderControlMode = self.isEditingConfig.defaultReorderControlMode;
     
-    try? reorderControlMode.apply(
+    self.reorderControlContainer = try? reorderControlMode.apply(
       toWrapper: reorderOrderViewWrapper,
       cellView: self,
       targetView: reorderControlTargetView
@@ -169,8 +171,15 @@ public class RNITableViewCell:
     guard self._didSetupReorderControl else { return };
     self._didSetupReorderControl = false;
     
-    self.reorderOrderViewWrapper = nil;
     self.reorderControlTargetView = nil;
+    self.reorderOrderViewWrapper = nil;
+    
+    guard self.isEditingConfig.isEditing == false else { return };
+    
+    if let reorderControlContainer = self.reorderControlContainer {
+      reorderControlContainer.removeFromSuperview();
+      self.reorderControlContainer = nil;
+    };    
   };
   
   func _setCellHeight(

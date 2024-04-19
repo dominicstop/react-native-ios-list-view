@@ -59,7 +59,7 @@ public class RNITableView: ExpoView {
   public var isEditingConfig: RNITableViewEditingConfig = .default;
   public var isEditingConfigProps: Dictionary<String, Any>? {
     willSet {
-      let isEditingConfig: RNITableViewEditingConfig = {
+      let newConfig: RNITableViewEditingConfig = {
         guard let newValue = newValue else {
           return .default;
         };
@@ -67,14 +67,29 @@ public class RNITableView: ExpoView {
         return (try? .init(fromDict: newValue)) ?? .default;
       }();
       
-      self.isEditingConfig = isEditingConfig;
+      let oldConfig = self.isEditingConfig;
+      self.isEditingConfig = newConfig;
       
-      if let tableView = self.tableView,
-         tableView.isEditing != isEditingConfig.isEditing {
-         
+      guard newConfig != oldConfig,
+            let tableView = self.tableView
+      else { return };
+      
+      let requiresCellReset = newConfig.defaultReorderControlMode.requiresCellReset(
+        prevValue: oldConfig.defaultReorderControlMode
+      );
+      
+      if tableView.isEditing != isEditingConfig.isEditing {
         DispatchQueue.main.async {
-          tableView.setEditing(isEditingConfig.isEditing, animated: false);
+          tableView.setEditing(newConfig.isEditing, animated: false);
         };
+      };
+      
+      if requiresCellReset {
+        self.cellManager.cellInstances.forEach {
+          $0._resetReorderControlIfNeeded();
+        };
+        
+        tableView.reloadData();
       };
     }
   };
