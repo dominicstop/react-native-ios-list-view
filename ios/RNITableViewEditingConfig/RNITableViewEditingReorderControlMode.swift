@@ -14,8 +14,10 @@ public enum RNITableViewEditingReorderControlMode: String {
 
   case visible;
   case hidden;
-  case customView;
+  case invisible;
+  case center;
   case entireCell;
+  case customView;
   
   func apply(
     toWrapper wrapper: TableViewCellReorderControlWrapper,
@@ -29,8 +31,10 @@ public enum RNITableViewEditingReorderControlMode: String {
     };
     
     @discardableResult
-    func wrapCellViewInContainer(wrapperParentView: UIView) -> UIView {
-    
+    func wrapCellViewInContainer(
+      wrapperParentView: UIView,
+      isCentered: Bool
+    ) -> UIView {
       TableViewCellReorderControlWrapper.swizzleHitTestIfNeeded();
       let reorderControlContainer = UIView();
       
@@ -40,7 +44,21 @@ public enum RNITableViewEditingReorderControlMode: String {
       reorderControlView.translatesAutoresizingMaskIntoConstraints = false;
       reorderControlContainer.addSubview(reorderControlView);
       
-      NSLayoutConstraint.activate([
+      var constraints: [NSLayoutConstraint] = isCentered ? [
+        reorderControlContainer.centerXAnchor.constraint(
+          equalTo: wrapperParentView.centerXAnchor
+        ),
+        reorderControlContainer.centerYAnchor.constraint(
+          equalTo: wrapperParentView.centerYAnchor
+        ),
+        reorderControlContainer.heightAnchor.constraint(
+          equalTo: wrapperParentView.heightAnchor
+        ),
+        reorderControlContainer.widthAnchor.constraint(
+          equalTo: wrapperParentView.widthAnchor,
+          multiplier: 0.5
+        ),
+      ] : [
         reorderControlContainer.leadingAnchor.constraint(
           equalTo: wrapperParentView.leadingAnchor
         ),
@@ -53,30 +71,50 @@ public enum RNITableViewEditingReorderControlMode: String {
         reorderControlContainer.bottomAnchor.constraint(
           equalTo: wrapperParentView.bottomAnchor
         ),
+      ];
       
-        reorderControlContainer.leadingAnchor.constraint(
+      constraints += [
+        reorderControlView.leadingAnchor.constraint(
           equalTo: reorderControlContainer.leadingAnchor
         ),
-        reorderControlContainer.trailingAnchor.constraint(
+        reorderControlView.trailingAnchor.constraint(
           equalTo: reorderControlContainer.trailingAnchor
         ),
-        reorderControlContainer.topAnchor.constraint(
+        reorderControlView.topAnchor.constraint(
           equalTo: reorderControlContainer.topAnchor
         ),
-        reorderControlContainer.bottomAnchor.constraint(
+        reorderControlView.bottomAnchor.constraint(
           equalTo: reorderControlContainer.bottomAnchor
         ),
-      ]);
+      ];
       
+      NSLayoutConstraint.activate(constraints);
       return reorderControlContainer;
     };
     
     switch self {
       case .visible:
-        return;
+        imageView.alpha = 1;
         
       case .hidden:
+        cellView.isHidden = true;
+        
+      case .invisible:
         imageView.alpha = 0.01;
+        
+      case .center:
+        imageView.alpha = 0.01;
+        wrapCellViewInContainer(
+          wrapperParentView: cellView,
+          isCentered: true
+        );
+        
+      case .entireCell:
+        imageView.alpha = 0.01;
+        wrapCellViewInContainer(
+          wrapperParentView: cellView,
+          isCentered: false
+        );
         
       case .customView:
         guard let reactTargetView = reactTargetView else {
@@ -84,52 +122,10 @@ public enum RNITableViewEditingReorderControlMode: String {
         };
         
         imageView.alpha = 0.01;
-        wrapCellViewInContainer(wrapperParentView: reactTargetView)
-        
-      case .entireCell:
-        //imageView.alpha = 0.01;
-        wrapCellViewInContainer(wrapperParentView: cellView);
+        wrapCellViewInContainer(
+          wrapperParentView: cellView,
+          isCentered: false
+        );
     };
-  };
-};
-
-extension RNITableViewEditingReorderControlMode {
-  
-  public init?(fromWrapper wrapper: TableViewCellReorderControlWrapper){
-    guard let reorderControlView = wrapper.wrappedObject,
-          let imageView = wrapper.imageView
-    else { return nil };
-    
-    if imageView.alpha <= 0.01,
-       reorderControlView.superview is RNITableViewCell {
-      self = .hidden;
-      return;
-    };
-    
-    if reorderControlView.superview is RNITableViewCell {
-      self = .visible;
-      return;
-    };
-    
-    if let ancestorView = reorderControlView.superview?.superview,
-       let reactSuperview = ancestorView as? RCTView,
-       let nativeID = reactSuperview.nativeID,
-       let nativeIDKey = RNITableView.NativeIDKey(rawValue: nativeID),
-       nativeIDKey == .customReorderControl {
-      
-      self = .customView;
-      return;
-    };
-    
-    if let ancestorView = reorderControlView.superview?.superview,
-       let tableViewCell = ancestorView as? RNITableViewCell,
-       Int(tableViewCell.bounds.height) == Int(reorderControlView.bounds.height),
-       Int(tableViewCell.bounds.width) == Int(reorderControlView.bounds.width)  {
-      
-      self = .entireCell;
-      return;
-    };
-    
-    return nil;
   };
 };

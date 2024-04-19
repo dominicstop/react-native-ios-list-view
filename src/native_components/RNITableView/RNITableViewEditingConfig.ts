@@ -2,8 +2,10 @@
 export type RNITableViewEditingReorderControlMode  =
   | 'visible'
   | 'hidden'
-  | 'customView'
-  | 'entireCell';
+  | 'invisible'
+  | 'center'
+  | 'entireCell'
+  | 'customView';
 
 export type RNITableViewEditingEditControlMode =
   | 'none'
