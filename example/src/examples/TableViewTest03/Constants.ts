@@ -75,9 +75,9 @@ export const ListReorderPresets: Array<{
     title: "isEditing + Standard Reorder Control",
     desc: "Uses the the table view's `isEditing` mode + built-in re-order control to reorder the list items.",
     props: {
-      dragInteractionEnabled: true,
+      dragInteractionEnabled: false,
       isEditingConfig: {
-        isEditing: false,
+        isEditing: true,
         defaultEditControlMode: 'none',
         defaultReorderControlMode: 'visible',
       },
@@ -89,9 +89,9 @@ export const ListReorderPresets: Array<{
     title: "isEditing + Custom Reorder Control",
     desc: "Uses the the table view's `isEditing` mode + custom react component for the re-order control.",
     props: {
-      dragInteractionEnabled: true,
+      dragInteractionEnabled: false,
       isEditingConfig: {
-        isEditing: false,
+        isEditing: true,
         defaultEditControlMode: 'none',
         defaultReorderControlMode: 'customView',
       },

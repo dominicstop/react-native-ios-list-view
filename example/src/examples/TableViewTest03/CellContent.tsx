@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ViewStyle } from 'react-native';
 
-import { TableView, TableViewNativeListItem} from 'react-native-ios-list-view';
+import { TableView, TableViewCustomReorderControlWrapper, TableViewNativeListItem} from 'react-native-ios-list-view';
 
 import * as Helpers from '../../functions/Helpers';
 import * as Colors from '../../constants/Colors';
@@ -43,6 +43,19 @@ export function CellContent(props: {
 
   const rootContainerStyle: ViewStyle = {
     backgroundColor: props.listDataItem?.colorHex,
+  };
+
+  const isEditingConfig = 
+    props.reorderPresetItem.props.isEditingConfig;
+
+  const rightButtonsContainerStyle: ViewStyle = {
+    opacity: (() => {
+      if(isEditingConfig == null) return 1;
+
+      return isEditingConfig.defaultReorderControlMode == 'visible'
+        ? 0
+        : 1;
+    })(),
   };
 
   return (
@@ -131,27 +144,32 @@ export function CellContent(props: {
           />
         </TouchableOpacity>
       </View>
-      <View style={styles.middleOuterContainer}>
-       <View style={styles.middleInnerContainer}>
-         <View style={styles.middleTopContainer}>
-            <Text style={styles.indexText}>
-              {`${listIndexPrefix + listIndex}`}
-            </Text>
-            <Text style={styles.colorNameText}>
-              {props.listDataItem?.colorName ?? "N/A"}
-            </Text>
+      <TableViewCustomReorderControlWrapper>
+        <View style={styles.middleOuterContainer}>
+          <View style={styles.middleInnerContainer}>
+            <View style={styles.middleTopContainer}>
+                <Text style={styles.indexText}>
+                  {`${listIndexPrefix + listIndex}`}
+                </Text>
+                <Text style={styles.colorNameText}>
+                  {props.listDataItem?.colorName ?? "N/A"}
+                </Text>
+              </View>
+              <View style={styles.middleBottomContainer}>
+                <Text style={styles.colorHexText}>
+                  {props.listDataItem?.colorHex ?? "N/A"}
+                </Text>
+              </View>
           </View>
-          <View style={styles.middleBottomContainer}>
-            <Text style={styles.colorHexText}>
-              {props.listDataItem?.colorHex ?? "N/A"}
-            </Text>
-          </View>
-       </View>
       </View>
-      <View style={[
-        styles.columnButtonContainer,
-        styles.rightButtonsContainer
-      ]}>
+      </TableViewCustomReorderControlWrapper>
+      <View 
+        style={[
+          styles.columnButtonContainer,
+          styles.rightButtonsContainer,
+          rightButtonsContainerStyle,
+        ]}
+      >
         <TouchableOpacity
           style={styles.rightButton}
           onPress={() => {
