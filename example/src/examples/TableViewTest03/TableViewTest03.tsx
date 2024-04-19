@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { TableView } from 'react-native-ios-list-view';
 
-import { CELL_HEIGHT, DUMMY_LIST_DATA, ListDataItem } from './Constants';
+import { CELL_HEIGHT, DUMMY_LIST_DATA, ListDataItem, ListReorderPresets } from './Constants';
 import { CellContent } from './CellContent';
 import { ListHeader } from './ListHeader';
 
@@ -12,9 +12,21 @@ export function TableViewTest03Screen() {
   const [listData, setListData] = React.useState(DUMMY_LIST_DATA);
   const tableViewRef = React.useRef<TableView>(null);
 
+  const [
+    reorderPresetCounter, 
+    setReorderPresetCounter
+  ] = React.useState(0);
+
+  const reorderPresetIndex = 
+    reorderPresetCounter % ListReorderPresets.length;
+
+  const reorderPresetItem = 
+    ListReorderPresets[reorderPresetIndex];
+
   return (
     <View style={styles.rootContainer}>
       <TableView
+        {...reorderPresetItem.props}
         ref={tableViewRef}
         style={styles.tableView}
         listData={listData}
@@ -29,6 +41,11 @@ export function TableViewTest03Screen() {
           return (
             <ListHeader
               listDataCount={listData.length}
+              reorderPresetItem={reorderPresetItem}
+              reorderPresetIndex={reorderPresetIndex}
+              onPressNextReorderPresetButton={() => {
+                setReorderPresetCounter(prevValue => prevValue + 1);
+              }}
             />
           );
         }}
@@ -48,6 +65,7 @@ export function TableViewTest03Screen() {
               orderedListItemIndex={orderedListItemIndex}
               reactListItemIndex={reactListItemIndex}
               nativeListItem={nativeListItem}
+              reorderPresetItem={reorderPresetItem}
             />
           );
         }}

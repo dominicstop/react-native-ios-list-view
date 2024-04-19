@@ -6,7 +6,7 @@ import { TableView, TableViewNativeListItem} from 'react-native-ios-list-view';
 import * as Helpers from '../../functions/Helpers';
 import * as Colors from '../../constants/Colors';
 
-import { ListDataItem } from './Constants';
+import { ListDataItem, ListReorderPresetItem } from './Constants';
 import { RNIImageView } from 'react-native-ios-utilities';
 
 
@@ -18,6 +18,7 @@ export function CellContent(props: {
   reactListItemIndex: number | undefined;
   nativeListItem: TableViewNativeListItem | undefined;
   listDataCount: number;
+  reorderPresetItem: ListReorderPresetItem;
 }){
 
   const listIndex = props.reactListItemIndex ?? 0;

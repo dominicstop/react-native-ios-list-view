@@ -1,6 +1,7 @@
 
 import * as Helpers from '../../functions/Helpers';
 import * as Colors from '../../constants/Colors';
+import { TableViewProps } from 'react-native-ios-list-view';
 
 export const COLOR_CHOICES = {
   'pink': Colors.PINK,
@@ -49,5 +50,56 @@ export const DUMMY_LIST_DATA = (() => {
 })();
 
 export type ListDataItem = typeof DUMMY_LIST_DATA[number];
+
+export const ListReorderPresets: Array<{
+  title: string;
+  desc: string;
+  props: Partial<TableViewProps>;
+}> = [
+  // Preset - 00
+  {
+    title: "Drag and Drop",
+    desc: "Uses the native drag and drop interaction API to re-order the table view items.",
+    props: {
+      dragInteractionEnabled: true,
+      isEditingConfig: {
+        isEditing: false,
+        defaultEditControlMode: 'none',
+        defaultReorderControlMode: 'hidden',
+      },
+    }
+  }, 
+
+  // Preset - 01
+  {
+    title: "isEditing + Standard Reorder Control",
+    desc: "Uses the the table view's `isEditing` mode + built-in re-order control to reorder the list items.",
+    props: {
+      dragInteractionEnabled: true,
+      isEditingConfig: {
+        isEditing: false,
+        defaultEditControlMode: 'none',
+        defaultReorderControlMode: 'visible',
+      },
+    },
+  },
+
+  // Preset - 02
+  {
+    title: "isEditing + Custom Reorder Control",
+    desc: "Uses the the table view's `isEditing` mode + custom react component for the re-order control.",
+    props: {
+      dragInteractionEnabled: true,
+      isEditingConfig: {
+        isEditing: false,
+        defaultEditControlMode: 'none',
+        defaultReorderControlMode: 'customView',
+      },
+    },
+  },
+];
+
+export type ListReorderPresetItem = 
+  typeof ListReorderPresets[number];
 
 export const CELL_HEIGHT = 110;
