@@ -2,6 +2,7 @@ import React from 'react';
 import { Dimensions, LayoutChangeEvent, StyleSheet, ViewStyle } from 'react-native';
 
 import type { TableViewProps, TableViewState } from './TableViewTypes';
+import { TABLE_VIEW_NATIVE_ID_KEYS } from './Constants';
 
 import { RNITableView, RNITableViewListItem, RNITableViewListItemMoveOperationConfig } from '../../native_components/RNITableView';
 import { RNITableViewCellContentView } from '../../native_components/RNITableViewCellContent';
@@ -9,11 +10,6 @@ import { RNITableHeaderView } from '../../native_components/RNITableHeaderView';
 
 import { RNIRenderRequestView, RenderRequestItem } from '../../native_components/RNIRenderRequestView';
 
-
-const NATIVE_ID_KEYS = {
-  renderRequest: "renderRequest",
-  listHeader: "listHeader",
-};
 
 const WINDOW_SIZE = Dimensions.get('window');
 
@@ -136,14 +132,14 @@ export class TableView extends
       >
         {shouldRenderListHeader && (
           <RNITableHeaderView
-            nativeID={NATIVE_ID_KEYS.listHeader}
+            nativeID={TABLE_VIEW_NATIVE_ID_KEYS.listHeader}
             style={props.tableHeaderContainerStyle}
           >
             {props.renderListHeader?.()}
           </RNITableHeaderView>
         )}
         <RNIRenderRequestView
-          nativeID={NATIVE_ID_KEYS.renderRequest}
+          nativeID={TABLE_VIEW_NATIVE_ID_KEYS.renderRequest}
           initialRenderRequestItems={initialRenderRequestItems}
           renderItem={(renderRequestData) => {
             return (
