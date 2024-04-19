@@ -9,6 +9,7 @@ public class RNITableView: ExpoView {
   enum NativeIDKey: String {
     case renderRequest;
     case listHeader;
+    case customReorderControl;
   };
   
   // MARK: - Properties
