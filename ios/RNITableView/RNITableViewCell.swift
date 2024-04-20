@@ -13,6 +13,8 @@ import DGSwiftUtilities
 public class RNITableViewCell:
   UITableViewCell, RNIRenderRequestDelegate, RNITableViewCellManagerDelegate {
   
+  public static var _debugShouldSetBackgroundColorToIndicateSyncStatus = false;
+  
   public var indexPath: IndexPath?;
   public var renderRequestKey: Int?;
   public var listItem: RNITableViewListItem?;
@@ -93,6 +95,9 @@ public class RNITableViewCell:
     self._resetReorderControlIfNeeded();
     self._resetReactCelContent();
     
+    #if DEBUG
+    self._debugUpdateSyncStatusColor();
+    #endif
   };
   
   public override func didMoveToSuperview() {
@@ -271,6 +276,16 @@ public class RNITableViewCell:
     if let cachedHeight = cachedHeight {
       self._setCellHeight(newHeight: cachedHeight);
     };
+  };
+  
+  func _debugUpdateSyncStatusColor(){
+    guard Self._debugShouldSetBackgroundColorToIndicateSyncStatus
+    else { return };
+    
+    let isSynced = self.reactCellContent?._checkIfSynced() ?? false;
+    self.backgroundColor = isSynced
+      ? .green
+      : .red;
   };
   
   // MARK: - Public Functions

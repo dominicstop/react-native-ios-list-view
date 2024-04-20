@@ -67,6 +67,11 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   
   public override func layoutSubviews() {
     super.layoutSubviews();
+    
+    #if DEBUG
+    self.parentTableViewCell?._debugUpdateSyncStatusColor();
+    #endif
+    
     print(
       "RNITableViewCellContentView.layoutSubviews",
       "\n - self.renderRequestKey:", self.renderRequestKey,
@@ -105,6 +110,9 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   func _syncIfNeeded(){
     let isSynced = self._checkIfSynced();
     
+    #if DEBUG
+    self.parentTableViewCell?._debugUpdateSyncStatusColor();
+    #endif
     
     guard !isSynced,
           let listItem = self.listItem,
