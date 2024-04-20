@@ -265,7 +265,7 @@ public class RNITableViewCell:
     indexPath: IndexPath
   ){
     self.indexPath = indexPath;
-    self.setListItem(forKey: key);
+    self.setListItemIfNeeded(forKey: key);
     
     guard let reactTableViewContainer = reactTableViewContainer
     else { return };
@@ -291,9 +291,16 @@ public class RNITableViewCell:
   // MARK: - Public Functions
   // ------------------------
   
-  public func setListItem(forKey key: String){
+  public func setListItemIfNeeded(forKey key: String){
     guard let reactTableViewContainer = self.reactTableViewContainer
     else { return };
+    
+    if let reactCellContent = self.reactCellContent,
+       reactCellContent.listItem?.key == key,
+       reactCellContent.reactListItem?.key == key {
+      
+      return;
+    };
     
     let listDataOrderedEnumerated =
       reactTableViewContainer.listDataOrdered.enumerated();
@@ -357,7 +364,7 @@ public class RNITableViewCell:
     reactCellContent.parentTableViewCell = self;
     
     if let listItem = self.listItem {
-      self.setListItem(forKey: listItem.key);
+      self.setListItemIfNeeded(forKey: listItem.key);
     };
     
     print(

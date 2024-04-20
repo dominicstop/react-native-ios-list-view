@@ -302,7 +302,7 @@ public class RNITableView: ExpoView {
       };
       
        guard let matchingListItemForCell = matchingListItemForCell else { return };
-       $0.setListItem(forKey: matchingListItemForCell.key);
+       $0.setListItemIfNeeded(forKey: matchingListItemForCell.key);
     };
   };
 };
