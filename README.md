@@ -1,35 +1,10 @@
 # react-native-ios-list-view
 
-TBA
+A component for using `UITableView` (and eventually `UIColletionView`) in `react-native`.
 
-# API documentation
+<br><br>
 
-- [Documentation for the main branch](https://github.com/expo/expo/blob/main/docs/pages/versions/unversioned/sdk/react-native-ios-list-view.md)
-- [Documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/react-native-ios-list-view/)
+| Gif                                                    | Description                                                  |
+| ------------------------------------------------------ | ------------------------------------------------------------ |
+| ![TableViewTest02-01](./assets/TableViewTest02-01.gif) | **Component**: [TableViewTest02](example/src/examples/TableViewTest02/TableViewTest02.tsx)<br><br>**Desc**:<br>1️⃣. This gif shows a `UITableView` using react components for the cell content.<br><br>2️⃣. Shows using an "array of JS objects" prop as the `UITableViewDataSource` for the table view.<br><br>3️⃣  Shows re-ordering the `UITableView` cells via the the iOS 11+  [drag & drop API](https://developer.apple.com/documentation/uikit/drag_and_drop) (i.e. `UITableViewDragDelegate`, `UITableViewDropDelegate`).<br><br>4️⃣. Shows a `UITableView` with self-sizing cells.<br><br>5️⃣. Shows `UITableView`'s cell re-use logic reusing the react components.<br><br> |
 
-# Installation in managed Expo projects
-
-For [managed](https://docs.expo.dev/archive/managed-vs-bare/) Expo projects, please follow the installation instructions in the [API documentation for the latest stable release](#api-documentation). If you follow the link and there is no documentation available then this library is not yet usable within managed projects &mdash; it is likely to be included in an upcoming Expo SDK release.
-
-# Installation in bare React Native projects
-
-For bare React Native projects, you must ensure that you have [installed and configured the `expo` package](https://docs.expo.dev/bare/installing-expo-modules/) before continuing.
-
-### Add the package to your npm dependencies
-
-```
-npm install react-native-ios-list-view
-```
-
-### Configure for iOS
-
-Run `npx pod-install` after installing the npm package.
-
-
-### Configure for Android
-
-
-
-# Contributing
-
-Contributions are very welcome! Please refer to guidelines described in the [contributing guide]( https://github.com/expo/expo#contributing).
