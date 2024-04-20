@@ -164,11 +164,26 @@ public class RNITableView: ExpoView {
       tableView: self.tableView!,
       cellProvider: { [unowned self] tableView, indexPath, key in
         
-        // Create the cell as you'd usually do.
-        let cell = tableView.dequeueReusableCell(
-          withIdentifier: "id",
-          for: indexPath
-        ) as! RNITableViewCell;
+        /// Unfortunately, the new `dequeueReusableCell` shuffles the cells
+        /// around when the table view is reloaded...
+        ///
+        /// So we have to use the older/unsafe API + use `cellManager` to
+        /// return the correct cell.
+        /// 
+        let cell: RNITableViewCell = {
+          if let dataSource = self.dataSource,
+             let itemID = dataSource.itemIdentifier(for: indexPath),
+             let cellForItemID = self.cellManager.cellForItemIdentifier(itemID) {
+             
+             return cellForItemID;
+          };
+        
+          if let cell = tableView.dequeueReusableCell(withIdentifier: "id") {
+            return cell as! RNITableViewCell;
+          };
+          
+          return .init();
+        }();
         
         cell.selectionStyle = .none;
         cell.reactTableViewContainer = self;

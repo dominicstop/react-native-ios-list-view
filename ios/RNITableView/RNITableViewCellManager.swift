@@ -83,6 +83,15 @@ final public class RNITableViewCellManager {
     cellForKey.notifyForCellHeightChange(newHeight: newHeight);
   };
   
+  public func cellForItemIdentifier(
+    _ itemID: RNITableViewListItemIdentifier
+  ) -> RNITableViewCell? {
+  
+    return self.cellInstances.first {
+      $0.listItem?.key == itemID;
+    };
+  };
+  
   func _debugPrintCellHeightCache(){
     var string = "RNITableViewCellManager._debugPrintCellHeightCache";
     string += "\n - count: \(self.cellHeightCache.count)";
