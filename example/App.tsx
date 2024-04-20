@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { TableViewTest01Screen } from './src/examples/TableViewTest01';
-import { TableViewTest02Screen } from './src/examples/TableViewTest02';
-import { TableViewTest03Screen } from './src/examples/TableViewTest03';
+import { TableViewTest01Screen } from './src/examples/TableViewTest01Screen';
+import { TableViewTest02Screen } from './src/examples/TableViewTest02Screen';
+import { TableViewTest03Screen } from './src/examples/TableViewTest03Screen';
 
 
 export default function App() {
