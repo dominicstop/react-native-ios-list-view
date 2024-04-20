@@ -72,6 +72,7 @@ export class RNITableViewCellContentView extends React.PureComponent<
     await RNITableViewCellContentViewModule.notifyOnReactLayout(reactTag, {
       layoutRect: rect,
       renderRequestKey: this.props.renderRequestKey,
+      listItem: this.state.listItem,
     });
   };
 

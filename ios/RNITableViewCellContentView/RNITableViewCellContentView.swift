@@ -112,7 +112,8 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   
   func notifyOnReactLayout(
     forRect layoutRect: CGRect,
-    renderRequestKey: Int
+    renderRequestKey: Int,
+    listItem reactListItem: RNITableViewListItem?
   ){
   
     print(
@@ -128,7 +129,10 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     );
     
     guard let parentTableViewContainer = self.parentTableViewContainer,
-          layoutRect.height > 0
+          let parentTableViewCell = self.parentTableViewCell,
+          
+          layoutRect.height > 0,
+          parentTableViewCell.renderRequestKey == renderRequestKey
     else { return };
     
     let cellManager = parentTableViewContainer.cellManager;
@@ -141,6 +145,14 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       parentTableViewContainer.minimumListCellHeightProp,
       layoutRect.height
     );
+    
+    if let currentListItem = self.listItem,
+       let reactListItem = reactListItem,
+       currentListItem != reactListItem {
+      
+      self.reactListItem = reactListItem;
+      return;
+    };
     
     let listItem: RNITableViewListItem? = {
       if let listItem = self.listItem {

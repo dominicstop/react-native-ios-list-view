@@ -35,11 +35,17 @@ public class RNITableViewCellContentViewModule: Module {
             type: Int.self
           );
           
+          let listItem = try? args.getValueFromDictionary(
+            forKey: "listItem",
+            type: RNITableViewListItem.self
+          );
+          
           let layoutRect = try CGRect(fromDict: layoutRectDict);
           
           view.notifyOnReactLayout(
             forRect: layoutRect,
-            renderRequestKey: renderRequestKey
+            renderRequestKey: renderRequestKey,
+            listItem: listItem
           );
           
           promise.resolve();
