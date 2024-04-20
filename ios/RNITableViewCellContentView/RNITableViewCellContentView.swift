@@ -36,6 +36,17 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   
   public var renderRequestKeyProp: Int = -1;
   
+  public var reactListItem: RNITableViewListItem?;
+  public var listItemProp: Dictionary<String, Any>? {
+    willSet {
+      guard let newValue = newValue,
+            let listItem = try? RNITableViewListItem(fromDict: newValue)
+      else { return };
+      
+      self.reactListItem = listItem;
+    }
+  };
+  
   // MARK: Properties - RNIRenderRequestableView
   // -------------------------------------------
 

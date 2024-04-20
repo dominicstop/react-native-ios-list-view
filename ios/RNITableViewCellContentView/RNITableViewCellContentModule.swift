@@ -57,6 +57,10 @@ public class RNITableViewCellContentViewModule: Module {
       Prop("renderRequestKey"){
         $0.renderRequestKeyProp = $1;
       };
+      
+      Prop("listItem"){
+        $0.listItemProp = $1;
+       };
     };
   };
 };

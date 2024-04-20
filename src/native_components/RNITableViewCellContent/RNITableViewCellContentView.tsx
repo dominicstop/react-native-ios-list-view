@@ -152,6 +152,7 @@ export class RNITableViewCellContentView extends React.PureComponent<
         this.props.style,
         styles.nativeView,
       ],
+      listItem: state.listItem,
       onDidSetListItem: this._handleOnDidSetListItem,
       children: props.renderCellContent(
         state.listItem,
