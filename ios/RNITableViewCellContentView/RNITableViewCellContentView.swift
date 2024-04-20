@@ -44,8 +44,11 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   public var reactListItem: RNITableViewListItem?;
   public var listItemProp: Dictionary<String, Any>? {
     willSet {
+      let oldListItem = self.reactListItem;
+      
       guard let newValue = newValue,
-            let listItem = try? RNITableViewListItem(fromDict: newValue)
+            let newListItem = try? RNITableViewListItem(fromDict: newValue),
+            oldListItem != newListItem
       else { return };
       
       self.reactListItem = listItem;
