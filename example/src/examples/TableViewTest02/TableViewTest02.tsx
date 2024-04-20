@@ -15,7 +15,7 @@ export function TableViewTest02Screen() {
         style={styles.tableView}
         listData={DUMMY_LIST_DATA}
         minimumListCellHeight={100}
-        //initialCellsToRenderCount={0}
+        dragInteractionEnabled={true}
         listDataKeyExtractor={(
           item: Record<string, ListDataItem>, 
           index: number

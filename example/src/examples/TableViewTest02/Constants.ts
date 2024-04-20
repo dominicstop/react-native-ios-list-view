@@ -18,7 +18,7 @@ export const DUMMY_LIST_DATA = (() => {
     const desc: string = (() => {
       const wordCount = Math.max(
         3,
-        Helpers.getRandomInt(30),
+        Helpers.getRandomInt(50),
       );
 
       return Helpers.getRandomDummyText(wordCount);
