@@ -90,13 +90,9 @@ public class RNITableViewCell:
   public override func prepareForReuse() {
     guard self._didTriggerSetup else { return };
     
-    if let reactTableViewContainer = self.reactTableViewContainer,
-       !reactTableViewContainer.dragState.isDraggingOrDropping {
-      
-      self.alpha = 0.01;
-    };
-    
     self._resetReorderControlIfNeeded();
+    self._resetReactCelContent();
+    
   };
   
   public override func didMoveToSuperview() {
@@ -180,6 +176,13 @@ public class RNITableViewCell:
       reorderControlContainer.removeFromSuperview();
       self.reorderControlContainer = nil;
     };    
+  };
+  
+  func _resetReactCelContent(){
+    guard let reactCellContent = self.reactCellContent else { return };
+    
+    reactCellContent._isSynced = false;
+    reactCellContent._didSetSize = false;
   };
   
   func _setCellHeight(
@@ -374,10 +377,8 @@ public class RNITableViewCell:
   public func notifyForCellHeightChange(newHeight: CGFloat) {
     self._setCellHeight(newHeight: newHeight);
     
-    if let reactTableViewContainer = self.reactTableViewContainer,
-       !reactTableViewContainer.dragState.isDraggingOrDropping {
-      
-      self.alpha = 1;
+    if let reactCellContent = self.reactCellContent {
+      reactCellContent._didSetSize = true;
     };
   };
 };
