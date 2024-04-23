@@ -19,7 +19,9 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   var _touchHandler: RCTTouchHandler?;
   
   var _isSynced = false;
+  var _didSetup = false;
   var _didSetSize = false;
+  weak var _shadowView: RCTShadowView?;
 
   public var listItem: RNITableViewListItem?;
   public var orderedListItemIndex: Int?;
@@ -29,6 +31,17 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   
   public var parentTableViewContainer: RNITableView? {
     self.parentTableViewCell?.reactTableViewContainer;
+  };
+  
+  
+  var isCellDataAndSizeSynced: Bool {
+       self._didSetSize
+    || self.listItem == self.reactListItem;
+  };
+  
+  
+  var layoutMetrics: RCTLayoutMetrics? {
+    self._shadowView?.layoutMetrics;
   };
   
   // MARK: Properties - React Events
@@ -81,6 +94,8 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       "\n - self.listItem.key:", self.listItem?.key ?? "N/A",
       "\n - self.bounds.size.width:", self.bounds.size.width,
       "\n - self.bounds.size.height:", self.bounds.size.height,
+      "\n - self._shadowView.layoutMetrics.frame:", self._shadowView?.layoutMetrics.frame ?? .zero,
+      "\n - self._shadowView.layoutMetrics.contentFrame:", self._shadowView?.layoutMetrics.contentFrame ?? .zero,
       "\n - self.frame.origin:", self.frame.origin,
       "\n - superview.className:", self.superview?.className ?? "N/A",
       "\n - superview.bounds.size:", self.superview?.bounds.size.debugDescription ?? "N/A",
@@ -89,8 +104,26 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     );
   };
   
+  public override func didMoveToWindow() {
+    guard self.window != nil else { return };
+    self._setupIfNeeded();
+  };
+  
   // MARK: Functions
   // ---------------
+  
+  func _setupIfNeeded(){
+    guard !self._didSetup,
+          let bridge = self.appContext?.reactBridge,
+          let uiManager = bridge.uiManager
+    else { return };
+    self._didSetup = true;
+    
+    RCTExecuteOnUIManagerQueue {
+      let shadowView = uiManager.shadowView(forReactTag: self.reactTag);
+      self._shadowView = shadowView;
+    };
+  };
   
   func _setupTouchHandlerIfNeeded(){
     guard self._touchHandler == nil,
