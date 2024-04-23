@@ -82,6 +82,7 @@ public class RNITableViewCell:
       equalToConstant: cellHeight
     );
     
+    cellHeightConstraint.priority = .defaultHigh;
     cellHeightConstraint.isActive = true;
     self.cellHeightConstraint = cellHeightConstraint;
   };
@@ -93,7 +94,7 @@ public class RNITableViewCell:
     guard self._didTriggerSetup else { return };
     
     self._resetReorderControlIfNeeded();
-    self._resetReactCelContent();
+    self.reactCellContent?.notifyPrepareForCellReuse();
     
     #if DEBUG
     self._debugUpdateSyncStatusColor();
@@ -181,13 +182,6 @@ public class RNITableViewCell:
       reorderControlContainer.removeFromSuperview();
       self.reorderControlContainer = nil;
     };    
-  };
-  
-  func _resetReactCelContent(){
-    guard let reactCellContent = self.reactCellContent else { return };
-    
-    reactCellContent._isSynced = false;
-    reactCellContent._didSetSize = false;
   };
   
   func _setCellHeight(
@@ -282,7 +276,7 @@ public class RNITableViewCell:
     guard Self._debugShouldSetBackgroundColorToIndicateSyncStatus
     else { return };
     
-    let isSynced = self.reactCellContent?._checkIfSynced() ?? false;
+    let isSynced = self.reactCellContent?.isListDataSynced ?? false;
     self.backgroundColor = isSynced
       ? .green
       : .red;
@@ -398,9 +392,5 @@ public class RNITableViewCell:
   
   public func notifyForCellHeightChange(newHeight: CGFloat) {
     self._setCellHeight(newHeight: newHeight);
-    
-    if let reactCellContent = self.reactCellContent {
-      reactCellContent._didSetSize = true;
-    };
   };
 };

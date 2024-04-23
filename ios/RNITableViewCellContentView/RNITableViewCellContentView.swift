@@ -17,10 +17,9 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   // ----------------
   
   var _touchHandler: RCTTouchHandler?;
-  
-  var _isSynced = false;
   var _didSetup = false;
-  var _didSetSize = false;
+  var _didSetInitialSize = false;
+  
   weak var _shadowView: RCTShadowView?;
 
   public var listItem: RNITableViewListItem?;
@@ -33,15 +32,18 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     self.parentTableViewCell?.reactTableViewContainer;
   };
   
-  
-  var isCellDataAndSizeSynced: Bool {
-       self._didSetSize
-    || self.listItem == self.reactListItem;
-  };
-  
-  
   var layoutMetrics: RCTLayoutMetrics? {
     self._shadowView?.layoutMetrics;
+  };
+  
+  public var isListDataSynced: Bool {
+    guard let nativeListItem = self.listItem,
+          let reactListItem = self.reactListItem
+    else {
+      return false;
+    };
+    
+    return nativeListItem.key == reactListItem.key;
   };
   
   // MARK: Properties - React Events
@@ -65,7 +67,9 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       else { return };
       
       self.reactListItem = listItem;
+      
       self._syncIfNeeded();
+      self._setCellHeightIfNeeded();
     }
   };
   
@@ -83,6 +87,7 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   
   public override func layoutSubviews() {
     super.layoutSubviews();
+    self._setCellHeightIfNeeded();
     
     #if DEBUG
     self.parentTableViewCell?._debugUpdateSyncStatusColor();
@@ -112,6 +117,12 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   // MARK: Functions
   // ---------------
   
+  public func notifyPrepareForCellReuse(){
+    self.orderedListItemIndex = nil;
+    self.reactListItemIndex = nil;
+    self.reactListItem = nil;
+  };
+  
   func _setupIfNeeded(){
     guard !self._didSetup,
           let bridge = self.appContext?.reactBridge,
@@ -123,6 +134,49 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       let shadowView = uiManager.shadowView(forReactTag: self.reactTag);
       self._shadowView = shadowView;
     };
+  };
+  
+  func _setCellHeightIfNeeded(){
+    defer {
+      self.parentTableViewContainer?.cellManager._debugPrintCellHeightCache();
+    }
+    
+    let shouldUpdateCellHeight =
+      self.isListDataSynced || !self._didSetInitialSize;
+      
+    guard shouldUpdateCellHeight,
+          let listItem = self.reactListItem,
+          let parentTableViewContainer = self.parentTableViewContainer,
+          let layoutMetrics = self.layoutMetrics,
+          
+          layoutMetrics.frame.height > 0
+    else {
+      return;
+    };
+    
+    let oldHeight = parentTableViewContainer.bounds.size.height;
+    
+    let newHeight = max(
+      parentTableViewContainer.minimumListCellHeightProp,
+      layoutMetrics.frame.height
+    );
+    
+    let didHeightChange: Bool = {
+      let delta = abs(newHeight - oldHeight);
+      return delta > 0;
+    }();
+    
+    guard didHeightChange else { return };
+    let cellManager = parentTableViewContainer.cellManager;
+    
+    if !self._didSetInitialSize {
+      self._didSetInitialSize = true;
+    };
+    
+    cellManager.setCellHeight(
+      forKey: listItem.key,
+      withHeight: newHeight
+    );
   };
   
   func _setupTouchHandlerIfNeeded(){
@@ -137,26 +191,16 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     touchHandler.attach(to: self);
   };
   
-  func _checkIfSynced() -> Bool {
-       self._isSynced
-    || self._didSetSize
-    || self.listItem == self.reactListItem;
-  };
-  
   func _syncIfNeeded(){
-    let isSynced = self._checkIfSynced();
-    
     #if DEBUG
     self.parentTableViewCell?._debugUpdateSyncStatusColor();
     #endif
     
-    guard !isSynced,
+    guard !self.isListDataSynced,
           let listItem = self.listItem,
           let orderedListItemIndex = self.orderedListItemIndex,
           let reactListItemIndex = self.reactListItemIndex
     else { return };
-    
-    self._isSynced = isSynced;
 
     let eventPayload: Dictionary<String, Any> = [
       "listItem": listItem.asDictionary!,
