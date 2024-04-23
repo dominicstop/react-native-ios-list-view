@@ -194,6 +194,9 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     renderRequestKey: Int,
     listItem reactListItem: RNITableViewListItem?
   ){
+    guard let parentTableViewCell = self.parentTableViewCell,
+          parentTableViewCell.renderRequestKey == renderRequestKey
+    else { return };
   
     print(
       "RNITableViewCellContentView.notifyOnReactLayout",
@@ -208,46 +211,25 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       "\n"
     );
     
+    if let reactListItem = reactListItem {
+      self.reactListItem = reactListItem;
+    };
+    
+    guard self.isListDataSynced else {
+      self._syncIfNeeded();
+      return;
+    };
+    
     guard let parentTableViewContainer = self.parentTableViewContainer,
-          let parentTableViewCell = self.parentTableViewCell,
-          
-          layoutRect.height > 0,
-          parentTableViewCell.renderRequestKey == renderRequestKey
+          let listItem = self.listItem
     else { return };
     
     let cellManager = parentTableViewContainer.cellManager;
-    
-    defer {
-      cellManager._debugPrintCellHeightCache();
-    };
     
     let newHeight = max(
       parentTableViewContainer.minimumListCellHeightProp,
       layoutRect.height
     );
-    
-    if let currentListItem = self.listItem,
-       let reactListItem = reactListItem,
-       currentListItem != reactListItem {
-      
-      self.reactListItem = reactListItem;
-      self._syncIfNeeded();
-      return;
-    };
-    
-    let listItem: RNITableViewListItem? = {
-      if let listItem = self.listItem {
-        return listItem;
-      };
-      
-      let cellForRenderRequestKey = cellManager.cellInstances.first {
-        $0.renderRequestKey == renderRequestKey;
-      };
-      
-      return cellForRenderRequestKey?.listItem;
-    }();
-    
-    guard let listItem = listItem else { return };
     
     cellManager.setCellHeight(
       forKey: listItem.key,
