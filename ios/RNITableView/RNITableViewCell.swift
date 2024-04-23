@@ -23,6 +23,12 @@ public class RNITableViewCell:
   var _didSetInitialSize = false;
   var _didSetupReorderControl = false;
   
+  var _isCellLoading = false;
+  var _shouldUpdateCellContent = true;
+  
+  var _didSetupLoadingIndicator = false;
+  lazy var loadingIndicatorView: UIActivityIndicatorView = .init();
+  
   public weak var reactTableViewContainer: RNITableView?;
   public weak var reactRenderRequestView: RNIRenderRequestView?;
   public weak var reactCellContent: RNITableViewCellContentView?;
@@ -87,6 +93,32 @@ public class RNITableViewCell:
     self.cellHeightConstraint = cellHeightConstraint;
   };
   
+  func _setupLoadingIndicatorIfNeeded(){
+    guard !self._didSetupLoadingIndicator else { return };
+    self._didSetupLoadingIndicator = true;
+    
+    let loadingIndicatorView = self.loadingIndicatorView;
+    loadingIndicatorView.isHidden = true;
+    
+    loadingIndicatorView.translatesAutoresizingMaskIntoConstraints = false;
+    self.contentView.addSubview(loadingIndicatorView);
+    
+    NSLayoutConstraint.activate([
+      loadingIndicatorView.centerXAnchor.constraint(
+        equalTo: self.contentView.centerXAnchor
+      ),
+      loadingIndicatorView.centerYAnchor.constraint(
+        equalTo: self.contentView.centerYAnchor
+      ),
+      loadingIndicatorView.heightAnchor.constraint(
+        equalToConstant: 75
+      ),
+      loadingIndicatorView.widthAnchor.constraint(
+        equalToConstant: 75
+      ),
+    ]);
+  };
+  
   // MARK: - Functions - Lifecycle
   // -----------------------------
   
@@ -116,8 +148,29 @@ public class RNITableViewCell:
     self._setupReorderControlIfNeeded();
   };
   
-  // MARK: - Functions
-  // -----------------
+  // MARK: Internal Functions
+  // ------------------------
+  
+  func _notifyWillDisplay(
+    forKey key: String,
+    indexPath: IndexPath
+  ){
+  
+    self.indexPath = indexPath;
+    self.setListItemIfNeeded(forKey: key);
+    
+    self._applyCellLoadingStateIfNeeded(shouldAnimate: false);
+    
+    guard let reactTableViewContainer = reactTableViewContainer
+    else { return };
+    
+    let cellManager = reactTableViewContainer.cellManager;
+    let cachedHeight = cellManager.cellHeightCache[key];
+    
+    if let cachedHeight = cachedHeight {
+      self._setCellHeight(newHeight: cachedHeight);
+    };
+  };
   
   func _getRefToReorderControlIfNeeded(){
     guard self.isEditingConfig.isEditing,
@@ -184,11 +237,61 @@ public class RNITableViewCell:
     };    
   };
   
+  func _applyCellLoadingStateIfNeeded(shouldAnimate: Bool? = nil){
+    self._setupLoadingIndicatorIfNeeded();
+    
+    let isLoadingPrev =
+        !self.loadingIndicatorView.isHidden
+      && self.loadingIndicatorView.isAnimating;
+      
+    guard isLoadingPrev != self._isCellLoading else { return };
+  
+    let shouldAnimate = shouldAnimate ?? {
+      guard let parentView = self.reactTableViewContainer,
+            let globalFrame = self.globalFrame
+      else { return false };
+      
+      return parentView.frame.intersects(globalFrame);
+    }();
+    
+    if self._isCellLoading {
+      self.loadingIndicatorView.startAnimating();
+    };
+    
+    let updateViewsBlock = {
+      self.reactCellContent?.alpha = self._isCellLoading ? 0.01 : 1;
+      self.loadingIndicatorView.isHidden = !self._isCellLoading;
+    };
+    
+    let updateViewsCompletionBlock = {
+      if !self._isCellLoading {
+        self.loadingIndicatorView.startAnimating();
+      };
+    };
+    
+    if shouldAnimate {
+      UIView.animate(
+        withDuration: 0.3,
+        animations: {
+          updateViewsBlock();
+        },
+        completion: { _ in
+          updateViewsCompletionBlock();
+        }
+      );
+    
+    } else {
+      updateViewsBlock();
+      updateViewsCompletionBlock();
+    };
+  };
+  
   func _setCellHeight(
     newHeight: CGFloat,
     isAnimated: Bool,
     shouldUpdateTableView: Bool
   ){
+  
     guard let reactTableViewContainer = self.reactTableViewContainer,
           let cellHeightConstraint = self.cellHeightConstraint,
           let tableView = reactTableViewContainer.tableView
@@ -254,24 +357,6 @@ public class RNITableViewCell:
     };
   };
   
-  func _notifyWillDisplay(
-    forKey key: String,
-    indexPath: IndexPath
-  ){
-    self.indexPath = indexPath;
-    self.setListItemIfNeeded(forKey: key);
-    
-    guard let reactTableViewContainer = reactTableViewContainer
-    else { return };
-    
-    let cellManager = reactTableViewContainer.cellManager;
-    let cachedHeight = cellManager.cellHeightCache[key];
-    
-    if let cachedHeight = cachedHeight {
-      self._setCellHeight(newHeight: cachedHeight);
-    };
-  };
-  
   func _debugUpdateSyncStatusColor(){
     guard Self._debugShouldSetBackgroundColorToIndicateSyncStatus
     else { return };
@@ -286,7 +371,8 @@ public class RNITableViewCell:
   // ------------------------
   
   public func setListItemIfNeeded(forKey key: String){
-    guard let reactTableViewContainer = self.reactTableViewContainer
+    guard let reactTableViewContainer = self.reactTableViewContainer,
+          self._shouldUpdateCellContent
     else { return };
     
     if let reactCellContent = self.reactCellContent,
@@ -340,6 +426,28 @@ public class RNITableViewCell:
       orderedListItemIndex: orderedListItemIndex,
       reactListItemIndex: reactListItemIndex
     );
+  };
+  
+  func pauseCellUpdates(
+    shouldImmediatelyApply: Bool,
+    shouldAnimate: Bool? = nil
+  ){
+    self._shouldUpdateCellContent = false;
+    
+    if shouldImmediatelyApply {
+      self._applyCellLoadingStateIfNeeded(shouldAnimate: shouldAnimate)
+    };
+  };
+  
+  func resumeCellUpdates(
+    shouldImmediatelyApply: Bool,
+    shouldAnimate: Bool? = nil
+  ){
+    self._shouldUpdateCellContent = false;
+    
+    if shouldImmediatelyApply {
+      self._applyCellLoadingStateIfNeeded(shouldAnimate: shouldAnimate)
+    };
   };
   
   // MARK: - Functions - RNIRenderRequestDelegate

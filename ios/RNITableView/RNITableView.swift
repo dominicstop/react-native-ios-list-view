@@ -247,8 +247,8 @@ public class RNITableView: ExpoView {
     );
   };
 
-  // MARK: Functions
-  // ---------------
+  // MARK: Internal Functions
+  // -----------------------
   
   func _applySnapshot(shouldAnimateRowUpdates: Bool = false) {
     guard let dataSource = self.dataSource else { return };
@@ -318,6 +318,33 @@ public class RNITableView: ExpoView {
       
        guard let matchingListItemForCell = matchingListItemForCell else { return };
        $0.setListItemIfNeeded(forKey: matchingListItemForCell.key);
+    };
+  };
+  
+  // MARK: Functions
+  // ---------------
+  
+  func pauseCellUpdates(
+    shouldImmediatelyApply: Bool = false,
+    shouldAnimate: Bool? = nil
+  ){
+    self.cellManager.cellInstances.forEach {
+      $0.pauseCellUpdates(
+        shouldImmediatelyApply: shouldImmediatelyApply,
+        shouldAnimate: shouldAnimate
+      );
+    };
+  };
+  
+  func resumeCellUpdates(
+    shouldImmediatelyApply: Bool = false,
+    shouldAnimate: Bool? = nil
+  ){
+    self.cellManager.cellInstances.forEach {
+      $0.resumeCellUpdates(
+        shouldImmediatelyApply: shouldImmediatelyApply,
+        shouldAnimate: shouldAnimate
+      );
     };
   };
 };
