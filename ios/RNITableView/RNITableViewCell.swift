@@ -127,6 +127,7 @@ public class RNITableViewCell:
     
     self._resetReorderControlIfNeeded();
     self.reactCellContent?.notifyPrepareForCellReuse();
+    self._applyCellLoadingStateIfNeeded(shouldAnimate: false);
     
     #if DEBUG
     self._debugUpdateSyncStatusColor();
@@ -158,6 +159,13 @@ public class RNITableViewCell:
   
     self.indexPath = indexPath;
     self.setListItemIfNeeded(forKey: key);
+    
+    if let reactTableViewContainer = self.reactTableViewContainer,
+        reactTableViewContainer._isCellUpdatesPaused {
+        
+      self._isCellLoading = true;
+      self._shouldUpdateCellContent = false;
+    };
     
     self._applyCellLoadingStateIfNeeded(shouldAnimate: false);
     
@@ -240,11 +248,18 @@ public class RNITableViewCell:
   func _applyCellLoadingStateIfNeeded(shouldAnimate: Bool? = nil){
     self._setupLoadingIndicatorIfNeeded();
     
-    let isLoadingPrev =
+    let isLoadingIndicatorVisible =
         !self.loadingIndicatorView.isHidden
       && self.loadingIndicatorView.isAnimating;
       
-    guard isLoadingPrev != self._isCellLoading else { return };
+    let isReactContentVisible =
+      Int(self.reactCellContent?.alpha ?? 0) != 0;
+      
+    let shouldUpdate =
+         isLoadingIndicatorVisible != self._isCellLoading
+      || isReactContentVisible != self._isCellLoading
+      
+    guard shouldUpdate else { return };
   
     let shouldAnimate = shouldAnimate ?? {
       guard let parentView = self.reactTableViewContainer,
@@ -433,6 +448,7 @@ public class RNITableViewCell:
     shouldAnimate: Bool? = nil
   ){
     self._shouldUpdateCellContent = false;
+    self._isCellLoading = true;
     
     if shouldImmediatelyApply {
       self._applyCellLoadingStateIfNeeded(shouldAnimate: shouldAnimate)
@@ -443,7 +459,8 @@ public class RNITableViewCell:
     shouldImmediatelyApply: Bool,
     shouldAnimate: Bool? = nil
   ){
-    self._shouldUpdateCellContent = false;
+    self._shouldUpdateCellContent = true;
+    self._isCellLoading = false;
     
     if shouldImmediatelyApply {
       self._applyCellLoadingStateIfNeeded(shouldAnimate: shouldAnimate)
@@ -464,6 +481,8 @@ public class RNITableViewCell:
     
     self.reactCellContent = reactCellContent;
     reactCellContent.parentTableViewCell = self;
+    
+    reactCellContent.alpha = self._isCellLoading ? 0.01 : 1;
     
     if let listItem = self.listItem {
       self.setListItemIfNeeded(forKey: listItem.key);

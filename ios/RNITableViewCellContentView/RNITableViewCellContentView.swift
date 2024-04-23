@@ -46,6 +46,10 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     return nativeListItem.key == reactListItem.key;
   };
   
+  var _shouldUpdateCellContent: Bool {
+    return self.parentTableViewCell?._shouldUpdateCellContent ?? true;
+  };
+  
   // MARK: Properties - React Events
   // -------------------------------
   
@@ -137,12 +141,10 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   };
   
   func _setCellHeightIfNeeded(){
-    defer {
-      self.parentTableViewContainer?.cellManager._debugPrintCellHeightCache();
-    }
-    
     let shouldUpdateCellHeight =
-      self.isListDataSynced || !self._didSetInitialSize;
+         self.isListDataSynced
+      || !self._didSetInitialSize
+      && self._shouldUpdateCellContent;
       
     guard shouldUpdateCellHeight,
           let listItem = self.reactListItem,
@@ -196,7 +198,8 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     self.parentTableViewCell?._debugUpdateSyncStatusColor();
     #endif
     
-    guard !self.isListDataSynced,
+    guard self._shouldUpdateCellContent,
+          !self.isListDataSynced,
           let listItem = self.listItem,
           let orderedListItemIndex = self.orderedListItemIndex,
           let reactListItemIndex = self.reactListItemIndex
@@ -238,7 +241,9 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     renderRequestKey: Int,
     listItem reactListItem: RNITableViewListItem?
   ){
-    guard let parentTableViewCell = self.parentTableViewCell,
+  
+    guard self._shouldUpdateCellContent,
+          let parentTableViewCell = self.parentTableViewCell,
           parentTableViewCell.renderRequestKey == renderRequestKey
     else { return };
   

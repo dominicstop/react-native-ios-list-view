@@ -32,6 +32,7 @@ public class RNITableView: ExpoView {
   };
   
   var _didTriggerSetup = false;
+  var _isCellUpdatesPaused = false;
   
   // MARK: Properties - RN Props
   // ---------------------------
@@ -328,6 +329,8 @@ public class RNITableView: ExpoView {
     shouldImmediatelyApply: Bool = false,
     shouldAnimate: Bool? = nil
   ){
+    self._isCellUpdatesPaused = true;
+    
     self.cellManager.cellInstances.forEach {
       $0.pauseCellUpdates(
         shouldImmediatelyApply: shouldImmediatelyApply,
@@ -340,6 +343,8 @@ public class RNITableView: ExpoView {
     shouldImmediatelyApply: Bool = false,
     shouldAnimate: Bool? = nil
   ){
+    self._isCellUpdatesPaused = true;
+    
     self.cellManager.cellInstances.forEach {
       $0.resumeCellUpdates(
         shouldImmediatelyApply: shouldImmediatelyApply,
