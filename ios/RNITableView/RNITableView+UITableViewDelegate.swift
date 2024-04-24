@@ -33,6 +33,13 @@ extension RNITableView: UITableViewDelegate {
     if self.shouldSetCellLoadingOnScrollToTop,
        shouldScrollToTop {
       
+      self._setMinVerticalContentOffsetToTriggerCellLoadingIfNeeded();
+      
+      let minVerticalContentOffset =
+        self.minVerticalContentOffsetToTriggerCellLoading ?? 0;
+      
+      guard scrollView.contentOffset.y >= minVerticalContentOffset
+      else { break block };
       
       self._isScrollingToTop = true;
       self.cellManager.cellInstances.forEach {

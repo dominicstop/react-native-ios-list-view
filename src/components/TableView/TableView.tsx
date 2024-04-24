@@ -36,6 +36,7 @@ export class TableView extends
       isEditingConfig,
       dragInteractionEnabled,
       shouldSetCellLoadingOnScrollToTop,
+      minVerticalContentOffsetToTriggerCellLoading,
 
       listDataKeyExtractor,
       renderCellContent,
@@ -67,6 +68,7 @@ export class TableView extends
       // A. Group native props for `RNITableView`...
       nativeProps: {
         isEditingConfig,
+        minVerticalContentOffsetToTriggerCellLoading,
 
         listData: listDataProcessed,
         minimumListCellHeight: minimumListCellHeightDefault,

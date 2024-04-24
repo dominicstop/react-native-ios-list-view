@@ -107,6 +107,14 @@ public class RNITableView: ExpoView {
   };
   
   public var shouldSetCellLoadingOnScrollToTop = true;
+  
+  public var minVerticalContentOffsetToTriggerCellLoading: CGFloat?;
+  public var minVerticalContentOffsetToTriggerCellLoadingProp: CGFloat? {
+    willSet {
+      self.minVerticalContentOffsetToTriggerCellLoading = newValue;
+    }
+  };
+  
   // MARK: Init + Setup
   // ------------------
   
@@ -335,9 +343,17 @@ public class RNITableView: ExpoView {
     };
   };
   
+  func _setMinVerticalContentOffsetToTriggerCellLoadingIfNeeded(){
+    let shouldSet =
+         self.minVerticalContentOffsetToTriggerCellLoading == nil
+      || self.minVerticalContentOffsetToTriggerCellLoadingProp == nil
   
+    guard shouldSet else { return };
     
+    let headerHeight = self.tableView?.tableHeaderView?.bounds.height ?? 0;
+    let minOffset = self.bounds.height * 0.7;
     
+    self.minVerticalContentOffsetToTriggerCellLoading = headerHeight + minOffset;
   };
   
   // MARK: Functions

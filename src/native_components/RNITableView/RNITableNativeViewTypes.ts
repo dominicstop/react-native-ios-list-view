@@ -8,6 +8,7 @@ export type RNITableNativeViewBaseProps = {
   data: Array<TableViewListItem>;
   minimumListCellHeight: number;
   shouldSetCellLoadingOnScrollToTop: boolean;
+  minVerticalContentOffsetToTriggerCellLoading: number | undefined;
 };
 
 export type RNITableNativeViewProps = 

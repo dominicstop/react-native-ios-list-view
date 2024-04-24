@@ -49,6 +49,10 @@ public class RNITableViewModule: Module {
       Prop("shouldSetCellLoadingOnScrollToTop"){
         $0.shouldSetCellLoadingOnScrollToTop = $1;
       };
+      
+      Prop("minVerticalContentOffsetToTriggerCellLoading"){
+        $0.minVerticalContentOffsetToTriggerCellLoadingProp = $1;
+      };
     }
   };
 };

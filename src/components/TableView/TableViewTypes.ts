@@ -13,6 +13,7 @@ export type TableViewInheritedOptionalProps = Partial<Pick<RNITableViewProps,
  | 'isEditingConfig'
  | 'dragInteractionEnabled'
  | 'shouldSetCellLoadingOnScrollToTop'
+ | 'minVerticalContentOffsetToTriggerCellLoading'
 >>;
 
 export type TableViewInheritedProps = 
