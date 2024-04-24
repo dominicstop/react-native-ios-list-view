@@ -11,6 +11,14 @@
 - [ ] **Impl**: `TableView` - Expose lifecycle events.
 - [ ] **Impl**: `TableView` - Support all the standard props from RN `ScrollView` component.
 - [ ] **Impl**: `TableView` - Add support for using `UIItableView` preset/standard layouts.
+- [ ] **Impl**: `TableView` - Impl. pre-rendered cell pool to fix improve "scrollsToTop" performance.
+  * When "scroll to top" is triggered, `UITableView` does not re-use the existing cells, and instead creates new cell instances.
+  * Because of this, native needs to make a request to JS to render cell content for the newly created cells, impacting performance.
+  * A way to improve this is to create a pool of cells that are already initialized with a "react cell content" view.
+  * This way instead of making a brand new render request from native to JS, we only need a "list data" sync + layout update,
+
+<br>
+
 - [ ] **Update**: Ex - Update example test layout.
 - [ ] **Impl**: Ex - Add different tests via routes + screens.
 
