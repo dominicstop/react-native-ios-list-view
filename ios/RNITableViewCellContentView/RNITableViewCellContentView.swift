@@ -19,6 +19,7 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   var _touchHandler: RCTTouchHandler?;
   var _didSetup = false;
   var _didSetInitialSize = false;
+  var _isListDataSynced = false;
   
   weak var _shadowView: RCTShadowView?;
 
@@ -122,6 +123,8 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   // ---------------
   
   public func notifyPrepareForCellReuse(){
+    self._isListDataSynced = false;
+  
     self.orderedListItemIndex = nil;
     self.reactListItemIndex = nil;
     self.reactListItem = nil;
@@ -198,8 +201,15 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     self.parentTableViewCell?._debugUpdateSyncStatusColor();
     #endif
     
-    guard self._shouldUpdateCellContent,
-          !self.isListDataSynced,
+    guard self._shouldUpdateCellContent else { return };
+    let isListDataSynced = self.isListDataSynced;
+    
+    if !self._isListDataSynced && isListDataSynced {
+      self._isListDataSynced = true;
+      self._notifyOnListDataSynced();
+    };
+  
+    guard !isListDataSynced,
           let listItem = self.listItem,
           let orderedListItemIndex = self.orderedListItemIndex,
           let reactListItemIndex = self.reactListItemIndex
@@ -212,6 +222,18 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
     ];
     
     self.onDidSetListItem.callAsFunction(eventPayload);
+  };
+  
+  func _notifyOnListDataSynced(){
+    if let parentTableViewCell = self.parentTableViewCell,
+       parentTableViewCell._isCellLoading {
+      
+      parentTableViewCell.setCellLoading(
+        isLoading: false,
+        shouldImmediatelyApply: true,
+        delay: 0.1
+      );
+    };
   };
   
   public func setListItem(

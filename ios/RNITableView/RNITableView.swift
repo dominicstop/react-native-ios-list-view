@@ -32,7 +32,7 @@ public class RNITableView: ExpoView {
   };
   
   var _didTriggerSetup = false;
-  var _isCellUpdatesPaused = false;
+  var _isScrollingToTop = false;
   
   // MARK: Properties - RN Props
   // ---------------------------
@@ -176,7 +176,15 @@ public class RNITableView: ExpoView {
              let itemID = dataSource.itemIdentifier(for: indexPath),
              let cellForItemID = self.cellManager.cellForItemIdentifier(itemID) {
              
-             return cellForItemID;
+            if self._isScrollingToTop {
+              cellForItemID.setCellLoading(
+                isLoading: false,
+                shouldImmediatelyApply: true,
+                shouldAnimate: false
+              );
+            };
+             
+            return cellForItemID;
           };
         
           if let cell = tableView.dequeueReusableCell(withIdentifier: "id") {
@@ -199,8 +207,12 @@ public class RNITableView: ExpoView {
     );
   };
 
-  // MARK: Functions - RN Lifecycle
-  // ------------------------------
+  // MARK: Functions - Lifecycle
+  // ---------------------------
+  
+  public override func layoutSubviews() {
+    super.layoutSubviews();
+  };
   
   public override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
     guard let nativeID = subview.nativeID,
@@ -322,34 +334,11 @@ public class RNITableView: ExpoView {
     };
   };
   
+  
+    
+    
+  };
+  
   // MARK: Functions
   // ---------------
-  
-  func pauseCellUpdates(
-    shouldImmediatelyApply: Bool = false,
-    shouldAnimate: Bool? = nil
-  ){
-    self._isCellUpdatesPaused = true;
-    
-    self.cellManager.cellInstances.forEach {
-      $0.pauseCellUpdates(
-        shouldImmediatelyApply: shouldImmediatelyApply,
-        shouldAnimate: shouldAnimate
-      );
-    };
-  };
-  
-  func resumeCellUpdates(
-    shouldImmediatelyApply: Bool = false,
-    shouldAnimate: Bool? = nil
-  ){
-    self._isCellUpdatesPaused = true;
-    
-    self.cellManager.cellInstances.forEach {
-      $0.resumeCellUpdates(
-        shouldImmediatelyApply: shouldImmediatelyApply,
-        shouldAnimate: shouldAnimate
-      );
-    };
-  };
 };

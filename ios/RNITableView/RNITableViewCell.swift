@@ -161,10 +161,9 @@ public class RNITableViewCell:
     self.setListItemIfNeeded(forKey: key);
     
     if let reactTableViewContainer = self.reactTableViewContainer,
-        reactTableViewContainer._isCellUpdatesPaused {
+        reactTableViewContainer._isScrollingToTop {
         
       self._isCellLoading = true;
-      self._shouldUpdateCellContent = false;
     };
     
     self._applyCellLoadingStateIfNeeded(shouldAnimate: false);
@@ -245,7 +244,10 @@ public class RNITableViewCell:
     };    
   };
   
-  func _applyCellLoadingStateIfNeeded(shouldAnimate: Bool? = nil){
+  func _applyCellLoadingStateIfNeeded(
+    shouldAnimate: Bool? = nil,
+    delay: TimeInterval = 0
+  ){
     self._setupLoadingIndicatorIfNeeded();
     
     let isLoadingIndicatorVisible =
@@ -287,6 +289,7 @@ public class RNITableViewCell:
     if shouldAnimate {
       UIView.animate(
         withDuration: 0.3,
+        delay: delay,
         animations: {
           updateViewsBlock();
         },
@@ -443,27 +446,19 @@ public class RNITableViewCell:
     );
   };
   
-  func pauseCellUpdates(
+  func setCellLoading(
+    isLoading: Bool,
     shouldImmediatelyApply: Bool,
-    shouldAnimate: Bool? = nil
+    shouldAnimate: Bool? = nil,
+    delay: TimeInterval = 0
   ){
-    self._shouldUpdateCellContent = false;
-    self._isCellLoading = true;
+    self._isCellLoading = isLoading;
     
     if shouldImmediatelyApply {
-      self._applyCellLoadingStateIfNeeded(shouldAnimate: shouldAnimate)
-    };
-  };
-  
-  func resumeCellUpdates(
-    shouldImmediatelyApply: Bool,
-    shouldAnimate: Bool? = nil
-  ){
-    self._shouldUpdateCellContent = true;
-    self._isCellLoading = false;
-    
-    if shouldImmediatelyApply {
-      self._applyCellLoadingStateIfNeeded(shouldAnimate: shouldAnimate)
+      self._applyCellLoadingStateIfNeeded(
+        shouldAnimate: shouldAnimate,
+        delay: delay
+      );
     };
   };
   
