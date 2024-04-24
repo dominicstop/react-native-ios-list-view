@@ -182,6 +182,8 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       forKey: listItem.key,
       withHeight: newHeight
     );
+    
+    self._notifyOnListHeightSynced();
   };
   
   func _setupTouchHandlerIfNeeded(){
@@ -225,6 +227,18 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
   };
   
   func _notifyOnListDataSynced(){
+    if let parentTableViewCell = self.parentTableViewCell,
+       parentTableViewCell._isCellLoading {
+      
+      parentTableViewCell.setCellLoading(
+        isLoading: false,
+        shouldImmediatelyApply: true,
+        delay: 0.1
+      );
+    };
+  };
+  
+  func _notifyOnListHeightSynced(){
     if let parentTableViewCell = self.parentTableViewCell,
        parentTableViewCell._isCellLoading {
       

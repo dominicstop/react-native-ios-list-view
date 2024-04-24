@@ -259,7 +259,7 @@ public class RNITableViewCell:
       
     let shouldUpdate =
          isLoadingIndicatorVisible != self._isCellLoading
-      || isReactContentVisible != self._isCellLoading
+      || isReactContentVisible == self._isCellLoading
       
     guard shouldUpdate else { return };
   
