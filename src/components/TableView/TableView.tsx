@@ -35,6 +35,7 @@ export class TableView extends
       tableHeaderContainerStyle,
       isEditingConfig,
       dragInteractionEnabled,
+      shouldSetCellLoadingOnScrollToTop,
 
       listDataKeyExtractor,
       renderCellContent,
@@ -65,10 +66,16 @@ export class TableView extends
     return {
       // A. Group native props for `RNITableView`...
       nativeProps: {
+        isEditingConfig,
+
         listData: listDataProcessed,
         minimumListCellHeight: minimumListCellHeightDefault,
-        dragInteractionEnabled: dragInteractionEnabled ?? false,
-        isEditingConfig,
+
+        dragInteractionEnabled: 
+          dragInteractionEnabled ?? false,
+
+        shouldSetCellLoadingOnScrollToTop: 
+          shouldSetCellLoadingOnScrollToTop ?? true,
       },
 
       // B. Pass-through props...

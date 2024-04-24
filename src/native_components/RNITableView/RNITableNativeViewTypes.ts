@@ -7,6 +7,7 @@ export type TableViewListItem = {
 export type RNITableNativeViewBaseProps = {
   data: Array<TableViewListItem>;
   minimumListCellHeight: number;
+  shouldSetCellLoadingOnScrollToTop: boolean;
 };
 
 export type RNITableNativeViewProps = 

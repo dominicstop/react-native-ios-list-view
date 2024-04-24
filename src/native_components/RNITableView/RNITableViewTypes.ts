@@ -5,6 +5,7 @@ import { RNITableViewEditingConfig } from './RNITableViewEditingConfig';
 
 export type RNITableViewInheritedProps = Pick<RNITableNativeViewBaseProps,
  | 'minimumListCellHeight'
+ | 'shouldSetCellLoadingOnScrollToTop'
 >;
 
 export type RNITableViewListItem = {

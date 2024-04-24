@@ -45,6 +45,10 @@ public class RNITableViewModule: Module {
       Prop("dragInteractionEnabled"){
         $0.dragInteractionEnabledProp = $1;
       };
+      
+      Prop("shouldSetCellLoadingOnScrollToTop"){
+        $0.shouldSetCellLoadingOnScrollToTop = $1;
+      };
     }
   };
 };

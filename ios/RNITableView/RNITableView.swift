@@ -106,6 +106,7 @@ public class RNITableView: ExpoView {
     }
   };
   
+  public var shouldSetCellLoadingOnScrollToTop = true;
   // MARK: Init + Setup
   // ------------------
   
