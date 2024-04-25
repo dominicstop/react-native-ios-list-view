@@ -233,7 +233,7 @@ public class RNITableViewCellContentView: ExpoView, RNIRenderRequestableView {
       parentTableViewCell.setCellLoading(
         isLoading: false,
         shouldImmediatelyApply: true,
-        delay: 0.1
+        delay: 0.2
       );
     };
   };
