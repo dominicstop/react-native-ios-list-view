@@ -11,10 +11,12 @@ import Foundation
 final public class RNITableViewCellManager {
 
   public weak var reactTableViewWrapper: RNITableView?;
+  
+  public var maxInactiveCellCount = 20;
 
   public var cellRegistry = NSMapTable<NSString, RNITableViewCell>.init(
     keyOptions: .copyIn,
-    valueOptions: .weakMemory
+    valueOptions: .strongMemory
   );
   
   public var cellHeightCache: Dictionary<String, CGFloat> = [:];
@@ -31,6 +33,12 @@ final public class RNITableViewCellManager {
     self.cellInstances.count;
   };
   
+  public var cellInstancesLoading: [RNITableViewCell] {
+    self.cellInstances.filter {
+      $0._isCellLoading;
+    };
+  };
+  
   public var cellInstancesInUse: [RNITableViewCell] {
     self.cellInstances.filter {
       $0._isCellInUse;
@@ -43,7 +51,6 @@ final public class RNITableViewCellManager {
     };
   };
   
-  
   // MARK: - Init
   // ------------
   
@@ -54,7 +61,31 @@ final public class RNITableViewCellManager {
   // MARK: - Functions
   // -----------------
   
+  public func purgeInactiveCellsIfNeeded(){
+    var cellInstancesInactive = self.cellInstancesInactive;
+    
+    guard cellInstancesInactive.count > 0,
+          cellInstancesInactive.count > self.maxInactiveCellCount
+    else { return };
+    
+    var cellsToRemove: [RNITableViewCell] = [];
+    
+    while cellInstancesInactive.count > self.maxInactiveCellCount {
+      guard let cell = cellInstancesInactive.first else { break };
+      cellsToRemove.append(cell);
+    };
+    
+    guard cellsToRemove.count > 0 else { return };
+    
+    cellsToRemove.forEach {
+      guard let key = $0.renderRequestKey else { return };
+      self.cellRegistry.removeObject(forKey: String(key) as NSString);
+    };
+  };
+  
   public func registerCell(_ cell: RNITableViewCell, forKey key: String){
+    self.purgeInactiveCellsIfNeeded();
+    
     guard self.cellRegistry.object(forKey: key as NSString) == nil
     else { return };
     
