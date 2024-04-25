@@ -159,6 +159,8 @@ public class RNITableViewCell:
     self.reactCellContent?.notifyPrepareForCellReuse();
     self._applyCellLoadingStateIfNeeded(shouldAnimate: false);
     
+    self._isCellInUse = false;
+    
     #if DEBUG
     self._debugUpdateSyncStatusColor();
     #endif
@@ -186,7 +188,9 @@ public class RNITableViewCell:
     forKey key: String,
     indexPath: IndexPath
   ){
-  
+    
+    self._isCellInUse = true;
+    
     self.indexPath = indexPath;
     self.setListItemIfNeeded(forKey: key);
     

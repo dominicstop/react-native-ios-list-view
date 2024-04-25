@@ -31,6 +31,19 @@ final public class RNITableViewCellManager {
     self.cellInstances.count;
   };
   
+  public var cellInstancesInUse: [RNITableViewCell] {
+    self.cellInstances.filter {
+      $0._isCellInUse;
+    };
+  };
+  
+  public var cellInstancesInactive: [RNITableViewCell] {
+    self.cellInstances.filter {
+      !$0._isCellInUse;
+    };
+  };
+  
+  
   // MARK: - Init
   // ------------
   
