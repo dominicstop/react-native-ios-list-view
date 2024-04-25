@@ -167,11 +167,12 @@ public class RNITableViewCell:
   };
   
   public override func didMoveToSuperview() {
-    guard self._didTriggerSetup,
-          self.superview != nil
-    else { return };
-    
-    print("didMoveToSuperview - cellRegistry.count - \(self.reactTableViewContainer?.cellManager.cellInstanceCount ?? -1)");
+    if self.superview == nil,
+       self._isCellInUse {
+      
+      self._isCellInUse = false;
+      self.reactTableViewContainer?.cellManager.purgeInactiveCellsIfNeeded();
+    };
   };
   
   public override func layoutSubviews() {

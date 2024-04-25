@@ -197,6 +197,7 @@ public class RNITableView: ExpoView {
           };
           
           if let cell = self.cellManager.cellInstancesInactive.first {
+            cell._isCellInUse = true;
             return cell;
           };
         

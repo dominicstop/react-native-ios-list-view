@@ -12,7 +12,7 @@ final public class RNITableViewCellManager {
 
   public weak var reactTableViewWrapper: RNITableView?;
   
-  public var maxInactiveCellCount = 20;
+  public var maxInactiveCellCount = 30;
 
   public var cellRegistry = NSMapTable<NSString, RNITableViewCell>.init(
     keyOptions: .copyIn,
@@ -71,7 +71,7 @@ final public class RNITableViewCellManager {
     var cellsToRemove: [RNITableViewCell] = [];
     
     while cellInstancesInactive.count > self.maxInactiveCellCount {
-      guard let cell = cellInstancesInactive.first else { break };
+      guard let cell = cellInstancesInactive.popLast() else { break };
       cellsToRemove.append(cell);
     };
     
