@@ -23,6 +23,7 @@ public class RNITableViewCell:
   var _didSetInitialSize = false;
   var _didSetupReorderControl = false;
   
+  var _isCellInUse = false;
   var _isCellLoading = false;
   var _shouldUpdateCellContent = true;
   
@@ -115,6 +116,35 @@ public class RNITableViewCell:
       ),
       loadingIndicatorView.widthAnchor.constraint(
         equalToConstant: 75
+      ),
+    ]);
+  };
+  
+  func _setupReactCellContent(){
+    guard let reactCellContent = self.reactCellContent
+    else { return };
+    
+    reactCellContent.removeFromSuperview();
+    reactCellContent.parentTableViewCell = self;
+    
+    reactCellContent.alpha = self._isCellLoading ? 0.01 : 1;
+    
+    if let listItem = self.listItem {
+      self.setListItemIfNeeded(forKey: listItem.key);
+    };
+    
+    reactCellContent.translatesAutoresizingMaskIntoConstraints = false;
+    self.contentView.addSubview(reactCellContent);
+    
+    NSLayoutConstraint.activate([
+      reactCellContent.leadingAnchor.constraint(
+        equalTo: self.contentView.leadingAnchor
+      ),
+      reactCellContent.trailingAnchor.constraint(
+        equalTo: self.contentView.trailingAnchor
+      ),
+      reactCellContent.topAnchor.constraint(
+        equalTo: self.contentView.topAnchor
       ),
     ]);
   };
@@ -475,38 +505,7 @@ public class RNITableViewCell:
     else { return };
     
     self.reactCellContent = reactCellContent;
-    reactCellContent.parentTableViewCell = self;
-    
-    reactCellContent.alpha = self._isCellLoading ? 0.01 : 1;
-    
-    if let listItem = self.listItem {
-      self.setListItemIfNeeded(forKey: listItem.key);
-    };
-    
-    print(
-      "RNITableViewCell.onRenderRequestCompleted",
-      "\n - renderRequestKey:", renderRequestKey,
-      "\n - requestedView.bounds:", requestedView.bounds,
-      "\n - listItem.key:", self.listItem?.key ?? "N/A",
-      "\n"
-    );
-    
-    reactCellContent.removeFromSuperview();
-    
-    reactCellContent.translatesAutoresizingMaskIntoConstraints = false;
-    self.contentView.addSubview(reactCellContent);
-    
-    NSLayoutConstraint.activate([
-      reactCellContent.leadingAnchor.constraint(
-        equalTo: self.contentView.leadingAnchor
-      ),
-      reactCellContent.trailingAnchor.constraint(
-        equalTo: self.contentView.trailingAnchor
-      ),
-      reactCellContent.topAnchor.constraint(
-        equalTo: self.contentView.topAnchor
-      ),
-    ]);
+    self._setupReactCellContent();
   };
   
   // MARK: - Functions: RNITableViewCellManagerDelegate
