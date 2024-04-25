@@ -195,6 +195,10 @@ public class RNITableView: ExpoView {
              
             return cellForItemID;
           };
+          
+          if let cell = self.cellManager.cellInstancesInactive.first {
+            return cell;
+          };
         
           if let cell = tableView.dequeueReusableCell(withIdentifier: "id") {
             return cell as! RNITableViewCell;
